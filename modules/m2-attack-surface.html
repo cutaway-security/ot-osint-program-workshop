@@ -14,36 +14,391 @@ next_module_title: "M3: Personnel Exposure"
 
 <section class="module-overview">
   <h2>Overview</h2>
-  <!-- TODO: Read section content from WORKSHOP_FRAMEWORK.md Module 2 Read Section
-       - External attack surface concepts
-       - Domain and subdomain discovery techniques
-       - Remote access technology identification
-       - Naming convention patterns that reveal infrastructure -->
-  <p>Content will be added in Phase 2.</p>
+
+  <p>Your external attack surface is everything an adversary can see about your organization <strong>without authenticating</strong> -- domains, subdomains, login portals, exposed services, and the technologies behind them. In Module 1, we established that publicly discoverable information enabled every attack we reviewed. This module teaches you how to discover that information systematically, the same way an adversary would.</p>
+
+  <h3>What Adversaries See</h3>
+
+  <p>External reconnaissance requires no credentials and no special access. An adversary with a web browser and free tools can discover:</p>
+
+  <ul>
+    <li><strong>Domains and subdomains</strong> -- every registered domain and SSL certificate your organization has issued reveals infrastructure</li>
+    <li><strong>Login portals</strong> -- VPN, webmail, remote desktop, and application login pages are visible to anyone who finds them</li>
+    <li><strong>Technology stack</strong> -- HTTP headers, certificate details, and login page appearance reveal specific products and versions</li>
+    <li><strong>Development and staging environments</strong> -- subdomains like dev., staging., or test. often have weaker security controls</li>
+  </ul>
+
+  <h3>Discovery Techniques</h3>
+
+  <p>This module uses four complementary techniques, all browser-based:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Technique</th>
+        <th>What It Finds</th>
+        <th>Tools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Certificate transparency</strong></td>
+        <td>Subdomains from SSL certificate issuance logs</td>
+        <td><a href="https://crt.sh/" target="_blank" rel="noopener">crt.sh</a></td>
+      </tr>
+      <tr>
+        <td><strong>DNS enumeration</strong></td>
+        <td>Subdomains, mail servers, name servers, DNS records</td>
+        <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a>, <a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></td>
+      </tr>
+      <tr>
+        <td><strong>Internet device search</strong></td>
+        <td>Exposed services, banners, product identification</td>
+        <td><a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a>, <a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a></td>
+      </tr>
+      <tr>
+        <td><strong>Search engine dorking</strong></td>
+        <td>Indexed login pages, documents, configuration files</td>
+        <td>Google advanced search operators</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Naming Conventions That Reveal Infrastructure</h3>
+
+  <p>Organizations often use predictable subdomain naming patterns. These are valuable reconnaissance targets because they indicate what is behind each service:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Pattern</th>
+        <th>What It Suggests</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>vpn., remote., access.</td>
+        <td>VPN or remote access portals</td>
+      </tr>
+      <tr>
+        <td>citrix., rdp., vdi.</td>
+        <td>Virtual desktop / remote desktop services</td>
+      </tr>
+      <tr>
+        <td>mail., owa., webmail.</td>
+        <td>Email services (login portals)</td>
+      </tr>
+      <tr>
+        <td>dev., staging., test.</td>
+        <td>Development/staging environments (often less secured)</td>
+      </tr>
+      <tr>
+        <td>plant1., substation-west., site-</td>
+        <td>Facility-specific infrastructure (reveals OT network presence)</td>
+      </tr>
+      <tr>
+        <td>api., portal., dashboard.</td>
+        <td>Application interfaces (potential data exposure)</td>
+      </tr>
+    </tbody>
+  </table>
 </section>
 
 <section class="module-worked-example">
   <h2>Worked Example: NRECA Domain Discovery</h2>
-  <!-- TODO: Worked example from WORKSHOP_FRAMEWORK.md Module 2
-       - Step 1: Certificate Transparency Search (crt.sh)
-       - Step 2: Known Domain Mapping (9 domains)
-       - Step 3: Remote Access Identification (Shodan/Censys)
-       - Step 4: AI-Assisted Analysis (prompt) -->
-  <p>Content will be added in Phase 2.</p>
+
+  <p>We will walk through external attack surface discovery for NRECA (National Rural Electric Cooperative Association) using publicly available tools. This demonstrates the complete workflow you will replicate for your own organization in the lab.</p>
+
+  <h3>Step 1: Certificate Transparency Search</h3>
+
+  <p>Certificate transparency (CT) logs record every SSL/TLS certificate issued by public certificate authorities. When an organization requests a certificate for a subdomain, that subdomain becomes permanently recorded in CT logs -- even if the subdomain is not linked from any public page.</p>
+
+  <p>Search crt.sh for all certificates issued to electric.coop subdomains:</p>
+
+  <p><a href="https://crt.sh/?q=%25.electric.coop" target="_blank" rel="noopener">https://crt.sh/?q=%25.electric.coop</a></p>
+
+  <p>Review the results and look for patterns suggesting:</p>
+
+  <ul>
+    <li>Member-facing portals (login pages, member services)</li>
+    <li>Administrative interfaces (admin., manage., internal.)</li>
+    <li>Development or staging environments (dev., staging., test.)</li>
+    <li>API endpoints (api., services., data.)</li>
+  </ul>
+
+  <h3>Step 2: Known Domain Mapping</h3>
+
+  <p>Public website analysis, job postings, and CT results reveal that NRECA operates across multiple domains -- not just one. Each domain represents a distinct part of the attack surface:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Domain</th>
+        <th>Purpose</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>electric.coop</td>
+        <td>Public website (WordPress)</td>
+        <td>News, advocacy, public-facing</td>
+      </tr>
+      <tr>
+        <td>cooperative.com</td>
+        <td>Member portal (SharePoint)</td>
+        <td>Login required -- attack surface</td>
+      </tr>
+      <tr>
+        <td>nreca.coop</td>
+        <td>Email domain</td>
+        <td>Confirmed format: firstname.lastname@nreca.coop</td>
+      </tr>
+      <tr>
+        <td>benefits.cooperative.com</td>
+        <td>Employee benefits portal</td>
+        <td>Login required -- sensitive</td>
+      </tr>
+      <tr>
+        <td>careers.electric.coop</td>
+        <td>Job postings</td>
+        <td>Reveals tech stack, org structure</td>
+      </tr>
+      <tr>
+        <td>resap.cooperative.com</td>
+        <td>Safety program portal</td>
+        <td>Member login</td>
+      </tr>
+      <tr>
+        <td>ecba.cooperative.com</td>
+        <td>Bar Association portal</td>
+        <td>Member login</td>
+      </tr>
+      <tr>
+        <td>remagazine.cooperative.com</td>
+        <td>RE Magazine</td>
+        <td>Content platform</td>
+      </tr>
+      <tr>
+        <td>nrecainternational.coop</td>
+        <td>International programs</td>
+        <td>Separate org site</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>This mapping reveals that NRECA's attack surface spans at least 3 root domains (.coop, cooperative.com, electric.coop) with multiple subdomains. Searching only one domain would miss most of the footprint.</p>
+
+  <h3>Step 3: Remote Access Identification</h3>
+
+  <p>Use Shodan or Censys browser search to identify what services are exposed on NRECA's known domains or IP ranges. Look for:</p>
+
+  <ul>
+    <li><strong>Web servers</strong> -- identified by HTTP response headers (Server, X-Powered-By)</li>
+    <li><strong>Mail servers</strong> -- SMTP, IMAP, Exchange endpoints</li>
+    <li><strong>VPN login portals</strong> -- identified by product-specific login pages (FortiGate, Cisco ASA, Palo Alto GlobalProtect)</li>
+    <li><strong>Load balancers and CDN endpoints</strong> -- may indicate cloud-hosted infrastructure</li>
+  </ul>
+
+  <p>For each exposed service, document the product name and version where identifiable. This information feeds directly into vulnerability correlation in Module 4.</p>
+
+  <h3>Step 4: AI-Assisted Analysis</h3>
+
+  <p>Feed your discovery results to your AI client for categorization and gap identification:</p>
+
+{% capture m2_analysis_prompt %}
+I performed subdomain enumeration on an electric cooperative
+organization and found these subdomains:
+
+- benefits.cooperative.com
+- resap.cooperative.com
+- ecba.cooperative.com
+- careers.electric.coop
+- remagazine.cooperative.com
+
+Analyze these subdomains and identify:
+1. Which suggest administrative or login interfaces
+2. Which might contain sensitive employee/member data
+3. What additional subdomains I should look for at a large
+   electric utility association
+4. Suggested Google dork queries to find additional exposed resources
+{% endcapture %}
+{% include prompt-block.html title="Subdomain Analysis Prompt" content=m2_analysis_prompt %}
+
+{% capture m2_analysis_response %}
+<h4>Subdomain Analysis</h4>
+
+<p><strong>1. Administrative / Login Interfaces:</strong></p>
+<ul>
+  <li><strong>benefits.cooperative.com</strong> -- almost certainly requires employee login for benefits enrollment, payroll, and personal information. High-value target for credential stuffing.</li>
+  <li><strong>resap.cooperative.com</strong> -- RESAP (Rural Electric Safety Achievement Program) likely requires member cooperative login for safety reporting and program participation.</li>
+  <li><strong>ecba.cooperative.com</strong> -- ECBA (Electric Cooperative Bar Association) likely requires member login. Lower sensitivity but still an authentication endpoint.</li>
+</ul>
+
+<p><strong>2. Sensitive Employee/Member Data:</strong></p>
+<ul>
+  <li><strong>benefits.cooperative.com</strong> -- highest sensitivity. Employee benefits portals typically contain SSNs, salary data, health insurance information, and banking details for direct deposit.</li>
+  <li><strong>careers.electric.coop</strong> -- contains job descriptions that reveal internal technology stack, team structure, and hiring priorities. May also expose applicant personal data.</li>
+</ul>
+
+<p><strong>3. Additional Subdomains to Investigate:</strong></p>
+<ul>
+  <li>vpn.*, remote.*, access.* -- remote access portals for staff and member cooperatives</li>
+  <li>mail.*, owa.*, webmail.* -- email login interfaces</li>
+  <li>api.*, services.* -- application programming interfaces that may expose data</li>
+  <li>training.*, learning.*, lms.* -- learning management systems (often contain employee rosters)</li>
+  <li>helpdesk.*, support.*, tickets.* -- IT support portals</li>
+</ul>
+
+<p><strong>4. Suggested Google Dork Queries:</strong></p>
+<ul>
+  <li><code>site:cooperative.com inurl:login</code> -- find login pages across cooperative.com subdomains</li>
+  <li><code>site:electric.coop filetype:pdf "confidential"</code> -- find potentially sensitive documents</li>
+  <li><code>site:electric.coop intitle:"index of"</code> -- find directory listings</li>
+  <li><code>"electric.coop" "nreca.coop" inurl:vpn OR inurl:remote</code> -- find remote access portals</li>
+</ul>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (Subdomain Analysis)" content=m2_analysis_response %}
 </section>
 
 <section class="module-lab">
-  <h2>Lab: External Attack Surface Inventory</h2>
-  <!-- TODO: Lab section from WORKSHOP_FRAMEWORK.md Module 2 Lab
-       - Step 1: Target Selection
-       - Step 2: AI-Assisted Query Generation
-       - Step 3: Domain/Subdomain Enumeration (crt.sh, DNSDumpster, SecurityTrails)
-       - Step 4: Remote Access Identification (Shodan, Censys)
-       - Step 5: AI-Assisted Analysis -->
-  <p>Content will be added in Phase 2.</p>
+  <h2>Lab: Build Your External Attack Surface Inventory</h2>
+
+  <p>In this lab, you will discover your target organization's external attack surface using the same techniques demonstrated in the worked example. Follow each step and document your findings -- the output becomes Artifact 2.</p>
+
+  <h3>Step 1: Target Selection</h3>
+
+  <p>Select your target organization for this exercise:</p>
+
+  <ul>
+    <li><strong>Your own organization</strong> (with authorization) -- provides the most operationally relevant results</li>
+    <li><strong>NRECA</strong> (practice target) -- use the domains from the worked example to follow along</li>
+  </ul>
+
+  <p>Identify the primary domain(s) you will investigate. Most organizations have more than one -- check the main website, email domain, and any known portals.</p>
+
+  <h3>Step 2: AI-Assisted Query Generation</h3>
+
+  <p>Use your AI client to generate discovery queries tailored to your target:</p>
+
+{% capture m2_query_prompt %}
+I am performing external attack surface discovery on [organization
+name], a [sector] organization. Their primary domain is
+[domain.com].
+
+Generate:
+1. Certificate transparency search queries for crt.sh
+2. Google dork queries to find login pages, exposed documents,
+   and directory listings
+3. Shodan/Censys search queries to identify their internet-facing
+   services
+4. A list of subdomain naming patterns I should look for based on
+   their sector
+{% endcapture %}
+{% include prompt-block.html title="Query Generation Prompt" content=m2_query_prompt %}
+
+  <p>Save the generated queries. You will use them in the following steps.</p>
+
+  <h3>Step 3: Domain and Subdomain Enumeration</h3>
+
+  <p>Use these browser-based tools to discover your target's domain footprint:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>What to Do</th>
+        <th>Account Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://crt.sh/" target="_blank" rel="noopener">crt.sh</a></td>
+        <td>Search <code>%.targetdomain.com</code> -- review all certificate entries for subdomains</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a></td>
+        <td>Enter root domain -- review DNS records, subdomains, and network map</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></td>
+        <td>Search domain -- review historical DNS records and subdomain history</td>
+        <td>Free tier</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>For each subdomain you discover, record:</p>
+
+  <ul>
+    <li>The full subdomain name</li>
+    <li>What it appears to be (login portal, web application, API, mail server, etc.)</li>
+    <li>Whether it suggests remote access, administrative, or sensitive functionality</li>
+  </ul>
+
+  <h3>Step 4: Remote Access Identification</h3>
+
+  <p>Use internet device search engines to identify exposed services and the technologies behind them:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>What to Do</th>
+        <th>Account Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a></td>
+        <td>Search by domain, hostname, or organization name -- review banners for product identification</td>
+        <td>Free tier</td>
+      </tr>
+      <tr>
+        <td><a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a></td>
+        <td>Search by domain or IP -- review certificates and service details</td>
+        <td>Free tier</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Focus on identifying:</p>
+
+  <ul>
+    <li><strong>VPN login portals</strong> -- FortiGate, Cisco ASA/AnyConnect, Palo Alto GlobalProtect, SonicWall</li>
+    <li><strong>Remote desktop services</strong> -- RDP, Citrix, VMware Horizon</li>
+    <li><strong>Vendor remote support tools</strong> -- TeamViewer, AnyDesk, ConnectWise ScreenConnect</li>
+    <li><strong>Web application login pages</strong> -- OWA, SharePoint, custom applications</li>
+  </ul>
+
+  <p>For each service, document the vendor, product, and version where identifiable from headers, certificates, or login page appearance. This information is critical for Module 4 (Vulnerability Correlation).</p>
+
+  <h3>Step 5: AI-Assisted Analysis</h3>
+
+  <p>Feed your combined findings back to your AI client for categorization, risk prioritization, and gap identification:</p>
+
+{% capture m2_findings_prompt %}
+Here are the results of my external attack surface discovery for
+[organization name]:
+
+Domains found: [list your domains]
+Subdomains found: [list your subdomains]
+Exposed services: [list services with product/version where known]
+
+Analyze these findings and provide:
+1. A categorized inventory (remote access, email, web apps, other)
+2. Which services represent the highest risk for initial access
+3. What gaps in my discovery I should investigate further
+4. A summary table I can use as my external attack surface baseline
+{% endcapture %}
+{% include prompt-block.html title="Findings Analysis Prompt" content=m2_findings_prompt %}
+
+  <p>Review the AI-generated analysis and correct any mischaracterizations. The categorized inventory becomes the foundation of your Artifact 2.</p>
 </section>
 
 <section class="module-output">
   <h2>Output</h2>
-  <p><strong>Artifact 2:</strong> External attack surface inventory -- domains, subdomains, remote access services, technologies identified.</p>
+  <p><strong>Artifact 2: External attack surface inventory.</strong> A categorized list of your target organization's domains, subdomains, remote access services, and identified technologies. This inventory feeds directly into Module 3 (identifying which personnel have access to these services), Module 4 (correlating identified products against vulnerability databases), and Module 5 (establishing a monitoring baseline to detect changes).</p>
 </section>

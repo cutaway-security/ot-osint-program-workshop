@@ -17,17 +17,15 @@ This document provides context for resuming development after a break or when st
 
 ### What Was Just Completed
 
-**Task 2.1-2.2 - M1: ICS/OT Threat Context**: COMPLETE
-- Overview: 4-incident attack table (Aliquippa, Colonial, Texas Water, Fortinet), problem statement, workshop framing
-- Lab: 4 steps with copyable prompt-block (NRECA sector threat profile) and response-block (sanitized example AI output)
-- Output: Artifact 1 description with cross-references to M2-M5
-- Created _includes/response-block.html for example AI responses
-- Added response-block CSS styling
-- Fixed schedule table: removed Block column, fixed inconsistent link bold styling
+**Task 2.3-2.5 - M2: External Attack Surface Discovery**: COMPLETE
+- Overview: attack surface concepts, 4-technique discovery table (CT, DNS, device search, dorking), naming convention patterns table
+- Worked Example: NRECA domain discovery -- crt.sh CT search, 9-domain mapping table, Shodan/Censys remote access identification, AI analysis prompt with response block
+- Lab: 5 structured steps with tool tables (crt.sh, DNSDumpster, SecurityTrails, Shodan, Censys), account requirements, 3 copyable prompt blocks (query generation, subdomain analysis, findings analysis)
+- Output: Artifact 2 description with cross-references to M3, M4, M5
 
 ### Next Task
 
-**Task**: 2.3-2.5 - M2: External Attack Surface Discovery
+**Task**: 2.6-2.8 - M3: Personnel & Credential Exposure
 **Status**: NOT STARTED
 
 ### Blockers
@@ -168,7 +166,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 | # | Task | Status |
 |---|------|--------|
 | 2.1-2.2 | M1: Threat Context | COMPLETE |
-| 2.3-2.5 | M2: External Attack Surface | NOT STARTED |
+| 2.3-2.5 | M2: External Attack Surface | COMPLETE |
 | 2.6-2.8 | M3: Personnel & Credential Exposure | NOT STARTED |
 | 2.9-2.11 | M4: Vulnerability Correlation | NOT STARTED |
 | 2.12-2.14 | M5: Monitoring & Alerting | NOT STARTED |

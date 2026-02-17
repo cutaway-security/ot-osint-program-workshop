@@ -124,9 +124,9 @@
 |---|------|--------|-------|
 | 2.1 | M1: Threat Context -- overview | COMPLETE | 4-incident attack table, problem statement, workshop framing |
 | 2.2 | M1: Threat Context -- lab | COMPLETE | 4 steps, prompt-block, response-block with sanitized example |
-| 2.3 | M2: Attack Surface -- overview | NOT STARTED | Concepts, techniques, naming patterns |
-| 2.4 | M2: Attack Surface -- worked example | NOT STARTED | NRECA domain discovery (crt.sh, domain mapping, Shodan) |
-| 2.5 | M2: Attack Surface -- lab | NOT STARTED | 5 structured steps with tool links |
+| 2.3 | M2: Attack Surface -- overview | COMPLETE | Attack surface concepts, discovery techniques table, naming conventions table |
+| 2.4 | M2: Attack Surface -- worked example | COMPLETE | NRECA: crt.sh, 9-domain mapping, Shodan/Censys, AI analysis prompt + response |
+| 2.5 | M2: Attack Surface -- lab | COMPLETE | 5 steps with tool tables, 3 prompt blocks, account requirements noted |
 | 2.6 | M3: Personnel -- overview | NOT STARTED | Why personnel exposure matters, tier model |
 | 2.7 | M3: Personnel -- worked example | NOT STARTED | NRECA leadership analysis, breach check, prioritization |
 | 2.8 | M3: Personnel -- lab | NOT STARTED | 4 structured steps |
