@@ -1,0 +1,15 @@
+<div class="module-nav">
+  {% if page.prev_module %}
+  <a href="{{ site.baseurl }}/modules/{{ page.prev_module }}.html" class="nav-prev">{{ page.prev_module_title | default: "Previous Module" }}</a>
+  {% else %}
+  <span></span>
+  {% endif %}
+
+  <a href="{{ site.baseurl }}/" class="nav-index">Back to Workshop Home</a>
+
+  {% if page.next_module %}
+  <a href="{{ site.baseurl }}/modules/{{ page.next_module }}.html" class="nav-next">{{ page.next_module_title | default: "Next Module" }}</a>
+  {% else %}
+  <span></span>
+  {% endif %}
+</div>

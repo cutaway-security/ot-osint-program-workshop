@@ -12,19 +12,22 @@ This document provides context for resuming development after a break or when st
 
 ### Active Phase
 
-**Phase**: 1 - Site Scaffolding
+**Phase**: 2 - Module Content
 **Status**: NOT STARTED
 
 ### What Was Just Completed
 
-**Phase 0 - Project Setup**: COMPLETE
-- All framework files created and reviewed
-- Jekyll build validated (clean, no errors)
-- WORKSHOP_FRAMEWORK.md encoding fixed and V1 references cleaned up
+**Phase 1 - Site Scaffolding**: COMPLETE
+- All layouts, includes, CSS, JS created
+- Index page with schedule table and material cards
+- 7 module placeholder pages with front matter and TODO markers
+- 4 supporting page placeholders (templates, prompts, resources)
+- CSS-only navigation dropdown, responsive breakpoints
+- All 12 pages build and render, zero broken internal links
 
 ### Next Task
 
-**Task**: 1.1 - Create directory structure
+**Task**: 2.1 - M1: Threat Context overview
 **Status**: NOT STARTED
 
 ### Blockers
@@ -78,19 +81,45 @@ None.
 - Module pages as .html with Liquid; supporting content as .md
 - Custom CSS: dark header / light content, CSS variables, wider content area than V1, section visual distinction
 
+### Session 4 (2026-02-17, continued)
+
+**What was done**:
+- Committed and pushed Phase 0 work to claude-dev branch
+- Completed Phase 1: Site Scaffolding
+- Created directory structure: _layouts/, _includes/, modules/, examples/, templates/, prompts/, resources/, css/, js/, img/
+- Created _layouts/default.html: HTML5, semantic structure, nav include, footer include, CSS + JS links
+- Created _layouts/module.html: extends default, timing badges from front matter, module navigation
+- Created _includes/nav.html: CSS-only hover dropdown for modules, responsive toggle button
+- Created _includes/footer.html: site name + GitHub link
+- Created _includes/module-nav.html: prev/next with configurable titles, back-to-home link
+- Created _includes/prompt-block.html: accepts title + content params, copy button
+- Created _includes/timing-badge.html: read/lab/total from front matter, lab hidden when 0
+- Created css/style.css: 470+ lines, CSS variables for all colors, dark navy nav/footer, light content, overview/lab/output section styling, prompt blocks with dark bg, timing badges, responsive at 768px and 375px, print styles
+- Created js/clipboard.js: Clipboard API with execCommand fallback, "Copied" feedback
+- Created index.html: schedule table with block/module/time columns, break rows, prerequisites, material cards grid
+- Created 7 module placeholder pages with front matter (timing, block, prev/next) and TODO markers referencing WORKSHOP_FRAMEWORK.md sections
+- Created 4 supporting page placeholders (templates/index, prompts, resources/tools, resources/vuln-intel) so nav links resolve
+- Fixed index page title duplication (was repeating site title)
+- Verified: clean Jekyll build, 12 pages generated, zero broken internal links, all pages return HTTP 200
+
+**Key decisions made**:
+- CSS-only hover dropdown for modules navigation (no JS dependency)
+- Simple templates index page (list with descriptions, usability tested later)
+- Color palette: navy primary (#1a365d), light bg (#f7f8fa), blue overview sections, green output sections, dark prompt blocks
+- Prompt-block include uses Liquid capture/content pattern for multi-line prompts
+- Supporting page placeholders created in Phase 1 so all nav links work during development
+
 ### What Needs To Happen Next
 
-**Phase 1: Site Scaffolding**:
-1. Create directory structure (modules/, examples/, templates/, prompts/, resources/, css/, js/, img/, _layouts/, _includes/)
-2. Create default layout (_layouts/default.html) -- HTML5 semantic, nav, footer, CSS link
-3. Create module layout (_layouts/module.html) -- extends default, timing badges, overview/lab/output sections
-4. Create includes (nav.html, footer.html, module-nav.html, prompt-block.html, timing-badge.html)
-5. Create stylesheet (css/style.css) -- CSS variables, dark header, light content, responsive, prompt block styling
-6. Create index page (index.html) -- schedule, prerequisites, module links, supporting materials
-7. Create placeholder module pages (7 files with front matter and TODO markers)
-8. Implement copy-to-clipboard JS (js/clipboard.js)
-9. Test build and navigation
-10. Test mobile responsiveness
+**Phase 2: Module Content**:
+1. M1: Threat Context -- overview (attack examples, problem statement) + lab (AI prompt exercise)
+2. M2: Attack Surface -- overview + NRECA worked example (crt.sh, domain mapping, Shodan) + lab (5 steps)
+3. M3: Personnel -- overview + NRECA worked example (leadership, breach check, prioritization) + lab (4 steps)
+4. M4: Vulnerability -- overview + FortiGate worked example (CVE correlation, KEV) + lab (4 steps)
+5. M5: Monitoring -- overview + NRECA worked example (Google Alerts, CISA subs) + lab (3 steps)
+6. M6: Runbook -- overview + NRECA runbook excerpt (daily/weekly) + lab (4 steps)
+7. Summary page -- prioritization recap, 8 artifacts list, next steps
+8. Content review against WORKSHOP_FRAMEWORK.md
 
 ---
 
@@ -114,24 +143,25 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 0.10 | Install Ruby/Jekyll | COMPLETE |
 | 0.11 | Validate Jekyll build | COMPLETE |
 
-### Phase 1: Site Scaffolding - NOT STARTED
+### Phase 1: Site Scaffolding - COMPLETE
 
 | # | Task | Status |
 |---|------|--------|
-| 1.1 | Create directory structure | NOT STARTED |
-| 1.2 | Create default layout | NOT STARTED |
-| 1.3 | Create module layout | NOT STARTED |
-| 1.4 | Create navigation include | NOT STARTED |
-| 1.5 | Create footer include | NOT STARTED |
-| 1.6 | Create module-nav include | NOT STARTED |
-| 1.7 | Create prompt-block include | NOT STARTED |
-| 1.8 | Create timing-badge include | NOT STARTED |
-| 1.9 | Create stylesheet | NOT STARTED |
-| 1.10 | Create index page | NOT STARTED |
-| 1.11 | Create placeholder module pages | NOT STARTED |
-| 1.12 | Implement copy-to-clipboard JS | NOT STARTED |
-| 1.13 | Test skeleton builds | NOT STARTED |
-| 1.14 | Test mobile responsiveness | NOT STARTED |
+| 1.1 | Create directory structure | COMPLETE |
+| 1.2 | Create default layout | COMPLETE |
+| 1.3 | Create module layout | COMPLETE |
+| 1.4 | Create navigation include | COMPLETE |
+| 1.5 | Create footer include | COMPLETE |
+| 1.6 | Create module-nav include | COMPLETE |
+| 1.7 | Create prompt-block include | COMPLETE |
+| 1.8 | Create timing-badge include | COMPLETE |
+| 1.9 | Create stylesheet | COMPLETE |
+| 1.10 | Create index page | COMPLETE |
+| 1.11 | Create placeholder module pages | COMPLETE |
+| 1.12 | Implement copy-to-clipboard JS | COMPLETE |
+| 1.13 | Test skeleton builds | COMPLETE |
+| 1.14 | Test mobile responsiveness | PARTIAL (CSS done, visual testing Phase 4) |
+| 1.15 | Create placeholder supporting pages | COMPLETE |
 
 ### Phase 2: Module Content - NOT STARTED
 
@@ -197,6 +227,21 @@ None.
 | _config.yml | Jekyll configuration | Complete (2026-02-17) |
 | Gemfile | Ruby gem dependencies (github-pages) | Complete (2026-02-17) |
 | .gitignore | Build artifacts, OS files, Jekyll | Complete (updated 2026-02-17) |
+| _layouts/default.html | Base page layout | Complete (2026-02-17) |
+| _layouts/module.html | Module page layout | Complete (2026-02-17) |
+| _includes/nav.html | Navigation bar with dropdown | Complete (2026-02-17) |
+| _includes/footer.html | Site footer | Complete (2026-02-17) |
+| _includes/module-nav.html | Previous/next module links | Complete (2026-02-17) |
+| _includes/prompt-block.html | Copyable AI prompt block | Complete (2026-02-17) |
+| _includes/timing-badge.html | Module timing indicators | Complete (2026-02-17) |
+| css/style.css | Site stylesheet | Complete (2026-02-17) |
+| js/clipboard.js | Copy-to-clipboard for prompts | Complete (2026-02-17) |
+| index.html | Workshop landing page | Complete (2026-02-17) |
+| modules/m1-m6 + summary.html | Module placeholder pages (7) | Scaffolded (2026-02-17) |
+| templates/index.html | Templates landing placeholder | Scaffolded (2026-02-17) |
+| prompts/ai-copilot-prompt-library.md | Prompt library placeholder | Scaffolded (2026-02-17) |
+| resources/tools.md | Tool reference placeholder | Scaffolded (2026-02-17) |
+| resources/vuln-intelligence-resources.md | Vuln intel placeholder | Scaffolded (2026-02-17) |
 
 ---
 
@@ -218,6 +263,10 @@ None.
 | 2026-02-17 | resources/ai-tool-considerations.md in scope | Student reference, added to Phase 3 |
 | 2026-02-17 | Module pages as .html, supporting content as .md | HTML for layout control in modules; Markdown for text-heavy reference pages |
 | 2026-02-17 | Custom CSS: dark header / light content | Professional, projector-readable, CSS variables for theming |
+| 2026-02-17 | CSS-only hover dropdown for Modules nav | No JS dependency for navigation |
+| 2026-02-17 | Simple templates index page | List all templates with descriptions; usability tested later |
+| 2026-02-17 | Color: navy #1a365d primary, #f7f8fa bg | High-contrast, professional palette with CSS variables |
+| 2026-02-17 | Prompt-block uses Liquid capture/content | Clean multi-line prompt integration in HTML module pages |
 
 ---
 
@@ -249,4 +298,4 @@ When starting next session:
 3. [ ] Read claude-dev/PLAN.md
 4. [ ] Read this file (claude-dev/RESUME.md)
 5. [ ] Set GEM_HOME and PATH for Ruby
-6. [ ] Begin Phase 1: Site Scaffolding (task 1.1)
+6. [ ] Begin Phase 2: Module Content (task 2.1 - M1 overview)

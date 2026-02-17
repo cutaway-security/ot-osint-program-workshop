@@ -13,7 +13,7 @@
 | Phase | Name | Status | Description |
 |-------|------|--------|-------------|
 | 0 | Project Setup | COMPLETE | Framework files, repo structure, conventions |
-| 1 | Site Scaffolding | NOT STARTED | Layouts, navigation, base templates, styling |
+| 1 | Site Scaffolding | COMPLETE | Layouts, navigation, base templates, styling |
 | 2 | Module Content | NOT STARTED | Convert WORKSHOP_FRAMEWORK.md into module pages |
 | 3 | Supporting Materials | NOT STARTED | Templates, prompt library, resource pages |
 | 4 | Polish and Testing | NOT STARTED | Cross-browser, mobile, content review, links |
@@ -65,7 +65,7 @@
 
 ## Phase 1: Site Scaffolding
 
-**Status**: NOT STARTED
+**Status**: COMPLETE
 
 **Objective**: Create the site skeleton with layouts, navigation, styling, and placeholder module pages.
 
@@ -73,40 +73,42 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 1.1 | Create directory structure | NOT STARTED | modules/, examples/, templates/, prompts/, resources/, css/, js/, img/ |
-| 1.2 | Create default layout | NOT STARTED | _layouts/default.html -- head, nav, footer |
-| 1.3 | Create module layout | NOT STARTED | _layouts/module.html -- overview + lab sections |
-| 1.4 | Create navigation include | NOT STARTED | _includes/nav.html |
-| 1.5 | Create footer include | NOT STARTED | _includes/footer.html |
-| 1.6 | Create module-nav include | NOT STARTED | Previous/next module links |
-| 1.7 | Create prompt-block include | NOT STARTED | Copyable AI prompt formatting |
-| 1.8 | Create timing-badge include | NOT STARTED | Read/lab/total time display |
-| 1.9 | Create stylesheet | NOT STARTED | css/style.css -- clean, projector-readable |
-| 1.10 | Create index page | NOT STARTED | Schedule, prerequisites, module links |
-| 1.11 | Create placeholder module pages | NOT STARTED | All 7 pages (M1-M6 + summary) with front matter |
-| 1.12 | Implement copy-to-clipboard JS | NOT STARTED | js/clipboard.js for AI prompt code blocks |
-| 1.13 | Test skeleton builds | NOT STARTED | All pages render, navigation works |
-| 1.14 | Test mobile responsiveness | NOT STARTED | Verify at 768px and 375px |
+| 1.1 | Create directory structure | COMPLETE | All directories created |
+| 1.2 | Create default layout | COMPLETE | _layouts/default.html -- HTML5, head, nav, footer, CSS, JS |
+| 1.3 | Create module layout | COMPLETE | _layouts/module.html -- extends default, timing badges, module nav |
+| 1.4 | Create navigation include | COMPLETE | _includes/nav.html -- CSS-only hover dropdown for modules |
+| 1.5 | Create footer include | COMPLETE | _includes/footer.html |
+| 1.6 | Create module-nav include | COMPLETE | Previous/next with configurable titles |
+| 1.7 | Create prompt-block include | COMPLETE | Accepts title and content params, copy button |
+| 1.8 | Create timing-badge include | COMPLETE | Read/lab/total from front matter, lab hidden when 0 |
+| 1.9 | Create stylesheet | COMPLETE | CSS variables, dark nav/footer, section styling, responsive |
+| 1.10 | Create index page | COMPLETE | Schedule table, prerequisites, material cards |
+| 1.11 | Create placeholder module pages | COMPLETE | 7 pages with front matter, TODO markers, output descriptions |
+| 1.12 | Implement copy-to-clipboard JS | COMPLETE | Clipboard API with execCommand fallback |
+| 1.13 | Test skeleton builds | COMPLETE | Clean build, 12 pages, all internal links verified |
+| 1.14 | Test mobile responsiveness | PARTIAL | CSS breakpoints at 768px and 375px implemented; visual testing deferred to Phase 4 |
+| 1.15 | Create placeholder supporting pages | COMPLETE | templates/index, prompts, resources (so nav links resolve) |
 
 ### Acceptance Criteria
 
-- [ ] Directory structure matches ARCHITECTURE.md
-- [ ] All layouts and includes created and functional
-- [ ] Index page renders with schedule and module links
-- [ ] All placeholder module pages reachable and render correctly
-- [ ] Navigation works (index, previous/next, modules dropdown)
-- [ ] CSS provides clean, readable layout suitable for projector display
-- [ ] Mobile responsive at tablet and phone breakpoints
+- [x] Directory structure matches ARCHITECTURE.md
+- [x] All layouts and includes created and functional
+- [x] Index page renders with schedule and module links
+- [x] All placeholder module pages reachable and render correctly
+- [x] Navigation works (index, previous/next, modules dropdown)
+- [x] CSS provides clean, readable layout suitable for projector display
+- [ ] Mobile responsive at tablet and phone breakpoints (CSS implemented, visual testing in Phase 4)
 
 ### Deliverables
 
-- Directory structure
+- Directory structure (9 directories)
 - _layouts/default.html, module.html
 - _includes/nav.html, footer.html, module-nav.html, prompt-block.html, timing-badge.html
-- css/style.css
+- css/style.css (470+ lines, CSS variables, responsive)
 - js/clipboard.js
 - index.html
 - modules/ placeholder pages (7 files)
+- Placeholder supporting pages (templates/index, prompts, resources/tools, resources/vuln-intel)
 
 ---
 
@@ -253,7 +255,7 @@
 | Milestone | Phases | Status | Description |
 |-----------|--------|--------|-------------|
 | M1: Framework Ready | 0 | COMPLETE | Claude Code framework files, Jekyll config, clean build |
-| M2: Site Skeleton | 1 | NOT STARTED | Site navigable with layouts, styling, placeholder pages |
+| M2: Site Skeleton | 1 | COMPLETE | Site navigable with layouts, styling, placeholder pages |
 | M3: Content Complete | 2 | NOT STARTED | All module pages have full content |
 | M4: Materials Complete | 3 | NOT STARTED | Templates, prompts, resources all created |
 | M5: Release Ready | 4 | NOT STARTED | Tested, polished, deployed |
@@ -289,6 +291,8 @@
 | 2026-02-17 | resources/ai-tool-considerations.md in scope | Student reference document, included in Phase 3 |
 | 2026-02-17 | Module pages as .html, supporting content as .md | HTML gives reliable layout control for modules; Markdown easier for text-heavy reference pages |
 | 2026-02-17 | Custom CSS with dark header / light content | Professional, high-contrast, projector-readable; CSS variables for theming |
+| 2026-02-17 | CSS-only hover dropdown for Modules nav | No JS dependency for navigation; simpler implementation |
+| 2026-02-17 | Simple templates index page | Lists all 5 templates with descriptions; usability tested later |
 
 ---
 

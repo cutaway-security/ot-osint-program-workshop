@@ -1,0 +1,9 @@
+<div class="module-timing">
+  {% if page.read_time %}
+  <span class="timing-badge timing-badge--read">Read: {{ page.read_time }} min</span>
+  {% endif %}
+  {% if page.lab_time and page.lab_time > 0 %}
+  <span class="timing-badge timing-badge--lab">Lab: {{ page.lab_time }} min</span>
+  {% endif %}
+  <span class="timing-badge timing-badge--total">Total: {{ page.total_time }} min</span>
+</div>
