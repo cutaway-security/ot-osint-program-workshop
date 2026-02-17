@@ -1,4 +1,4 @@
-# CutSec ICS/OT OSINT Workshop V2 â€” Framework Document
+# CutSec ICS/OT OSINT Workshop -- Framework Document
 
 ## Building an ICS/OT OSINT Monitoring Program
 
@@ -6,7 +6,7 @@
 **Format:** Self-paced browser-based tasks via GitHub Pages, instructor-guided  
 **Duration:** 4 hours (~240 min total, ~215 min usable content)  
 **Prerequisites:** Basic OSINT familiarity; ChatGPT account or preferred AI client  
-**Recommended Preparation:** [CutSec ICS/OT OSINT Workshop V1](https://cutaway-security.github.io/ics-summit-2025-osint-workshop/) covers foundational discovery techniques and is helpful background, but not required  
+**Recommended Preparation:** The [CutSec ICS/OT OSINT Workshop](https://cutaway-security.github.io/ics-summit-2025-osint-workshop/) covers foundational discovery techniques and additional OSINT methods; helpful background but not required
 **Student Requirements:** Laptop with web browser (Windows primary; macOS/Linux supported), AI client access  
 **Example Target Organization:** NRECA / America's Electric Cooperatives (electric.coop, cooperative.com, nreca.coop)  
 **Example Edge Device Vendor:** Fortinet FortiGate (CVE-2025-59718 / CVE-2025-59719)
@@ -15,13 +15,13 @@
 
 ## Design Principles
 
-Carried forward from [OSINT Workshop V1](https://cutaway-security.github.io/ics-summit-2025-osint-workshop/):
+These principles guide all workshop design decisions. See also the [CutSec ICS/OT OSINT Workshop](https://cutaway-security.github.io/ics-summit-2025-osint-workshop/) for additional OSINT techniques and context.
 
-- **Minimal lecture, maximum hands-on** â€” each module has a short read-through section followed by structured steps
-- **Browser-based only** â€” no tool installs, no API keys required (students with accounts are encouraged to use them)
-- **AI copilot integrated throughout** â€” students use their AI client (ChatGPT, Claude, etc.) as a working partner in every module
+- **Minimal lecture, maximum hands-on** -- each module has a short read-through section followed by structured steps
+- **Browser-based only** -- no tool installs, no API keys required (students with accounts are encouraged to use them)
+- **AI copilot integrated throughout** -- students use their AI client (ChatGPT, Claude, etc.) as a working partner in every module
 - **Students leave with artifacts** they can use Monday morning
-- **Real examples first** â€” every module includes worked examples using NRECA/Cooperative as the demonstration target before students work their own targets
+- **Real examples first** -- every module includes worked examples using NRECA/Cooperative as the demonstration target before students work their own targets
 
 ---
 
@@ -37,7 +37,7 @@ Carried forward from [OSINT Workshop V1](https://cutaway-security.github.io/ics-
 | | M5: Monitoring & Alerting | 10 min | 35 min | 45 min |
 | | **Break 2** | | | **10 min** |
 | **Block 3** | M6: Runbook Development | 10 min | 25 min | 35 min |
-| | Summary & Next Steps | 10 min | â€” | 10 min |
+| | Summary & Next Steps | 10 min | -- | 10 min |
 | **Total** | | **65 min** | **165 min** | **~250 min** |
 
 Breaks at ~1.5 hour intervals. Block 1 runs 100 min, Block 2 runs 85 min, Block 3 runs 45 min. Instructor can flex M2/M3 labs if students move quickly.
@@ -46,7 +46,7 @@ Breaks at ~1.5 hour intervals. Block 1 runs 100 min, Block 2 runs 85 min, Block 
 
 ## Example Target Organization: NRECA
 
-NRECA (National Rural Electric Cooperative Association) is used throughout the workshop as the worked example. This is a real organization with publicly available information â€” all data used in examples comes from publicly accessible sources.
+NRECA (National Rural Electric Cooperative Association) is used throughout the workshop as the worked example. This is a real organization with publicly available information -- all data used in examples comes from publicly accessible sources.
 
 ### Organization Profile
 
@@ -65,15 +65,15 @@ Source: https://www.electric.coop/our-organization/leadership
 
 | Name | Title | OSINT Priority Tier |
 |------|-------|-------------------|
-| Jim Matheson | Chief Executive Officer | Tier 3 â€” Executive (BEC, strategic targeting) |
-| Jeffrey Connor | Chief Operating Officer | Tier 3 â€” Executive |
-| Wayne F. McGurk | Chief Information Officer / SVP Information Technology | **Tier 1 â€” IT/OT administrator** (direct system access) |
-| D. Scott Barash | Senior Vice President / General Counsel | Tier 3 â€” Executive |
-| Digna Louis | Chief Financial Officer | Tier 3 â€” Executive (financial fraud targeting) |
-| Louis Finkel | Senior Vice President, Government Relations | Tier 3 â€” Elevated |
-| Stephen Bell | Senior Vice President, Communications | Tier 3 â€” Elevated |
-| Peter Baxter | Senior Vice President, Insurance & Financial Services | Tier 3 â€” Elevated |
-| Danielle Sieverling | VP, Chief Risk and Compliance Officer | Tier 2 â€” Security personnel |
+| Jim Matheson | Chief Executive Officer | Tier 3 -- Executive (BEC, strategic targeting) |
+| Jeffrey Connor | Chief Operating Officer | Tier 3 -- Executive |
+| Wayne F. McGurk | Chief Information Officer / SVP Information Technology | **Tier 1 -- IT/OT administrator** (direct system access) |
+| D. Scott Barash | Senior Vice President / General Counsel | Tier 3 -- Executive |
+| Digna Louis | Chief Financial Officer | Tier 3 -- Executive (financial fraud targeting) |
+| Louis Finkel | Senior Vice President, Government Relations | Tier 3 -- Elevated |
+| Stephen Bell | Senior Vice President, Communications | Tier 3 -- Elevated |
+| Peter Baxter | Senior Vice President, Insurance & Financial Services | Tier 3 -- Elevated |
+| Danielle Sieverling | VP, Chief Risk and Compliance Officer | Tier 2 -- Security personnel |
 
 ### Known Staff Contacts (from public contact page)
 
@@ -81,28 +81,28 @@ Source: https://www.electric.coop/our-organization/contact-us
 
 | Name | Role | Email | OSINT Notes |
 |------|------|-------|-------------|
-| Dan Riedinger | Senior Communications Manager | dan.riedinger@nreca.coop | Media contact â€” public figure |
+| Dan Riedinger | Senior Communications Manager | dan.riedinger@nreca.coop | Media contact -- public figure |
 | Shelby Hartley | Senior Manager, Advocacy Communications | shelby.hartley@nreca.coop | Public contact |
-| Veronica Franco | Advertising | veronica.franco@nreca.coop | â€” |
-| Melissa DePuy | Electric Cooperative Bar Association | melissa.depuy@nreca.coop | â€” |
-| Elizabeth Kulig | Government Relations | elizabeth.kulig@nreca.coop | â€” |
-| Amy Lewis | PAC | amy.lewis@nreca.coop | â€” |
-| Nick Pascale | Office of General Counsel | nicholas.pascale@nreca.coop | â€” |
-| Scot Hoffman | RE Magazine | scot.hoffman@nreca.coop | â€” |
-| Katherine Loving | Program Manager, GIS Services | katherine.loving@nreca.coop | GIS/mapping â€” Tier 2 |
-| Martha Duggan | Mutual Aid Agreements | martha.duggan@nreca.coop | â€” |
-| Desiree Dunham | Workforce Programs Manager | desiree.dunham@nreca.coop | â€” |
+| Veronica Franco | Advertising | veronica.franco@nreca.coop | -- |
+| Melissa DePuy | Electric Cooperative Bar Association | melissa.depuy@nreca.coop | -- |
+| Elizabeth Kulig | Government Relations | elizabeth.kulig@nreca.coop | -- |
+| Amy Lewis | PAC | amy.lewis@nreca.coop | -- |
+| Nick Pascale | Office of General Counsel | nicholas.pascale@nreca.coop | -- |
+| Scot Hoffman | RE Magazine | scot.hoffman@nreca.coop | -- |
+| Katherine Loving | Program Manager, GIS Services | katherine.loving@nreca.coop | GIS/mapping -- Tier 2 |
+| Martha Duggan | Mutual Aid Agreements | martha.duggan@nreca.coop | -- |
+| Desiree Dunham | Workforce Programs Manager | desiree.dunham@nreca.coop | -- |
 
 **Email Format Discovered:** firstname.lastname@nreca.coop (confirmed across all public contacts)
 
 ### Why NRECA Works as a Workshop Target
 
-1. **Electric cooperative sector** â€” directly relevant to ICS/OT security
-2. **Rich public information** â€” leadership pages, contact directories, press releases, financial filings (Form 990), job postings
-3. **Multiple domains** â€” demonstrates subdomain enumeration across related organizations
-4. **Member-facing portal** â€” cooperative.com has a login page (attack surface indicator)
-5. **Cybersecurity relevance** â€” NRECA has an explicit cybersecurity and grid resilience program, Co-op Cyber Goals Program, and member cooperatives operate SCADA/EMS systems
-6. **No harm** â€” NRECA is a large national organization; workshop exercises use only publicly available data and do not test or probe their systems
+1. **Electric cooperative sector** -- directly relevant to ICS/OT security
+2. **Rich public information** -- leadership pages, contact directories, press releases, financial filings (Form 990), job postings
+3. **Multiple domains** -- demonstrates subdomain enumeration across related organizations
+4. **Member-facing portal** -- cooperative.com has a login page (attack surface indicator)
+5. **Cybersecurity relevance** -- NRECA has an explicit cybersecurity and grid resilience program, Co-op Cyber Goals Program, and member cooperatives operate SCADA/EMS systems
+6. **No harm** -- NRECA is a large national organization; workshop exercises use only publicly available data and do not test or probe their systems
 
 ---
 
@@ -110,7 +110,7 @@ Source: https://www.electric.coop/our-organization/contact-us
 
 ### Why Fortinet
 
-Fortinet FortiGate firewalls are among the most widely deployed VPN/firewall appliances in electric utility and cooperative environments. They serve as the primary remote access and perimeter security device for many small-to-medium utilities â€” exactly the type of edge device students need to learn to identify and monitor.
+Fortinet FortiGate firewalls are among the most widely deployed VPN/firewall appliances in electric utility and cooperative environments. They serve as the primary remote access and perimeter security device for many small-to-medium utilities -- exactly the type of edge device students need to learn to identify and monitor.
 
 ### Vulnerability Example: CVE-2025-59718 / CVE-2025-59719
 
@@ -122,17 +122,17 @@ Fortinet FortiGate firewalls are among the most widely deployed VPN/firewall app
 **Summary:** Authentication bypass vulnerabilities in FortiOS, FortiProxy, FortiSwitchManager, and FortiWeb. An unauthenticated remote attacker can bypass FortiCloud SSO login authentication using a crafted SAML message, gaining administrative access to the device.
 
 **Affected Products:**
-- FortiOS 7.6.0â€“7.6.3, 7.4.0â€“7.4.8, 7.2.0â€“7.2.11, 7.0.0â€“7.0.17
-- FortiProxy 7.6.0â€“7.6.1, 7.4.0â€“7.4.5, 7.2.0â€“7.2.13, 7.0.0â€“7.0.20
-- FortiSwitchManager 7.2.0â€“7.2.5
-- FortiWeb 8.0.0, 7.6.0â€“7.6.4, 7.4.0â€“7.4.9
+- FortiOS 7.6.0--7.6.3, 7.4.0--7.4.8, 7.2.0--7.2.11, 7.0.0--7.0.17
+- FortiProxy 7.6.0--7.6.1, 7.4.0--7.4.5, 7.2.0--7.2.13, 7.0.0--7.0.20
+- FortiSwitchManager 7.2.0--7.2.5
+- FortiWeb 8.0.0, 7.6.0--7.6.4, 7.4.0--7.4.9
 
 **Why This Matters for the Workshop:**
-- FortiCloud SSO is **automatically enabled** when a device is registered via the GUI â€” many admins don't realize it's on
+- FortiCloud SSO is **automatically enabled** when a device is registered via the GUI -- many admins don't realize it's on
 - Shodan shows approximately **189,000 internet-exposed FortiOS 7.x admin GUIs**, with ~30,000 having FortiCloud SSO enabled
-- Attackers exploited within 3 days â€” demonstrates why continuous monitoring matters
-- Observed attack pattern: authenticate as admin â†’ download system config (including hashed credentials) â†’ crack hashes offline â†’ establish rogue VPN tunnels
-- Subsequent vulnerability CVE-2026-24858 affected even devices that patched the original CVEs â€” demonstrates that edge device monitoring is ongoing
+- Attackers exploited within 3 days -- demonstrates why continuous monitoring matters
+- Observed attack pattern: authenticate as admin --> download system config (including hashed credentials) --> crack hashes offline --> establish rogue VPN tunnels
+- Subsequent vulnerability CVE-2026-24858 affected even devices that patched the original CVEs -- demonstrates that edge device monitoring is ongoing
 
 **CISA Resources:**
 - KEV entry: https://www.cisa.gov/known-exploited-vulnerabilities-catalog (search CVE-2025-59718)
@@ -155,7 +155,7 @@ Students would look for: version numbers in HTTP headers or login page HTML, SSL
 
 ### Module 1: ICS/OT Threat Context (15 min)
 
-**Purpose:** Establish *why* OSINT monitoring matters for ICS/OT â€” grounding, not a deep dive.
+**Purpose:** Establish *why* OSINT monitoring matters for ICS/OT -- grounding, not a deep dive.
 
 #### Read Section (5 min)
 
@@ -222,9 +222,9 @@ From public website analysis, we already know NRECA operates across multiple dom
 | Domain | Purpose | Notes |
 |--------|---------|-------|
 | electric.coop | Public website (WordPress) | News, advocacy, public-facing |
-| cooperative.com | Member portal (SharePoint) | Login required â€” attack surface |
+| cooperative.com | Member portal (SharePoint) | Login required -- attack surface |
 | nreca.coop | Email domain | Confirmed format: firstname.lastname@nreca.coop |
-| benefits.cooperative.com | Employee benefits portal | Login required â€” sensitive |
+| benefits.cooperative.com | Employee benefits portal | Login required -- sensitive |
 | careers.electric.coop | Job postings | Reveals tech stack, org structure |
 | resap.cooperative.com | Safety program portal | Member login |
 | ecba.cooperative.com | Bar Association portal | Member login |
@@ -261,7 +261,7 @@ Analyze these subdomains and identify:
 4. Suggested Google dork queries to find additional exposed resources
 ```
 
-#### Lab (35 min) â€” Structured Steps
+#### Lab (35 min) -- Structured Steps
 
 1. **Target Selection:** Students select their target organization (their own with authorization, or use NRECA as practice target)
 2. **AI-Assisted Query Generation:** Prompt AI client to generate domain discovery queries, Google dork strings, and certificate transparency search strategies
@@ -290,9 +290,9 @@ Analyze these subdomains and identify:
 - Why personnel exposure matters for ICS/OT: credential stuffing against remote access, social engineering targeting engineers with system access, executives as high-value phishing targets
 - Breach databases and what they reveal: email addresses, passwords, password hashes, associated services
 - Role-based prioritization:
-  - **Tier 1 â€” Immediate:** Control system engineers, SCADA administrators, OT network administrators, CIO/IT leadership with system access
-  - **Tier 2 â€” High:** IT administrators, plant managers, security personnel, GIS/mapping specialists
-  - **Tier 3 â€” Elevated:** Executives (BEC, strategic targeting), third-party integrator/vendor contacts, financial officers
+  - **Tier 1 -- Immediate:** Control system engineers, SCADA administrators, OT network administrators, CIO/IT leadership with system access
+  - **Tier 2 -- High:** IT administrators, plant managers, security personnel, GIS/mapping specialists
+  - **Tier 3 -- Elevated:** Executives (BEC, strategic targeting), third-party integrator/vendor contacts, financial officers
 - Professional network exposure: conference presentations, job postings revealing technology stacks
 
 #### Worked Example: NRECA Personnel Analysis
@@ -314,7 +314,7 @@ From the public leadership page, we identify key personnel and map them to prior
 
 Source: https://www.electric.coop/our-organization/contact-us
 
-Key finding: **Email format is firstname.lastname@nreca.coop** â€” confirmed across 10+ public contacts. This allows us to:
+Key finding: **Email format is firstname.lastname@nreca.coop** -- confirmed across 10+ public contacts. This allows us to:
 - Predict email addresses for any discovered employee
 - Generate targeted breach database queries
 - Build a comprehensive email list for monitoring
@@ -330,7 +330,7 @@ Students would check nreca.coop domain for known breaches. Individual email chec
 
 **Critical Finding Example (Hypothetical for Workshop):**
 
-> Wayne McGurk (CIO) â€” email wayne.mcgurk@nreca.coop found in 2 breach databases. One breach (2023) included bcrypt-hashed passwords. As CIO with likely administrative access to network infrastructure including VPN and firewall management, this is a **Tier 1 / P1 finding** â€” the combination of credential exposure + high-privilege role + likely access to remote access infrastructure creates an immediate risk.
+> Wayne McGurk (CIO) -- email wayne.mcgurk@nreca.coop found in 2 breach databases. One breach (2023) included bcrypt-hashed passwords. As CIO with likely administrative access to network infrastructure including VPN and firewall management, this is a **Tier 1 / P1 finding** -- the combination of credential exposure + high-privilege role + likely access to remote access infrastructure creates an immediate risk.
 
 **Step 4: AI-Assisted Prioritization**
 
@@ -342,11 +342,11 @@ their roles at an electric cooperative association that manages IT
 infrastructure for 900+ member cooperatives, rank them by risk 
 priority and explain potential attack scenarios for the top 3:
 
-1. Wayne McGurk, CIO/SVP IT â€” found in 2 breaches (one with hashed passwords)
-2. Jim Matheson, CEO â€” found in 1 breach (email only)
-3. Digna Louis, CFO â€” found in 1 breach (email + plaintext password from 2019)
-4. Dan Riedinger, Communications Manager â€” found in 3 breaches (various)
-5. Elizabeth Kulig, Government Relations â€” not found in any breach databases
+1. Wayne McGurk, CIO/SVP IT -- found in 2 breaches (one with hashed passwords)
+2. Jim Matheson, CEO -- found in 1 breach (email only)
+3. Digna Louis, CFO -- found in 1 breach (email + plaintext password from 2019)
+4. Dan Riedinger, Communications Manager -- found in 3 breaches (various)
+5. Elizabeth Kulig, Government Relations -- not found in any breach databases
 
 For each person found, describe:
 - The most likely attack scenario given their role
@@ -354,7 +354,7 @@ For each person found, describe:
 - Recommended immediate actions
 ```
 
-#### Lab (30 min) â€” Structured Steps
+#### Lab (30 min) -- Structured Steps
 
 1. **Personnel Discovery:**
    - Review target's website for leadership pages, staff directories, press releases, contact pages
@@ -376,7 +376,7 @@ For each person found, describe:
 
 ---
 
-### â˜• Break 1 (10 min)
+### Break 1 (10 min)
 
 ---
 
@@ -386,8 +386,8 @@ For each person found, describe:
 
 #### Read Section (10 min)
 
-- Your external attack surface findings *are* your vulnerability scope â€” focus on what's actually exposed, not theoretical assets
-- Asset-to-vulnerability workflow: identify product/version â†’ map to CPE â†’ query vulnerability databases
+- Your external attack surface findings *are* your vulnerability scope -- focus on what's actually exposed, not theoretical assets
+- Asset-to-vulnerability workflow: identify product/version --> map to CPE --> query vulnerability databases
 - Key vulnerability sources: NVD, CISA ICS Advisories, CISA Known Exploited Vulnerabilities (KEV) catalog, vendor PSIRTs
 - **Priority emphasis:** KEV list entries = confirmed active exploitation = top priority for anything in your external attack surface
 
@@ -427,9 +427,9 @@ Vulnerabilities) list.
 
 **Step 3: Vulnerability Database Queries**
 
-- **NVD Search:** https://nvd.nist.gov/vuln/search â€” search for "fortinet fortios 7.4"
-- **CISA KEV Check:** https://www.cisa.gov/known-exploited-vulnerabilities-catalog â€” search "fortinet"
-- **CISA ICS Advisories:** https://www.cisa.gov/news-events/cybersecurity-advisories â€” filter by vendor
+- **NVD Search:** https://nvd.nist.gov/vuln/search -- search for "fortinet fortios 7.4"
+- **CISA KEV Check:** https://www.cisa.gov/known-exploited-vulnerabilities-catalog -- search "fortinet"
+- **CISA ICS Advisories:** https://www.cisa.gov/news-events/cybersecurity-advisories -- filter by vendor
 - **Fortinet PSIRT:** https://fortiguard.fortinet.com/psirt
 
 **Step 4: Active Exploit Prioritization**
@@ -438,9 +438,9 @@ Key findings for FortiOS 7.4.6:
 
 | CVE | CVSS | KEV | Description | Priority |
 |-----|------|-----|-------------|----------|
-| CVE-2025-59718 | 9.8 | âœ… Yes (Dec 16, 2025) | SSO authentication bypass via crafted SAML â€” allows unauthenticated admin access | **P0 â€” Active Exploitation** |
-| CVE-2025-59719 | 9.8 | âœ… Yes | Same root cause, affects FortiWeb | **P0 â€” Active Exploitation** |
-| CVE-2026-24858 | â€” | Monitoring | Follow-on SSO bypass affecting even patched devices | **P1 â€” Critical** |
+| CVE-2025-59718 | 9.8 | Yes Yes (Dec 16, 2025) | SSO authentication bypass via crafted SAML -- allows unauthenticated admin access | **P0 -- Active Exploitation** |
+| CVE-2025-59719 | 9.8 | Yes Yes | Same root cause, affects FortiWeb | **P0 -- Active Exploitation** |
+| CVE-2026-24858 | -- | Monitoring | Follow-on SSO bypass affecting even patched devices | **P1 -- Critical** |
 
 **Step 5: Risk Summary**
 
@@ -453,14 +453,14 @@ finding:
 - Asset: Fortinet FortiGate firewall, FortiOS 7.4.6
 - Exposure: Admin interface on port 443, internet-facing
 - Vulnerability: CVE-2025-59718 (CVSS 9.8, on CISA KEV since Dec 16, 2025)
-- Attack pattern: Unauthenticated SSO bypass â†’ admin access â†’ config 
-  export with hashed credentials â†’ rogue VPN tunnel creation
+- Attack pattern: Unauthenticated SSO bypass --> admin access --> config 
+  export with hashed credentials --> rogue VPN tunnel creation
 - Context: This is the primary perimeter firewall for our organization
 
 Include recommended immediate actions.
 ```
 
-#### Lab (30 min) â€” Structured Steps
+#### Lab (30 min) -- Structured Steps
 
 1. **Extract Product/Version Information:**
    - Review Module 2 findings for identifiable products and versions
@@ -473,7 +473,7 @@ Include recommended immediate actions.
    - Flag: external exposure + known vulnerability + KEV listing = **P0 critical**
    - AI-assisted risk summary generation
 4. **Document Findings:**
-   - Create asset-vulnerability correlation table: asset â†’ product/version â†’ CVE(s) â†’ KEV status â†’ priority
+   - Create asset-vulnerability correlation table: asset --> product/version --> CVE(s) --> KEV status --> priority
 
 **Output:** Vulnerability correlation table with active-exploit prioritization
 
@@ -487,14 +487,14 @@ Include recommended immediate actions.
 
 - Sustainable monitoring = **push** (alerts come to you) + **pull** (you go check periodically)
 - **Push-based alerts:**
-  - Google Alerts â€” organization name + ICS/OT keywords
-  - Shodan Alerts (free tier) â€” IP range or query-based monitoring
-  - Certificate transparency monitors â€” crt.sh, Certspotter
-  - CISA ICS-CERT email subscriptions â€” vendor-specific advisories
-  - HaveIBeenPwned domain notification â€” new breaches affecting your domain
+  - Google Alerts -- organization name + ICS/OT keywords
+  - Shodan Alerts (free tier) -- IP range or query-based monitoring
+  - Certificate transparency monitors -- crt.sh, Certspotter
+  - CISA ICS-CERT email subscriptions -- vendor-specific advisories
+  - HaveIBeenPwned domain notification -- new breaches affecting your domain
 - **Pull-based checks (periodic):**
-  - Re-run Module 2â€“4 queries on a schedule
-  - Baseline comparison â€” has anything changed since last check?
+  - Re-run Module 2--4 queries on a schedule
+  - Baseline comparison -- has anything changed since last check?
   - New CVE checks against your asset inventory
 - Alert aggregation: dedicated email folder, Slack channel, or Teams channel
 - Signal-to-noise: start narrow, expand as you learn what generates value
@@ -533,10 +533,10 @@ Include specific tools and queries for:
 - Personnel changes (LinkedIn, website leadership pages)
 ```
 
-#### Lab (35 min) â€” Structured Steps
+#### Lab (35 min) -- Structured Steps
 
 1. **Configure Push-Based Alerts:**
-   - Set up 3â€“5 Google Alerts using organization name + ICS/OT keywords
+   - Set up 3--5 Google Alerts using organization name + ICS/OT keywords
    - Subscribe to CISA ICS-CERT advisories for vendors identified in Modules 2 and 4
    - Configure HaveIBeenPwned domain notification (if not already active)
    - If students have Shodan accounts: configure alert for target IP range
@@ -544,14 +544,14 @@ Include specific tools and queries for:
    - AI-assisted generation of weekly/monthly monitoring checklist
    - Students customize the generated schedule to their environment
 3. **Baseline Snapshot:**
-   - Consolidate Modules 2â€“4 outputs into a single baseline document (template provided)
+   - Consolidate Modules 2--4 outputs into a single baseline document (template provided)
    - Classify each item: **known-good** / **accepted risk** / **needs remediation** / **needs investigation**
 
 **Output:** Configured alert services, pull-based monitoring schedule, consolidated baseline document
 
 ---
 
-### â˜• Break 2 (10 min)
+### Break 2 (10 min)
 
 ---
 
@@ -561,10 +561,10 @@ Include specific tools and queries for:
 
 #### Read Section (10 min)
 
-- **What a runbook is:** Step-by-step operational procedures for routine monitoring â€” the runbook keeps the program alive when people change, priorities shift, or memory fades
+- **What a runbook is:** Step-by-step operational procedures for routine monitoring -- the runbook keeps the program alive when people change, priorities shift, or memory fades
 - **Runbook vs. playbook:**
   - **Runbook** = routine operational procedures (how to run the program day-to-day)
-  - **Playbook** = incident response procedures (how to respond to specific findings) â€” playbooks are a next step beyond this workshop
+  - **Playbook** = incident response procedures (how to respond to specific findings) -- playbooks are a next step beyond this workshop
 - **Runbook cadence structure:**
   - **Daily:** Check alert queue, quick triage (new vs. known)
   - **Weekly:** Process alert backlog, update baseline if changes found, 30-minute pull-based checks
@@ -573,27 +573,27 @@ Include specific tools and queries for:
 
 #### Worked Example: NRECA Runbook Excerpt
 
-**Daily Check Procedure (5â€“10 min):**
+**Daily Check Procedure (5--10 min):**
 
 1. Open alert email folder / Slack channel
-2. Review new Google Alerts â€” scan for breach mentions, exposure reports, SCADA references
-3. Review CISA ICS-CERT emails â€” check for advisories affecting Fortinet, [other identified vendors]
+2. Review new Google Alerts -- scan for breach mentions, exposure reports, SCADA references
+3. Review CISA ICS-CERT emails -- check for advisories affecting Fortinet, [other identified vendors]
 4. **Triage each alert:**
-   - Known baseline item â†’ mark as reviewed, no action
-   - New finding, low priority â†’ add to weekly review queue
-   - New finding, elevated priority â†’ investigate immediately, apply prioritization framework
-   - New finding, critical â†’ escalate per escalation procedures
+   - Known baseline item --> mark as reviewed, no action
+   - New finding, low priority --> add to weekly review queue
+   - New finding, elevated priority --> investigate immediately, apply prioritization framework
+   - New finding, critical --> escalate per escalation procedures
 5. Document triage decisions in alert log
 
 **Weekly Check Procedure (30 min):**
 
-1. Run crt.sh query for `%.electric.coop` â€” compare to baseline subdomain list
-2. Check HaveIBeenPwned for domain `nreca.coop` â€” any new breaches since last check?
-3. Review CISA KEV catalog additions from the past week â€” any matches to asset inventory?
+1. Run crt.sh query for `%.electric.coop` -- compare to baseline subdomain list
+2. Check HaveIBeenPwned for domain `nreca.coop` -- any new breaches since last check?
+3. Review CISA KEV catalog additions from the past week -- any matches to asset inventory?
 4. Process weekly alert backlog from daily triage
 5. Update baseline document if any changes discovered
 
-#### Lab (25 min) â€” Structured Steps
+#### Lab (25 min) -- Structured Steps
 
 1. **AI-Assisted Runbook Generation:**
 
@@ -615,7 +615,7 @@ Include specific tools and queries for:
    - Define roles: who owns each cadence?
 
 3. **Define Minimum Viable Monitoring:**
-   - If resources contract to near-zero, what are the 2â€“3 activities that absolutely must continue?
+   - If resources contract to near-zero, what are the 2--3 activities that absolutely must continue?
 
    **Prompt:**
 
@@ -638,10 +638,10 @@ Instructor-led wrap-up.
 #### Remediation Prioritization Recap
 
 Emphasize the hierarchy:
-- **P0 â€” Active Exploitation:** KEV-listed vulnerability on an exposed asset = immediate action (hours, not days). Example: FortiGate CVE-2025-59718 on an internet-facing admin interface.
-- **P1 â€” Critical:** Direct exposure + known exploit + safety/operational impact
-- **P2 â€” Urgent (1â€“2 weeks):** Remote access exposure + credential risk, or vulnerable edge device without confirmed exploitation
-- **P3 â€” Planned (30â€“90 days):** Information disclosure, configuration weaknesses, monitoring gaps
+- **P0 -- Active Exploitation:** KEV-listed vulnerability on an exposed asset = immediate action (hours, not days). Example: FortiGate CVE-2025-59718 on an internet-facing admin interface.
+- **P1 -- Critical:** Direct exposure + known exploit + safety/operational impact
+- **P2 -- Urgent (1--2 weeks):** Remote access exposure + credential risk, or vulnerable edge device without confirmed exploitation
+- **P3 -- Planned (30--90 days):** Information disclosure, configuration weaknesses, monitoring gaps
 
 The baseline + monitoring program gives you the *visibility* to prioritize. Without it you're guessing.
 
@@ -658,7 +658,7 @@ The baseline + monitoring program gives you the *visibility* to prioritize. With
 
 #### Next Steps Beyond This Workshop
 
-- **Response Playbooks:** Documented procedures for specific finding types (exposed remote access, breached credentials, critical vuln on exposed asset) â€” these build on the runbook
+- **Response Playbooks:** Documented procedures for specific finding types (exposed remote access, breached credentials, critical vuln on exposed asset) -- these build on the runbook
 - **Tabletop Exercises:** Validate playbooks before a real incident
 - **Script Automation:** AI-assisted development of monitoring scripts for baseline comparison
 - **Program Maturity:** Metrics, stakeholder reporting, integration with existing security workflows
@@ -743,54 +743,38 @@ All prompts from all modules collected and organized by category:
 ## Project Structure for Claude Project / GitHub Repo
 
 ```
-osint-workshop-v2/
-â”œâ”€â”€ README.md                    # Workshop overview and quick start
-â”œâ”€â”€ WORKSHOP_FRAMEWORK.md        # This document â€” master reference
-â”œâ”€â”€ index.html                   # GitHub Pages landing page
-â”œâ”€â”€ modules/
-â”‚   â”œâ”€â”€ m1-threat-context.html
-â”‚   â”œâ”€â”€ m2-attack-surface.html
-â”‚   â”œâ”€â”€ m3-personnel-exposure.html
-â”‚   â”œâ”€â”€ m4-vulnerability-correlation.html
-â”‚   â”œâ”€â”€ m5-monitoring-alerting.html
-â”‚   â”œâ”€â”€ m6-runbook-development.html
-â”‚   â””â”€â”€ summary.html
-â”œâ”€â”€ examples/
-â”‚   â”œâ”€â”€ nreca-domain-discovery.md
-â”‚   â”œâ”€â”€ nreca-personnel-analysis.md
-â”‚   â”œâ”€â”€ fortinet-vuln-correlation.md
-â”‚   â””â”€â”€ google-alerts-configuration.md
-â”œâ”€â”€ templates/
-â”‚   â”œâ”€â”€ baseline-template.md
-â”‚   â”œâ”€â”€ personnel-inventory-template.md
-â”‚   â”œâ”€â”€ vuln-correlation-template.md
-â”‚   â”œâ”€â”€ runbook-template.md
-â”‚   â””â”€â”€ monitoring-checklist-template.md
-â”œâ”€â”€ prompts/
-â”‚   â””â”€â”€ ai-copilot-prompt-library.md
-â”œâ”€â”€ resources/
-â”‚   â”œâ”€â”€ tools.md
-â”‚   â”œâ”€â”€ vuln-intelligence-resources.md
-â”‚   â””â”€â”€ ai-tool-considerations.md
-â”œâ”€â”€ css/
-â”‚   â””â”€â”€ style.css                # GitHub Pages styling (match V1)
-â””â”€â”€ img/
-    â””â”€â”€ (workshop images)
+ot-osint-program-workshop/
++-- README.md                    # Workshop overview and quick start
++-- WORKSHOP_FRAMEWORK.md        # This document -- master reference
++-- index.html                   # GitHub Pages landing page
++-- modules/
+|   +-- m1-threat-context.html
+|   +-- m2-attack-surface.html
+|   +-- m3-personnel-exposure.html
+|   +-- m4-vulnerability-correlation.html
+|   +-- m5-monitoring-alerting.html
+|   +-- m6-runbook-development.html
+|   +-- summary.html
++-- examples/
+|   +-- nreca-domain-discovery.md
+|   +-- nreca-personnel-analysis.md
+|   +-- fortinet-vuln-correlation.md
+|   +-- google-alerts-configuration.md
++-- templates/
+|   +-- baseline-template.md
+|   +-- personnel-inventory-template.md
+|   +-- vuln-correlation-template.md
+|   +-- runbook-template.md
+|   +-- monitoring-checklist-template.md
++-- prompts/
+|   +-- ai-copilot-prompt-library.md
++-- resources/
+|   +-- tools.md
+|   +-- vuln-intelligence-resources.md
+|   +-- ai-tool-considerations.md
++-- css/
+|   +-- style.css                # GitHub Pages styling
++-- img/
+    +-- (workshop images)
 ```
 
----
-
-## Key Differences from V1
-
-| Aspect | V1 (ICS Summit 2025) | V2 (This Workshop) |
-|--------|----------------------|---------------------|
-| Duration | 2 hours | 4 hours |
-| Focus | Discovery techniques | Discovery â†’ operational program |
-| AI Integration | Referenced, optional | Core workflow in every module |
-| Vulnerability correlation | Not included | Dedicated module with KEV emphasis |
-| Personnel analysis | One task (Task 9) | Full module with role-based prioritization |
-| Monitoring/alerting | Not included | Dedicated module, students leave with active alerts |
-| Runbook | Not included | Dedicated module, students leave with operational procedures |
-| Edge device focus | Not included | Fortinet FortiGate as worked example |
-| Example target | Student-selected | NRECA as instructor-led example + student target |
-| Deliverables | Notes and awareness | 8 operational artifacts |

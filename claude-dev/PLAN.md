@@ -12,7 +12,7 @@
 
 | Phase | Name | Status | Description |
 |-------|------|--------|-------------|
-| 0 | Project Setup | IN PROGRESS | Framework files, repo structure, conventions |
+| 0 | Project Setup | COMPLETE | Framework files, repo structure, conventions |
 | 1 | Site Scaffolding | NOT STARTED | Layouts, navigation, base templates, styling |
 | 2 | Module Content | NOT STARTED | Convert WORKSHOP_FRAMEWORK.md into module pages |
 | 3 | Supporting Materials | NOT STARTED | Templates, prompt library, resource pages |
@@ -22,7 +22,7 @@
 
 ## Phase 0: Project Setup
 
-**Status**: IN PROGRESS
+**Status**: COMPLETE
 
 **Objective**: Create Claude Code framework files, establish repo structure and conventions, and get a clean Jekyll build.
 
@@ -34,18 +34,23 @@
 | 0.2 | Create claude-dev/ARCHITECTURE.md | COMPLETE | Site structure and technical design |
 | 0.3 | Create claude-dev/PLAN.md | COMPLETE | This file |
 | 0.4 | Create claude-dev/RESUME.md | COMPLETE | Session status and context |
-| 0.5 | Create README.md | NOT STARTED | Project overview and quick start |
-| 0.6 | Create _config.yml | NOT STARTED | Jekyll configuration for GitHub Pages |
-| 0.7 | Create .gitignore | NOT STARTED | Jekyll build artifacts, OS files |
-| 0.8 | Validate Jekyll build | NOT STARTED | Confirm GitHub Pages compatible setup |
+| 0.5 | Rewrite README.md | COMPLETE | Project overview, structure, local dev instructions |
+| 0.6 | Create _config.yml | COMPLETE | Jekyll configuration for GitHub Pages |
+| 0.7 | Update .gitignore | COMPLETE | Added Jekyll entries, kept existing |
+| 0.8 | Create Gemfile | COMPLETE | github-pages gem for build compatibility |
+| 0.9 | Fix WORKSHOP_FRAMEWORK.md | COMPLETE | Fixed 239 encoding corruptions, removed V1 comparison, updated project name |
+| 0.10 | Install Ruby/Jekyll | COMPLETE | Ruby 3.2.3, Bundler 4.0.6, github-pages gem 232 |
+| 0.11 | Validate Jekyll build | COMPLETE | Clean build, exclusions verified |
 
 ### Acceptance Criteria
 
-- [ ] All four framework files created and reviewed
-- [ ] README.md provides project overview
-- [ ] Jekyll configuration established
-- [ ] .gitignore in place
-- [ ] Clean Jekyll build with no errors
+- [x] All four framework files created and reviewed
+- [x] README.md provides project overview
+- [x] Jekyll configuration established
+- [x] .gitignore in place
+- [x] Gemfile created for github-pages gem
+- [x] WORKSHOP_FRAMEWORK.md encoding fixed and V1 references cleaned
+- [x] Clean Jekyll build with no errors
 
 ### Deliverables
 
@@ -53,6 +58,7 @@
 - claude-dev/ARCHITECTURE.md, PLAN.md, RESUME.md, WORKSHOP_FRAMEWORK.md
 - README.md
 - _config.yml
+- Gemfile
 - .gitignore
 
 ---
@@ -246,7 +252,7 @@
 
 | Milestone | Phases | Status | Description |
 |-----------|--------|--------|-------------|
-| M1: Framework Ready | 0 | IN PROGRESS | Claude Code framework files, Jekyll config, clean build |
+| M1: Framework Ready | 0 | COMPLETE | Claude Code framework files, Jekyll config, clean build |
 | M2: Site Skeleton | 1 | NOT STARTED | Site navigable with layouts, styling, placeholder pages |
 | M3: Content Complete | 2 | NOT STARTED | All module pages have full content |
 | M4: Materials Complete | 3 | NOT STARTED | Templates, prompts, resources all created |
@@ -277,6 +283,12 @@
 | 2026-02-17 | Standalone repo (ot-osint-program-workshop) | Combined repo approach breaks GitHub Pages for original workshop |
 | 2026-02-17 | No V1 content in this repo | Each workshop is its own independent project and site |
 | 2026-02-17 | Flat directory structure (no v2/ nesting) | Single workshop, no need for subdirectory isolation |
+| 2026-02-17 | Development on claude-dev branch | claude-dev for all dev; merge to main for go-live; GitHub Pages set to claude-dev during dev |
+| 2026-02-17 | Gemfile required for Jekyll build | github-pages gem ensures build compatibility with GitHub Pages |
+| 2026-02-17 | V1 references informational only, no comparison chart | V1 workshop linked as recommended preparation and additional context |
+| 2026-02-17 | resources/ai-tool-considerations.md in scope | Student reference document, included in Phase 3 |
+| 2026-02-17 | Module pages as .html, supporting content as .md | HTML gives reliable layout control for modules; Markdown easier for text-heavy reference pages |
+| 2026-02-17 | Custom CSS with dark header / light content | Professional, high-contrast, projector-readable; CSS variables for theming |
 
 ---
 
