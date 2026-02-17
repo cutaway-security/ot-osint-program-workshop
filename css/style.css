@@ -416,6 +416,58 @@ strong {
 }
 
 /* ============================================================
+   Response Blocks (Example AI Responses)
+   ============================================================ */
+
+.response-block {
+    margin: 1.5em 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--color-border-dark);
+    background-color: #f8fafc;
+}
+
+.response-header {
+    background-color: #e2e8f0;
+    color: var(--color-text);
+    padding: 0.4rem 1rem;
+    font-size: 0.85em;
+}
+
+.response-header span {
+    font-weight: 600;
+}
+
+.response-content {
+    padding: 1rem;
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+.response-content h1,
+.response-content h2,
+.response-content h3,
+.response-content h4 {
+    font-size: 1em;
+    font-weight: 700;
+    margin: 1em 0 0.3em 0;
+    border-bottom: none;
+}
+
+.response-content h3 {
+    font-weight: 600;
+}
+
+.response-content ul,
+.response-content ol {
+    margin-bottom: 0.5em;
+}
+
+.response-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================================
    Generic Content Styles
    ============================================================ */
 

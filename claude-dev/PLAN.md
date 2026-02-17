@@ -293,6 +293,9 @@
 | 2026-02-17 | Custom CSS with dark header / light content | Professional, high-contrast, projector-readable; CSS variables for theming |
 | 2026-02-17 | CSS-only hover dropdown for Modules nav | No JS dependency for navigation; simpler implementation |
 | 2026-02-17 | Simple templates index page | Lists all 5 templates with descriptions; usability tested later |
+| 2026-02-17 | Build modules one at a time for review | Each module completed and reviewed before starting the next |
+| 2026-02-17 | Example data: public business info only | Include publicly available org data; no personal accounts; sanitize AI response examples |
+| 2026-02-17 | Prompt blocks include example responses | Students reading along (not running prompts) need to see expected output; also useful for comparing their results |
 
 ---
 
