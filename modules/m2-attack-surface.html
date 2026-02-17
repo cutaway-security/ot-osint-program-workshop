@@ -113,18 +113,102 @@ next_module_title: "M3: Personnel Exposure"
 
   <p>Certificate transparency (CT) logs record every SSL/TLS certificate issued by public certificate authorities. When an organization requests a certificate for a subdomain, that subdomain becomes permanently recorded in CT logs -- even if the subdomain is not linked from any public page.</p>
 
-  <p>Search crt.sh for all certificates issued to electric.coop subdomains:</p>
+  <p><strong>1a. Query the crt.sh JSON API</strong></p>
 
-  <p><a href="https://crt.sh/?q=%25.electric.coop" target="_blank" rel="noopener">https://crt.sh/?q=%25.electric.coop</a></p>
+  <p>crt.sh provides a JSON API that returns structured certificate data. Appending <code>&amp;output=json</code> to any crt.sh query returns JSON instead of an HTML table -- this makes it easy to feed results directly to your AI client for analysis.</p>
 
-  <p>Review the results and look for patterns suggesting:</p>
+  <p>Visit the JSON endpoint for electric.coop:</p>
 
-  <ul>
-    <li>Member-facing portals (login pages, member services)</li>
-    <li>Administrative interfaces (admin., manage., internal.)</li>
-    <li>Development or staging environments (dev., staging., test.)</li>
-    <li>API endpoints (api., services., data.)</li>
-  </ul>
+  <p><a href="https://crt.sh/?q=%25.electric.coop&output=json" target="_blank" rel="noopener">https://crt.sh/?q=%25.electric.coop&amp;output=json</a></p>
+
+  <p>Save the JSON response to a local file using your browser's Save Page As (Ctrl+S / Cmd+S). Name it something descriptive like <code>electric_coop_crt.json</code>.</p>
+
+  <p><strong>1b. AI-assisted CT analysis</strong></p>
+
+  <p>Attach or paste the saved JSON file into your AI client with this prompt:</p>
+
+{% capture m2_ct_prompt %}
+I am analyzing certificate transparency data from crt.sh for an
+electric cooperative organization. The attached/pasted JSON contains
+certificate records for %.electric.coop.
+
+Analyze this data and provide:
+1. A deduplicated list of all unique subdomain and domain names
+2. Naming patterns and conventions the organization uses
+3. Subdomains suggesting admin interfaces, login portals,
+   VPN/remote access, dev/staging environments, or API endpoints
+4. Any wildcard certificates and what infrastructure they might
+   cover
+5. Certificate authorities used (this can reveal vendor
+   relationships and hosting providers)
+6. Anything unusual or potentially sensitive that a human reviewer
+   would miss scrolling through hundreds of certificate rows
+
+Output a clean categorized subdomain list organized by
+function/risk category.
+{% endcapture %}
+{% include prompt-block.html title="CT JSON Analysis Prompt" content=m2_ct_prompt %}
+
+  <p><strong>Timeout fallback:</strong> crt.sh JSON responses can be slow for domains with large result sets. If the endpoint times out or returns an error, use the standard HTML view at <a href="https://crt.sh/?q=%25.electric.coop" target="_blank" rel="noopener">crt.sh/?q=%25.electric.coop</a>, select all results in the table (Ctrl+A), copy (Ctrl+C), and paste into your AI client instead.</p>
+
+<details>
+  <summary>Example AI Response (CT JSON Analysis for electric.coop)</summary>
+{% capture m2_ct_response %}
+<h4>Certificate Transparency Analysis: electric.coop</h4>
+
+<p><strong>Unique Domains/Subdomains (deduplicated):</strong></p>
+
+<p><strong>Public-Facing / Content:</strong></p>
+<ul>
+  <li>electric.coop -- primary public website</li>
+  <li>www.electric.coop -- www redirect</li>
+  <li>remagazine.cooperative.com -- RE Magazine content platform</li>
+  <li>careers.electric.coop -- job postings and recruitment</li>
+  <li>nrecainternational.coop -- international programs site</li>
+</ul>
+
+<p><strong>Member/Employee Portals (Login Required):</strong></p>
+<ul>
+  <li>cooperative.com -- member portal (SharePoint-based)</li>
+  <li>benefits.cooperative.com -- employee benefits enrollment</li>
+  <li>resap.cooperative.com -- Rural Electric Safety Achievement Program</li>
+  <li>ecba.cooperative.com -- Electric Cooperative Bar Association</li>
+</ul>
+
+<p><strong>Email / Communication:</strong></p>
+<ul>
+  <li>nreca.coop -- email domain (confirmed format: firstname.lastname@nreca.coop)</li>
+</ul>
+
+<p><strong>Naming Patterns Identified:</strong></p>
+<ul>
+  <li>Program-specific subdomains under cooperative.com (benefits, resap, ecba) -- suggests each internal program gets its own subdomain</li>
+  <li>Public content uses electric.coop; internal/member services use cooperative.com -- clear split between public and authenticated surfaces</li>
+  <li>Email on a separate domain (nreca.coop) from web properties</li>
+</ul>
+
+<p><strong>Wildcard Certificates:</strong></p>
+<ul>
+  <li>*.cooperative.com -- covers all subdomains under cooperative.com. This means additional subdomains may exist that are not individually logged in CT. Consider DNS enumeration tools to find subdomains covered by this wildcard.</li>
+  <li>*.electric.coop -- same pattern; additional subdomains may be hidden behind the wildcard</li>
+</ul>
+
+<p><strong>Certificate Authorities Used:</strong></p>
+<ul>
+  <li>DigiCert -- used for primary domains, suggests enterprise certificate management</li>
+  <li>Let's Encrypt -- used for some subdomains, may indicate cloud-hosted or developer-managed services</li>
+  <li>Sectigo -- used for specific portals</li>
+</ul>
+
+<p><strong>Notable Observations:</strong></p>
+<ul>
+  <li>The wildcard certificates for *.cooperative.com and *.electric.coop mean the CT logs undercount the actual subdomain footprint. DNS enumeration (DNSDumpster, SecurityTrails) should be used to find subdomains covered by these wildcards.</li>
+  <li>The split between DigiCert (enterprise) and Let's Encrypt (free/automated) may indicate some services are managed outside the primary IT team -- worth investigating for shadow IT.</li>
+  <li>Benefits portal (benefits.cooperative.com) is a high-value target -- benefits systems typically contain SSNs, banking details, and salary data.</li>
+</ul>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (CT JSON Analysis)" content=m2_ct_response %}
+</details>
 
   <h3>Step 2: Known Domain Mapping</h3>
 
@@ -301,7 +385,35 @@ Generate:
 
   <h3>Step 3: Domain and Subdomain Enumeration</h3>
 
-  <p>Use these browser-based tools to discover your target's domain footprint:</p>
+  <p><strong>3a. crt.sh with AI analysis:</strong> Query the crt.sh JSON API for your target domain and save the results:</p>
+
+  <p><code>https://crt.sh/?q=%25.yourdomain.com&amp;output=json</code></p>
+
+  <p>Save the JSON to a local file (Ctrl+S / Cmd+S), then attach or paste it into your AI client:</p>
+
+{% capture m2_lab_ct_prompt %}
+I am analyzing certificate transparency data from crt.sh for
+[organization name]. The attached/pasted JSON contains certificate
+records for %.[yourdomain.com].
+
+Analyze this data and provide:
+1. A deduplicated list of all unique subdomain and domain names
+2. Naming patterns and conventions the organization uses
+3. Subdomains suggesting admin interfaces, login portals,
+   VPN/remote access, dev/staging environments, or API endpoints
+4. Any wildcard certificates and what infrastructure they might
+   cover
+5. Certificate authorities used (reveals vendor relationships)
+6. Anything unusual or potentially sensitive
+
+Output a clean categorized subdomain list organized by
+function/risk category.
+{% endcapture %}
+{% include prompt-block.html title="CT JSON Analysis Prompt (Your Organization)" content=m2_lab_ct_prompt %}
+
+  <p>If the JSON endpoint times out, use the standard HTML view at <code>https://crt.sh/?q=%25.yourdomain.com</code>, select all results (Ctrl+A), copy, and paste into your AI client instead.</p>
+
+  <p><strong>3b. Supplement with DNS enumeration tools:</strong> CT logs may undercount subdomains (especially when wildcard certificates are in use). Use these tools to find additional subdomains:</p>
 
   <table>
     <thead>
@@ -312,11 +424,6 @@ Generate:
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a href="https://crt.sh/" target="_blank" rel="noopener">crt.sh</a></td>
-        <td>Search <code>%.targetdomain.com</code> -- review all certificate entries for subdomains</td>
-        <td>No</td>
-      </tr>
       <tr>
         <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a></td>
         <td>Enter root domain -- review DNS records, subdomains, and network map</td>
@@ -330,13 +437,7 @@ Generate:
     </tbody>
   </table>
 
-  <p>For each subdomain you discover, record:</p>
-
-  <ul>
-    <li>The full subdomain name</li>
-    <li>What it appears to be (login portal, web application, API, mail server, etc.)</li>
-    <li>Whether it suggests remote access, administrative, or sensitive functionality</li>
-  </ul>
+  <p>Merge any new subdomains from these tools into the categorized list your AI client produced from the crt.sh data.</p>
 
   <h3>Step 4: Remote Access Identification</h3>
 

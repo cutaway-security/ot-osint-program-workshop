@@ -493,6 +493,56 @@ strong {
 }
 
 /* ============================================================
+   Collapsible Sections (details/summary)
+   ============================================================ */
+
+details {
+    margin: 1.5em 0;
+    border: 1px solid var(--color-border-dark);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+details summary {
+    background-color: #e2e8f0;
+    color: var(--color-text);
+    padding: 0.6rem 1rem;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+details summary::-webkit-details-marker {
+    display: none;
+}
+
+details summary::before {
+    content: ">";
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    transition: transform 0.15s ease;
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+details summary:hover {
+    background-color: #cbd5e0;
+}
+
+details .response-block {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+
+/* ============================================================
    Generic Content Styles
    ============================================================ */
 
