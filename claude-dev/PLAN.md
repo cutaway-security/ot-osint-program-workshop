@@ -1,0 +1,289 @@
+# PLAN.md - Project Roadmap
+
+## Project: CutSec OT OSINT Program Workshop
+
+**Goal**: Build a standalone GitHub Pages website for a 4-hour ICS/OT OSINT monitoring program workshop.
+
+**Target**: ICS/OT security professionals attending instructor-led workshops with laptops and web browsers.
+
+---
+
+## Phase Overview
+
+| Phase | Name | Status | Description |
+|-------|------|--------|-------------|
+| 0 | Project Setup | IN PROGRESS | Framework files, repo structure, conventions |
+| 1 | Site Scaffolding | NOT STARTED | Layouts, navigation, base templates, styling |
+| 2 | Module Content | NOT STARTED | Convert WORKSHOP_FRAMEWORK.md into module pages |
+| 3 | Supporting Materials | NOT STARTED | Templates, prompt library, resource pages |
+| 4 | Polish and Testing | NOT STARTED | Cross-browser, mobile, content review, links |
+
+---
+
+## Phase 0: Project Setup
+
+**Status**: IN PROGRESS
+
+**Objective**: Create Claude Code framework files, establish repo structure and conventions, and get a clean Jekyll build.
+
+### Tasks
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 0.1 | Create CLAUDE.md | COMPLETE | Project rules and guidelines |
+| 0.2 | Create claude-dev/ARCHITECTURE.md | COMPLETE | Site structure and technical design |
+| 0.3 | Create claude-dev/PLAN.md | COMPLETE | This file |
+| 0.4 | Create claude-dev/RESUME.md | COMPLETE | Session status and context |
+| 0.5 | Create README.md | NOT STARTED | Project overview and quick start |
+| 0.6 | Create _config.yml | NOT STARTED | Jekyll configuration for GitHub Pages |
+| 0.7 | Create .gitignore | NOT STARTED | Jekyll build artifacts, OS files |
+| 0.8 | Validate Jekyll build | NOT STARTED | Confirm GitHub Pages compatible setup |
+
+### Acceptance Criteria
+
+- [ ] All four framework files created and reviewed
+- [ ] README.md provides project overview
+- [ ] Jekyll configuration established
+- [ ] .gitignore in place
+- [ ] Clean Jekyll build with no errors
+
+### Deliverables
+
+- CLAUDE.md
+- claude-dev/ARCHITECTURE.md, PLAN.md, RESUME.md, WORKSHOP_FRAMEWORK.md
+- README.md
+- _config.yml
+- .gitignore
+
+---
+
+## Phase 1: Site Scaffolding
+
+**Status**: NOT STARTED
+
+**Objective**: Create the site skeleton with layouts, navigation, styling, and placeholder module pages.
+
+### Tasks
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 1.1 | Create directory structure | NOT STARTED | modules/, examples/, templates/, prompts/, resources/, css/, js/, img/ |
+| 1.2 | Create default layout | NOT STARTED | _layouts/default.html -- head, nav, footer |
+| 1.3 | Create module layout | NOT STARTED | _layouts/module.html -- overview + lab sections |
+| 1.4 | Create navigation include | NOT STARTED | _includes/nav.html |
+| 1.5 | Create footer include | NOT STARTED | _includes/footer.html |
+| 1.6 | Create module-nav include | NOT STARTED | Previous/next module links |
+| 1.7 | Create prompt-block include | NOT STARTED | Copyable AI prompt formatting |
+| 1.8 | Create timing-badge include | NOT STARTED | Read/lab/total time display |
+| 1.9 | Create stylesheet | NOT STARTED | css/style.css -- clean, projector-readable |
+| 1.10 | Create index page | NOT STARTED | Schedule, prerequisites, module links |
+| 1.11 | Create placeholder module pages | NOT STARTED | All 7 pages (M1-M6 + summary) with front matter |
+| 1.12 | Implement copy-to-clipboard JS | NOT STARTED | js/clipboard.js for AI prompt code blocks |
+| 1.13 | Test skeleton builds | NOT STARTED | All pages render, navigation works |
+| 1.14 | Test mobile responsiveness | NOT STARTED | Verify at 768px and 375px |
+
+### Acceptance Criteria
+
+- [ ] Directory structure matches ARCHITECTURE.md
+- [ ] All layouts and includes created and functional
+- [ ] Index page renders with schedule and module links
+- [ ] All placeholder module pages reachable and render correctly
+- [ ] Navigation works (index, previous/next, modules dropdown)
+- [ ] CSS provides clean, readable layout suitable for projector display
+- [ ] Mobile responsive at tablet and phone breakpoints
+
+### Deliverables
+
+- Directory structure
+- _layouts/default.html, module.html
+- _includes/nav.html, footer.html, module-nav.html, prompt-block.html, timing-badge.html
+- css/style.css
+- js/clipboard.js
+- index.html
+- modules/ placeholder pages (7 files)
+
+---
+
+## Phase 2: Module Content
+
+**Status**: NOT STARTED
+
+**Objective**: Convert WORKSHOP_FRAMEWORK.md module specifications into full HTML pages with overview sections, worked examples, and structured lab steps.
+
+### Tasks
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 2.1 | M1: Threat Context -- overview | NOT STARTED | Attack examples, problem statement |
+| 2.2 | M1: Threat Context -- lab | NOT STARTED | AI prompt exercise, sector threat profile |
+| 2.3 | M2: Attack Surface -- overview | NOT STARTED | Concepts, techniques, naming patterns |
+| 2.4 | M2: Attack Surface -- worked example | NOT STARTED | NRECA domain discovery (crt.sh, domain mapping, Shodan) |
+| 2.5 | M2: Attack Surface -- lab | NOT STARTED | 5 structured steps with tool links |
+| 2.6 | M3: Personnel -- overview | NOT STARTED | Why personnel exposure matters, tier model |
+| 2.7 | M3: Personnel -- worked example | NOT STARTED | NRECA leadership analysis, breach check, prioritization |
+| 2.8 | M3: Personnel -- lab | NOT STARTED | 4 structured steps |
+| 2.9 | M4: Vulnerability -- overview | NOT STARTED | Asset-to-vuln workflow, KEV emphasis |
+| 2.10 | M4: Vulnerability -- worked example | NOT STARTED | FortiGate CVE-2025-59718 correlation |
+| 2.11 | M4: Vulnerability -- lab | NOT STARTED | 4 structured steps |
+| 2.12 | M5: Monitoring -- overview | NOT STARTED | Push vs pull, alert types, aggregation |
+| 2.13 | M5: Monitoring -- worked example | NOT STARTED | NRECA Google Alerts, CISA subscriptions |
+| 2.14 | M5: Monitoring -- lab | NOT STARTED | 3 structured steps, baseline snapshot |
+| 2.15 | M6: Runbook -- overview | NOT STARTED | Runbook vs playbook, cadence structure |
+| 2.16 | M6: Runbook -- worked example | NOT STARTED | NRECA runbook excerpt (daily/weekly) |
+| 2.17 | M6: Runbook -- lab | NOT STARTED | 4 structured steps |
+| 2.18 | Summary page | NOT STARTED | Prioritization recap, artifacts list, next steps |
+| 2.19 | Content review vs WORKSHOP_FRAMEWORK.md | NOT STARTED | Verify completeness |
+
+### Acceptance Criteria
+
+- [ ] All 6 module pages have complete overview sections
+- [ ] All applicable modules have worked NRECA/Fortinet examples
+- [ ] All modules have structured lab sections with numbered steps
+- [ ] All AI prompts formatted as copyable code blocks
+- [ ] All external tool links present and open in new tab
+- [ ] Summary page lists all 8 artifacts and next steps
+- [ ] Content matches WORKSHOP_FRAMEWORK.md specifications
+- [ ] Timing estimates on each module page match framework
+- [ ] Overview sections readable when projected (not too dense)
+
+### Deliverables
+
+- modules/m1-threat-context.html (complete)
+- modules/m2-attack-surface.html (complete)
+- modules/m3-personnel-exposure.html (complete)
+- modules/m4-vulnerability-correlation.html (complete)
+- modules/m5-monitoring-alerting.html (complete)
+- modules/m6-runbook-development.html (complete)
+- modules/summary.html (complete)
+
+---
+
+## Phase 3: Supporting Materials
+
+**Status**: NOT STARTED
+
+**Objective**: Create templates, prompt library, and resource pages that students can use during and after the workshop.
+
+### Tasks
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 3.1 | Baseline document template | NOT STARTED | Consolidated M2-M4 outputs format |
+| 3.2 | Personnel exposure inventory template | NOT STARTED | Role-based tier model |
+| 3.3 | Vulnerability correlation table template | NOT STARTED | Asset-to-CVE-to-KEV format |
+| 3.4 | Runbook template | NOT STARTED | Daily/weekly/monthly/quarterly procedures |
+| 3.5 | Monitoring checklist template | NOT STARTED | Pull-based schedule format |
+| 3.6 | Templates index page | NOT STARTED | Links to all templates with descriptions |
+| 3.7 | AI Copilot Prompt Library | NOT STARTED | All prompts from M1-M6, organized by category |
+| 3.8 | Tool Reference page | NOT STARTED | All tools with URLs, purpose, account requirements |
+| 3.9 | Vulnerability Intelligence Resources | NOT STARTED | Primary sources, vendor PSIRTs, exploit intel |
+| 3.10 | NRECA domain discovery example | NOT STARTED | Standalone worked example page |
+| 3.11 | NRECA personnel analysis example | NOT STARTED | Standalone worked example page |
+| 3.12 | Fortinet vulnerability correlation example | NOT STARTED | Standalone worked example page |
+| 3.13 | Google Alerts configuration example | NOT STARTED | Standalone worked example page |
+
+### Acceptance Criteria
+
+- [ ] All 5 templates created with clear formatting and instructions
+- [ ] Templates are copy/paste friendly (Markdown format)
+- [ ] Prompt library contains all prompts from all modules
+- [ ] Tool reference matches Appendix C of WORKSHOP_FRAMEWORK.md
+- [ ] Vulnerability resources match Appendix D of WORKSHOP_FRAMEWORK.md
+- [ ] All example pages contain complete worked examples
+- [ ] All pages linked from relevant module pages and navigation
+
+### Deliverables
+
+- templates/ (5 template files + index)
+- prompts/ai-copilot-prompt-library.md
+- resources/tools.md
+- resources/vuln-intelligence-resources.md
+- examples/ (4 example files)
+
+---
+
+## Phase 4: Polish and Testing
+
+**Status**: NOT STARTED
+
+**Objective**: Final quality assurance, cross-browser testing, content review, and deployment verification.
+
+### Tasks
+
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 4.1 | Cross-browser testing | NOT STARTED | Chrome, Firefox, Edge, Safari |
+| 4.2 | Mobile responsiveness testing | NOT STARTED | Tablet (768px), phone (375px) |
+| 4.3 | Projector readability check | NOT STARTED | Overview sections readable at distance |
+| 4.4 | Content review vs WORKSHOP_FRAMEWORK.md | NOT STARTED | Line-by-line completeness check |
+| 4.5 | Link verification | NOT STARTED | All internal and external links |
+| 4.6 | External tool link verification | NOT STARTED | Confirm all tools accessible |
+| 4.7 | AI prompt copy/paste testing | NOT STARTED | All prompts copy cleanly |
+| 4.8 | Timing validation | NOT STARTED | Content fits allocated times per module |
+| 4.9 | GitHub Pages deployment test | NOT STARTED | Push to repo, verify live site |
+| 4.10 | Instructor walkthrough | NOT STARTED | Simulate full 4-hour workshop flow |
+
+### Acceptance Criteria
+
+- [ ] All pages render correctly in Chrome, Firefox, Edge, Safari
+- [ ] Mobile layout usable at tablet and phone sizes
+- [ ] Overview sections readable on projector (not too dense, good contrast)
+- [ ] All content from WORKSHOP_FRAMEWORK.md represented
+- [ ] No broken internal or external links
+- [ ] All AI prompts copy cleanly to clipboard
+- [ ] GitHub Pages site builds and deploys correctly
+- [ ] Workshop flow feasible within 4-hour timeframe
+
+### Deliverables
+
+- Testing report / checklist
+- Any bug fixes identified during testing
+- Final deployed site
+
+---
+
+## Milestones
+
+| Milestone | Phases | Status | Description |
+|-----------|--------|--------|-------------|
+| M1: Framework Ready | 0 | IN PROGRESS | Claude Code framework files, Jekyll config, clean build |
+| M2: Site Skeleton | 1 | NOT STARTED | Site navigable with layouts, styling, placeholder pages |
+| M3: Content Complete | 2 | NOT STARTED | All module pages have full content |
+| M4: Materials Complete | 3 | NOT STARTED | Templates, prompts, resources all created |
+| M5: Release Ready | 4 | NOT STARTED | Tested, polished, deployed |
+
+---
+
+## Risk Register
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Jekyll/GitHub Pages build failures | Medium | Test builds locally before pushing |
+| Content exceeds module time allocations | Medium | Review with instructor during Phase 4 |
+| External tool URLs change or go offline | Low | Document alternatives, verify links periodically |
+| Mobile layout breaks for complex tables | Medium | Test responsive design, use scrollable tables |
+| AI prompts don't copy cleanly across browsers | Low | Test copy-to-clipboard in all target browsers |
+| Overview sections too dense for projector use | Medium | Review readability during Phase 4 testing |
+
+---
+
+## Decision Log
+
+| Date | Decision | Rationale |
+|------|----------|-----------|
+| 2026-02-16 | Framework files in claude-dev/ directory | Consistent with project owner's management pattern |
+| 2026-02-16 | Jekyll via GitHub Pages | Proven approach, simple deployment |
+| 2026-02-16 | WORKSHOP_FRAMEWORK.md is authoritative for content | Separates content decisions from development process |
+| 2026-02-17 | Standalone repo (ot-osint-program-workshop) | Combined repo approach breaks GitHub Pages for original workshop |
+| 2026-02-17 | No V1 content in this repo | Each workshop is its own independent project and site |
+| 2026-02-17 | Flat directory structure (no v2/ nesting) | Single workshop, no need for subdirectory isolation |
+
+---
+
+## Notes
+
+- Development tool: Claude Code CLI
+- All content decisions defer to claude-dev/WORKSHOP_FRAMEWORK.md
+- No SANS course references (ICS421 or similar) in workshop content
+- Workshop delivered in-person -- site must work well on projector displays
+- Module overview sections serve dual purpose: instructor talking points and student orientation
