@@ -47,8 +47,13 @@ next_module_title: "M3: Personnel Exposure"
         <td><a href="https://crt.sh/" target="_blank" rel="noopener">crt.sh</a></td>
       </tr>
       <tr>
+        <td><strong>Subdomain enumeration</strong></td>
+        <td>Subdomains with IP addresses, hosting providers, infrastructure mapping</td>
+        <td><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">Subdomain Finder</a></td>
+      </tr>
+      <tr>
         <td><strong>DNS enumeration</strong></td>
-        <td>Subdomains, mail servers, name servers, DNS records</td>
+        <td>DNS records, mail servers, name servers, network maps</td>
         <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a>, <a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></td>
       </tr>
       <tr>
@@ -210,9 +215,128 @@ function/risk category.
 {% include response-block.html title="Example AI Response (CT JSON Analysis)" content=m2_ct_response %}
 </details>
 
-  <h3>Step 2: Known Domain Mapping</h3>
+  <h3>Step 2: Subdomain Enumeration Across All Root Domains</h3>
 
-  <p>Public website analysis, job postings, and CT results reveal that NRECA operates across multiple domains -- not just one. Each domain represents a distinct part of the attack surface:</p>
+  <p>CT logs from Step 1 reveal certificate-level data, but comprehensive discovery requires <strong>subdomain enumeration across every root domain</strong> the organization uses. NRECA operates across at least three root domains: <strong>electric.coop</strong> (public website), <strong>cooperative.com</strong> (member services), and <strong>nreca.coop</strong> (email). Each reveals different infrastructure -- and the most "obvious" domain often reveals the least.</p>
+
+  <p><strong>2a. Enumerate subdomains with Subdomain Finder</strong></p>
+
+  <p><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">subdomainfinder.c99.nl</a> is a subdomain enumeration tool that aggregates results from multiple sources and exports JSON. Search each of NRECA's root domains:</p>
+
+  <ul>
+    <li>Search <strong>cooperative.com</strong>: <a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">subdomainfinder.c99.nl</a> -- this returns 100+ subdomains with rich infrastructure detail</li>
+    <li>Search <strong>electric.coop</strong>: same tool -- this returns only ~2 subdomains (www, careers)</li>
+  </ul>
+
+  <p>The contrast is the key lesson: <strong>the public-facing website domain (electric.coop) reveals almost nothing, while the member-services domain (cooperative.com) exposes the entire internal infrastructure</strong>. An adversary who only searches the primary website domain misses most of the attack surface -- and so will a defender who does the same.</p>
+
+  <p>Save the JSON results for each domain. Results pages follow the pattern <code>subdomainfinder.c99.nl/scans/YYYY-MM-DD/domain.com</code>. Use your browser's Save Page As (Ctrl+S / Cmd+S) to save each result set. The JSON structure contains objects with subdomain, IP address, and Cloudflare status:</p>
+
+  <pre><code>{"subdomain":"okta.cooperative.com","ip":"15.197.134.95","cloudflare":"false"}</code></pre>
+
+  <p><strong>2b. AI-assisted subdomain analysis</strong></p>
+
+  <p>Attach or paste the saved JSON files from all enumerated domains into your AI client with this prompt:</p>
+
+{% capture m2_subdomain_prompt %}
+I am analyzing subdomain enumeration data for an electric
+cooperative association (NRECA). The attached/pasted JSON files
+contain subdomain records for cooperative.com and electric.coop.
+Each record includes subdomain name, IP address, and Cloudflare
+status.
+
+Analyze the combined data and provide:
+1. All unique subdomains grouped by root domain
+2. IP address clustering -- which subdomains share the same IP
+   (suggests shared hosting or load balancer)
+3. Authentication and identity infrastructure (SSO portals,
+   federation servers, access management)
+4. Remote access or VPN-related subdomains
+5. API endpoints and what backend systems they suggest
+6. Staging, test, or development environments
+7. Blue/green or canary deployment patterns that reveal
+   infrastructure architecture
+8. Subdomains revealing sensitive business functions (benefits,
+   payroll, financial, compliance, HR)
+9. Which subdomains use cloud provider IPs vs on-premise IP
+   ranges
+10. Which root domain reveals the most infrastructure detail
+    and why that matters for reconnaissance
+
+Output a categorized inventory organized by: authentication/
+identity, remote access, benefits/HR, financial/compliance,
+APIs/backend, staging/test, content/public, and other.
+{% endcapture %}
+{% include prompt-block.html title="Subdomain Enumeration Analysis Prompt" content=m2_subdomain_prompt %}
+
+<details>
+  <summary>Example AI Response (Subdomain Analysis for NRECA)</summary>
+{% capture m2_subdomain_response %}
+<h4>Subdomain Enumeration Analysis: NRECA</h4>
+
+<p><strong>Domain Contrast:</strong> electric.coop returned only 2 subdomains (www.electric.coop, careers.electric.coop). cooperative.com returned 100+ subdomains exposing authentication infrastructure, benefits systems, financial portals, APIs, and staging environments. The member-facing domain is far richer for reconnaissance than the public website.</p>
+
+<p><strong>Authentication / Identity:</strong></p>
+<ul>
+  <li><strong>okta.cooperative.com</strong> -- Okta SSO portal. Reveals the organization uses Okta as its identity provider. High-value target: compromising SSO provides access to all federated applications.</li>
+  <li><strong>pingfed.cooperative.com</strong> -- PingFederate identity federation server. Indicates a dual-IdP architecture (Okta + Ping) or migration between platforms.</li>
+  <li><strong>pingaccess.cooperative.com</strong> -- PingAccess API security gateway. Controls access to web applications and APIs behind the Ping identity stack.</li>
+</ul>
+
+<p><strong>Benefits / HR (High-Value PII Targets):</strong></p>
+<ul>
+  <li><strong>benefits.cooperative.com</strong> -- primary benefits portal</li>
+  <li><strong>beneficiaries.cooperative.com</strong> -- beneficiary designation (life insurance, retirement accounts)</li>
+  <li><strong>cobra.cooperative.com</strong> -- COBRA benefits continuation</li>
+  <li><strong>divorce.cooperative.com</strong>, <strong>marriage.cooperative.com</strong>, <strong>newchild.cooperative.com</strong> -- life event processing portals (contain highly sensitive personal data)</li>
+  <li><strong>w2salary.cooperative.com</strong> -- W-2 and salary data (tax documents, compensation)</li>
+  <li><strong>retirement.cooperative.com</strong> -- retirement/pension management</li>
+</ul>
+<p>This cluster represents a massive PII exposure surface. Benefits systems typically contain SSNs, banking details, salary data, and family information. Each subdomain is a potential credential stuffing target.</p>
+
+<p><strong>Financial / Compliance:</strong></p>
+<ul>
+  <li><strong>form990.cooperative.com</strong> -- IRS Form 990 (nonprofit tax filings, reveals financial data)</li>
+  <li><strong>financialpower.cooperative.com</strong> -- financial services portal</li>
+  <li><strong>invoicepreferences.cooperative.com</strong> -- invoice management (potential for business email compromise targeting)</li>
+</ul>
+
+<p><strong>APIs / Backend:</strong></p>
+<ul>
+  <li>Multiple *api.* subdomains revealing backend service architecture</li>
+  <li>API endpoints suggest microservices architecture with dedicated backends for member services, content delivery, and internal tooling</li>
+</ul>
+
+<p><strong>Staging / Test (Often Less Secured):</strong></p>
+<ul>
+  <li><strong>stage.cooperative.com</strong>, <strong>stagesearch.cooperative.com</strong> -- staging environment</li>
+  <li><strong>test.community.cooperative.com</strong> -- test instance of community platform</li>
+  <li><strong>pae-ext-test.cooperative.com</strong>, <strong>pfe-ext-test.cooperative.com</strong> -- external test instances of PingAccess and PingFederate (identity infrastructure test environments are especially sensitive)</li>
+</ul>
+<p>Staging and test environments frequently have weaker authentication, default credentials, or disabled security controls. Identity infrastructure test instances (pae-ext-test, pfe-ext-test) are high-priority findings.</p>
+
+<p><strong>Infrastructure Architecture:</strong></p>
+<ul>
+  <li><strong>Blue/green deployment:</strong> Extensive blue.* subdomain pattern (blue.benefits, blue.retirement, etc.) reveals blue/green deployment architecture. This tells an adversary how the organization manages releases and where redundant infrastructure exists.</li>
+  <li><strong>IP clustering:</strong> The majority of cooperative.com subdomains resolve to 74.127.88.162, suggesting centralized hosting or a load balancer fronting most services. A small number of subdomains resolve to different IPs, indicating cloud-hosted or externally managed services.</li>
+</ul>
+
+<p><strong>Content / Public:</strong></p>
+<ul>
+  <li>electric.coop -- public website, WordPress</li>
+  <li>careers.electric.coop -- job postings</li>
+  <li>remagazine.cooperative.com -- RE Magazine</li>
+  <li>nrecainternational.coop -- international programs</li>
+</ul>
+
+<p><strong>Key Takeaway:</strong> Searching only electric.coop would have found 2 subdomains. Searching cooperative.com revealed authentication infrastructure, benefits/PII systems, financial portals, staging environments, and deployment architecture. Always enumerate all known root domains.</p>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (Subdomain Enumeration Analysis)" content=m2_subdomain_response %}
+</details>
+
+  <p><strong>2c. Validation checkpoint</strong></p>
+
+  <p>Compare your AI-generated inventory against what you already knew from public website analysis. The table below shows domains identifiable from NRECA's public website and contact pages:</p>
 
   <table>
     <thead>
@@ -271,7 +395,7 @@ function/risk category.
     </tbody>
   </table>
 
-  <p>This mapping reveals that NRECA's attack surface spans at least 3 root domains (.coop, cooperative.com, electric.coop) with multiple subdomains. Searching only one domain would miss most of the footprint.</p>
+  <p>Manual website review found 9 domains. Subdomain enumeration of cooperative.com alone found 100+, including authentication infrastructure (Okta, PingFederate), benefits/PII systems, financial portals, and staging environments that do not appear anywhere on the public website. <strong>Enumeration always finds infrastructure that manual review misses.</strong></p>
 
   <h3>Step 3: Remote Access Identification</h3>
 
@@ -385,7 +509,9 @@ Generate:
 
   <h3>Step 3: Domain and Subdomain Enumeration</h3>
 
-  <p><strong>3a. crt.sh with AI analysis:</strong> Query the crt.sh JSON API for your target domain and save the results:</p>
+  <p><strong>Important:</strong> Enumerate <strong>all known root domains</strong> for your target organization, not just the primary website. As the NRECA example demonstrated, member portals, internal service domains, and email domains often reveal far more infrastructure than the public website.</p>
+
+  <p><strong>3a. crt.sh with AI analysis:</strong> Query the crt.sh JSON API for each root domain and save the results:</p>
 
   <p><code>https://crt.sh/?q=%25.yourdomain.com&amp;output=json</code></p>
 
@@ -413,7 +539,7 @@ function/risk category.
 
   <p>If the JSON endpoint times out, use the standard HTML view at <code>https://crt.sh/?q=%25.yourdomain.com</code>, select all results (Ctrl+A), copy, and paste into your AI client instead.</p>
 
-  <p><strong>3b. Supplement with DNS enumeration tools:</strong> CT logs may undercount subdomains (especially when wildcard certificates are in use). Use these tools to find additional subdomains:</p>
+  <p><strong>3b. Subdomain enumeration:</strong> CT logs reveal certificate-level data but may miss subdomains covered by wildcard certificates. Use enumeration tools to find additional subdomains and collect IP address data. Run each tool against <strong>every known root domain</strong> for your target:</p>
 
   <table>
     <thead>
@@ -424,6 +550,11 @@ function/risk category.
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">Subdomain Finder</a></td>
+        <td>Search each root domain -- export/save JSON results (includes IP addresses and Cloudflare status)</td>
+        <td>No</td>
+      </tr>
       <tr>
         <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a></td>
         <td>Enter root domain -- review DNS records, subdomains, and network map</td>
@@ -437,7 +568,7 @@ function/risk category.
     </tbody>
   </table>
 
-  <p>Merge any new subdomains from these tools into the categorized list your AI client produced from the crt.sh data.</p>
+  <p><strong>3c. Combined AI analysis:</strong> Feed the combined JSON results from all domains into your AI client using the Subdomain Enumeration Analysis Prompt from the worked example. The AI will categorize subdomains, identify IP clustering, flag authentication infrastructure, and highlight the most revealing domains.</p>
 
   <h3>Step 4: Remote Access Identification</h3>
 
