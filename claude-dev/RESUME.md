@@ -13,21 +13,21 @@ This document provides context for resuming development after a break or when st
 ### Active Phase
 
 **Phase**: 2 - Module Content
-**Status**: NOT STARTED
+**Status**: IN PROGRESS
 
 ### What Was Just Completed
 
-**Phase 1 - Site Scaffolding**: COMPLETE
-- All layouts, includes, CSS, JS created
-- Index page with schedule table and material cards
-- 7 module placeholder pages with front matter and TODO markers
-- 4 supporting page placeholders (templates, prompts, resources)
-- CSS-only navigation dropdown, responsive breakpoints
-- All 12 pages build and render, zero broken internal links
+**Task 2.1-2.2 - M1: ICS/OT Threat Context**: COMPLETE
+- Overview: 4-incident attack table (Aliquippa, Colonial, Texas Water, Fortinet), problem statement, workshop framing
+- Lab: 4 steps with copyable prompt-block (NRECA sector threat profile) and response-block (sanitized example AI output)
+- Output: Artifact 1 description with cross-references to M2-M5
+- Created _includes/response-block.html for example AI responses
+- Added response-block CSS styling
+- Fixed schedule table: removed Block column, fixed inconsistent link bold styling
 
 ### Next Task
 
-**Task**: 2.1 - M1: Threat Context overview
+**Task**: 2.3-2.5 - M2: External Attack Surface Discovery
 **Status**: NOT STARTED
 
 ### Blockers
@@ -163,11 +163,11 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 1.14 | Test mobile responsiveness | PARTIAL (CSS done, visual testing Phase 4) |
 | 1.15 | Create placeholder supporting pages | COMPLETE |
 
-### Phase 2: Module Content - NOT STARTED
+### Phase 2: Module Content - IN PROGRESS
 
 | # | Task | Status |
 |---|------|--------|
-| 2.1-2.2 | M1: Threat Context | NOT STARTED |
+| 2.1-2.2 | M1: Threat Context | COMPLETE |
 | 2.3-2.5 | M2: External Attack Surface | NOT STARTED |
 | 2.6-2.8 | M3: Personnel & Credential Exposure | NOT STARTED |
 | 2.9-2.11 | M4: Vulnerability Correlation | NOT STARTED |
@@ -298,4 +298,4 @@ When starting next session:
 3. [ ] Read claude-dev/PLAN.md
 4. [ ] Read this file (claude-dev/RESUME.md)
 5. [ ] Set GEM_HOME and PATH for Ruby
-6. [ ] Begin Phase 2: Module Content (task 2.1 - M1 overview)
+6. [ ] Continue Phase 2: Module Content (task 2.3-2.5 - M2: External Attack Surface)

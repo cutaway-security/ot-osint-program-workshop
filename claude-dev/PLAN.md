@@ -114,7 +114,7 @@
 
 ## Phase 2: Module Content
 
-**Status**: NOT STARTED
+**Status**: IN PROGRESS
 
 **Objective**: Convert WORKSHOP_FRAMEWORK.md module specifications into full HTML pages with overview sections, worked examples, and structured lab steps.
 
@@ -122,8 +122,8 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 2.1 | M1: Threat Context -- overview | NOT STARTED | Attack examples, problem statement |
-| 2.2 | M1: Threat Context -- lab | NOT STARTED | AI prompt exercise, sector threat profile |
+| 2.1 | M1: Threat Context -- overview | COMPLETE | 4-incident attack table, problem statement, workshop framing |
+| 2.2 | M1: Threat Context -- lab | COMPLETE | 4 steps, prompt-block, response-block with sanitized example |
 | 2.3 | M2: Attack Surface -- overview | NOT STARTED | Concepts, techniques, naming patterns |
 | 2.4 | M2: Attack Surface -- worked example | NOT STARTED | NRECA domain discovery (crt.sh, domain mapping, Shodan) |
 | 2.5 | M2: Attack Surface -- lab | NOT STARTED | 5 structured steps with tool links |
