@@ -14,25 +14,149 @@ next_module_title: "M2: Attack Surface Discovery"
 
 <section class="module-overview">
   <h2>Overview</h2>
-  <!-- TODO: Read section content from WORKSHOP_FRAMEWORK.md Module 1 Read Section
-       - Brief overview of attacks enabled by publicly discoverable information
-       - Aliquippa Water Authority, Colonial Pipeline, Texas Water, Fortinet FortiGate examples
-       - Problem statement: most ICS/OT teams don't know what's externally visible
-       - This workshop builds a repeatable OSINT monitoring process -->
-  <p>Content will be added in Phase 2.</p>
+
+  <p>Before we start building an OSINT monitoring program, we need to understand <strong>why</strong> it matters. The attacks below were all enabled -- or made significantly worse -- by information that was publicly discoverable before the attack occurred.</p>
+
+  <h3>Attacks Enabled by Public Exposure</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Incident</th>
+        <th>What Was Exposed</th>
+        <th>What Happened</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Aliquippa Water Authority</strong> (Nov 2023)</td>
+        <td>Unitronics PLCs discoverable via internet scanning; default password "1111"</td>
+        <td>Iranian-linked actors accessed water treatment SCADA systems</td>
+      </tr>
+      <tr>
+        <td><strong>Colonial Pipeline</strong> (2021)</td>
+        <td>VPN credential found in a breach database</td>
+        <td>$4.4M ransomware attack disrupted fuel pipeline operations across the U.S. East Coast</td>
+      </tr>
+      <tr>
+        <td><strong>Texas Water Facilities</strong> (Jan 2024)</td>
+        <td>Vendor remote access software exposed to the internet</td>
+        <td>Russian-linked actors accessed SCADA systems and posted video evidence of interaction</td>
+      </tr>
+      <tr>
+        <td><strong>Fortinet FortiGate Campaign</strong> (Dec 2025)</td>
+        <td>~30,000 FortiGate admin interfaces with FortiCloud SSO exposed to the internet</td>
+        <td>Mass exploitation of <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CVE-2025-59718</a> (CVSS 9.8) within 3 days of disclosure; attackers stole device configurations and established rogue VPN tunnels</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>In each case, the information an attacker needed -- exposed devices, breached credentials, vulnerable services -- was available through publicly accessible sources <strong>before the attack happened</strong>. A monitoring program that regularly checks these sources can identify exposures before adversaries exploit them.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Most ICS/OT security teams do not have a systematic way to answer these questions:</p>
+
+  <ul>
+    <li>What does our organization look like from the outside?</li>
+    <li>Which of our remote access services are visible on the internet?</li>
+    <li>Have any of our employees' credentials appeared in breach databases?</li>
+    <li>Are the specific products we deploy being actively exploited right now?</li>
+  </ul>
+
+  <p>This workshop builds a <strong>repeatable OSINT monitoring process</strong> -- not a one-time assessment. You will leave with operational artifacts and procedures you can use starting tomorrow.</p>
 </section>
 
 <section class="module-lab">
-  <h2>Lab: Sector Threat Profile</h2>
-  <!-- TODO: Lab section content from WORKSHOP_FRAMEWORK.md Module 1 Lab
-       - Students open AI client
-       - Instructor demonstrates example prompt (NRECA cooperative)
-       - Students modify prompt for their own sector/organization
-       - Output: sector threat profile document -->
-  <p>Content will be added in Phase 2.</p>
+  <h2>Lab: Generate a Sector Threat Profile</h2>
+
+  <p>In this lab, you will use your AI client to generate a sector-specific threat profile. This document becomes the context for everything you do in the remaining modules.</p>
+
+  <h3>Step 1: Open Your AI Client</h3>
+
+  <p>Open your preferred AI assistant (ChatGPT, Claude, or other). You will use this throughout the workshop as a working partner for analysis, query generation, and document drafting.</p>
+
+  <h3>Step 2: Review the Example Prompt</h3>
+
+  <p>The instructor will demonstrate this prompt using NRECA (National Rural Electric Cooperative Association) as the example target organization:</p>
+
+{% capture m1_prompt %}
+I work at a rural electric cooperative that operates generation,
+transmission, and distribution infrastructure. We are a member of
+NRECA and operate SCADA/EMS systems for grid management.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the electric cooperative sector
+2. Priority remote access technologies commonly deployed at cooperatives
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target the electric sector
+{% endcapture %}
+{% include prompt-block.html title="Sector Threat Profile Prompt" content=m1_prompt %}
+
+{% capture m1_response %}
+<h4>Electric Cooperative Sector Threat Profile</h4>
+
+<p><strong>Top 3 External Exposure Categories:</strong></p>
+<ol>
+  <li><strong>Remote access infrastructure</strong> -- VPN portals (especially FortiGate, Cisco, SonicWall), RDP gateways, and vendor remote support tools are the primary entry points adversaries target. Many cooperatives maintain internet-facing administrative interfaces for these devices.</li>
+  <li><strong>SCADA/EMS web interfaces</strong> -- Energy management system dashboards, historian servers, and HMI web clients are sometimes reachable from the internet, particularly through misconfigured network segmentation or dual-homed systems.</li>
+  <li><strong>Email and credential exposure</strong> -- Employee credentials from third-party breaches, combined with predictable email formats (firstname.lastname@domain), enable credential stuffing attacks against VPN and webmail portals.</li>
+</ol>
+
+<p><strong>Priority Remote Access Technologies:</strong></p>
+<ul>
+  <li>Fortinet FortiGate SSL-VPN (widely deployed at cooperatives for site-to-site and remote admin access)</li>
+  <li>Cisco AnyConnect / ASA</li>
+  <li>TeamViewer, AnyDesk, or similar tools used by SCADA vendors for remote support</li>
+  <li>Citrix or RDP-based virtual desktop environments</li>
+  <li>OPC-UA gateways or data diodes with web management interfaces</li>
+</ul>
+
+<p><strong>Key Personnel Roles Targeted:</strong></p>
+<ul>
+  <li><strong>SCADA/EMS administrators</strong> -- direct access to control systems</li>
+  <li><strong>IT administrators / CIO</strong> -- credentials often provide VPN and firewall admin access</li>
+  <li><strong>Plant managers</strong> -- operational authority, often have system access</li>
+  <li><strong>Executives (CEO, CFO)</strong> -- business email compromise and strategic intelligence</li>
+  <li><strong>Third-party integrator contacts</strong> -- shared credentials for vendor support access</li>
+</ul>
+
+<p><strong>Recent Threat Actor Groups:</strong></p>
+<ul>
+  <li><strong>Volt Typhoon</strong> (PRC) -- pre-positioning in U.S. critical infrastructure, including energy sector, using living-off-the-land techniques</li>
+  <li><strong>CyberAv3ngers</strong> (Iran-linked) -- targeted water and energy infrastructure using default credentials on exposed PLCs</li>
+  <li><strong>Sandworm</strong> (Russia/GRU) -- history of targeting electric grids; responsible for Ukraine power grid attacks</li>
+  <li><strong>Various ransomware groups</strong> -- financially motivated attacks on utilities via exposed RDP and VPN credentials from breach databases</li>
+</ul>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (Electric Cooperative Sector)" content=m1_response %}
+
+  <h3>Step 3: Customize for Your Organization</h3>
+
+  <p>Modify the prompt to match your own sector and environment:</p>
+
+  <ul>
+    <li>Replace the sector description with your organization's industry (water utility, natural gas, manufacturing, etc.)</li>
+    <li>Include the types of operational technology your organization uses (SCADA, DCS, PLCs, building automation, etc.)</li>
+    <li>Add any relevant details: regulatory framework, geographic scope, number of sites</li>
+  </ul>
+
+  <p>Generate your sector threat profile and save the output. You will reference this document in every remaining module.</p>
+
+  <h3>Step 4: Review and Refine</h3>
+
+  <p>Review the AI-generated profile for accuracy. Consider:</p>
+
+  <ul>
+    <li>Does the list of exposure categories match what you know about your environment?</li>
+    <li>Are the remote access technologies accurate for your organization?</li>
+    <li>Are there personnel roles or threat actors specific to your sector that the AI missed?</li>
+  </ul>
+
+  <p>Edit the document to correct any gaps. This is <strong>your</strong> operational artifact -- the AI accelerates the drafting, but you validate the content.</p>
 </section>
 
 <section class="module-output">
   <h2>Output</h2>
-  <p><strong>Artifact 1:</strong> Sector threat profile document -- referenced in remaining modules.</p>
+  <p><strong>Artifact 1: Sector threat profile document.</strong> This profile provides the context for the remaining modules -- it identifies what exposure categories to investigate (Module 2), which personnel roles to prioritize (Module 3), what technologies to correlate against vulnerability databases (Module 4), and what keywords to monitor (Module 5).</p>
 </section>
