@@ -36,6 +36,7 @@ This document provides context for resuming development after a break or when st
   - Step 4: Correlation table documentation format (8 fields), cross-module connections (M2 assets, M3 personnel, M5 monitoring, M6 runbook)
 - Output: Artifact 4 with cross-references to M2, M3, M5, M6
 - 2 prompt blocks, 1 response block, 3 collapsible worked examples
+- Review updates (cee7631): internal asset inventory in workflow, ICSAP source with non-ICS vendor note, KEV patch-available caveat, NVD CPE Search validation, manual validation framing, re-validation closing
 
 ### Next Task
 
@@ -132,7 +133,7 @@ None.
 - Updated Step 2 breach findings: hypothetical breaches now reference Manucy, Banunarayanan, McGurk, McNamara with OT-framed rationale
 - Added Step 2 scaling subsection: HIBP domain verification, API v3 reference, SpiderFoot + V1 workshop link
 - Updated Step 3 prioritization AI response: OT-focused attack scenarios (Manucy critical, Banunarayanan critical, McNamara high, McGurk monitor)
-- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content)
+- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content), cee7631 (M4 review updates)
 
 **Key decisions made**:
 - OT-centric tier model: prioritize by proximity to operational technology, not corporate rank
