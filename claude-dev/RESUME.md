@@ -12,8 +12,8 @@ This document provides context for resuming development after a break or when st
 
 ### Active Phase
 
-**Phase**: 3 - Supporting Materials
-**Status**: COMPLETE
+**Phase**: 4 - Polish and Testing
+**Status**: SUBSTANTIALLY COMPLETE (3 venue/rehearsal items TBD)
 
 ### What Was Just Completed
 
@@ -86,10 +86,16 @@ This document provides context for resuming development after a break or when st
   - Python generator scripts stored alongside generated files for reproducibility
   - _config.yml excludes .py files from Jekyll build output
 
+**Phase 4 - Polish and Testing**: SUBSTANTIALLY COMPLETE
+- Pre-polish: CutSec logo in nav, favicon (ICO/PNG/Apple Touch), style consistency audit, 8 instructional blockquotes converted to .info-callout, 5 inline styles moved to CSS, templates callout box, NRECA examples on Worked Examples page, prompt library styling standardized
+- Manual testing results (2026-02-18):
+  - PASS: Cross-browser (Chrome, Firefox, Edge), mobile (iPhone Chrome), content review, internal/external links, AI prompt copy/paste, GitHub Pages deployment
+  - TBD: Projector readability (venue), timing validation (rehearsal), instructor walkthrough (rehearsal)
+
 ### Next Task
 
-**Task**: Phase 4 - Polish and Testing
-**Status**: NOT STARTED
+**Task**: Remaining Phase 4 items require venue/rehearsal verification
+**Status**: No development tasks remaining; 3 manual checks deferred to delivery prep
 
 ### Blockers
 
@@ -191,14 +197,12 @@ None.
 
 ### What Needs To Happen Next
 
-**Phase 4: Polish and Testing**:
-1. Cross-browser testing (Chrome, Firefox, Edge, Safari)
-2. Mobile responsiveness testing (768px, 375px)
-3. Projector readability check (overview sections)
-4. Link verification (all internal and external links)
-5. AI prompt copy/paste testing (all prompts copy cleanly)
-6. GitHub Pages deployment test (push to repo, verify live site)
-7. Instructor walkthrough (simulate full 4-hour workshop flow)
+**Remaining Phase 4 items (venue/rehearsal only)**:
+1. Projector readability check -- verify overview sections at venue
+2. Timing validation -- confirm module pacing during rehearsal
+3. Instructor walkthrough -- simulate full 4-hour workshop flow
+
+All development work is complete. No code or content changes pending.
 
 ---
 
@@ -266,11 +270,20 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 3.10-3.13 | Example pages (4 + index) | COMPLETE |
 | 3.14-3.15 | Examples linking (index + nav card) | COMPLETE |
 
-### Phase 4: Polish and Testing - NOT STARTED
+### Phase 4: Polish and Testing - SUBSTANTIALLY COMPLETE
 
 | # | Task | Status |
 |---|------|--------|
-| 4.1-4.10 | All testing tasks | NOT STARTED |
+| 4.1 | Cross-browser (Chrome, Firefox, Edge) | COMPLETE |
+| 4.2 | Mobile (iPhone Chrome) | COMPLETE |
+| 4.3 | Projector readability | TBD (venue) |
+| 4.4 | Content review | COMPLETE |
+| 4.5 | Internal and external links | COMPLETE |
+| 4.6 | External tool links | COMPLETE |
+| 4.7 | AI prompt copy/paste | COMPLETE |
+| 4.8 | Timing validation | TBD (rehearsal) |
+| 4.9 | GitHub Pages deployment | COMPLETE |
+| 4.10 | Instructor walkthrough | TBD (rehearsal) |
 
 ---
 
@@ -382,4 +395,4 @@ When starting next session:
 3. [ ] Read claude-dev/PLAN.md
 4. [ ] Read this file (claude-dev/RESUME.md)
 5. [ ] Set GEM_HOME and PATH for Ruby
-6. [ ] Continue Phase 4: Polish and Testing
+6. [ ] All development tasks complete; remaining items are venue/rehearsal verification

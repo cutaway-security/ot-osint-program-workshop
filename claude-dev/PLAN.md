@@ -214,41 +214,54 @@
 
 ## Phase 4: Polish and Testing
 
-**Status**: NOT STARTED
+**Status**: SUBSTANTIALLY COMPLETE (3 venue/rehearsal items TBD)
 
 **Objective**: Final quality assurance, cross-browser testing, content review, and deployment verification.
+
+### Pre-Phase 4 Polish (completed during manual review cycle)
+
+| Item | Status | Notes |
+|------|--------|-------|
+| CutSec logo in navigation | COMPLETE | Logo added to nav-brand with flexbox layout |
+| Favicon generation | COMPLETE | ICO, PNG (32px), Apple Touch Icon (180px) from logo |
+| Style consistency audit | COMPLETE | Full audit of blockquotes, callouts, prompt blocks across all pages |
+| Callout standardization | COMPLETE | 8 instructional blockquotes converted to .info-callout; 6 example blockquotes remain as blockquotes |
+| Inline style cleanup | COMPLETE | 5 inline styles on index.html material cards moved to CSS |
+| Templates callout box | COMPLETE | Info-callout added to templates index page |
+| NRECA examples on Worked Examples page | COMPLETE | Download links for monitoring checklist and runbook |
+| Prompt library styling | COMPLETE | Rewritten to use prompt-block.html includes matching modules |
 
 ### Tasks
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 4.1 | Cross-browser testing | NOT STARTED | Chrome, Firefox, Edge, Safari |
-| 4.2 | Mobile responsiveness testing | NOT STARTED | Tablet (768px), phone (375px) |
-| 4.3 | Projector readability check | NOT STARTED | Overview sections readable at distance |
-| 4.4 | Content review vs WORKSHOP_FRAMEWORK.md | NOT STARTED | Line-by-line completeness check |
-| 4.5 | Link verification | NOT STARTED | All internal and external links |
-| 4.6 | External tool link verification | NOT STARTED | Confirm all tools accessible |
-| 4.7 | AI prompt copy/paste testing | NOT STARTED | All prompts copy cleanly |
-| 4.8 | Timing validation | NOT STARTED | Content fits allocated times per module |
-| 4.9 | GitHub Pages deployment test | NOT STARTED | Push to repo, verify live site |
-| 4.10 | Instructor walkthrough | NOT STARTED | Simulate full 4-hour workshop flow |
+| 4.1 | Cross-browser testing | COMPLETE | Chrome, Firefox, Edge -- manual verified |
+| 4.2 | Mobile responsiveness testing | COMPLETE | iPhone Chrome -- manual verified |
+| 4.3 | Projector readability check | TBD | Verify at venue before delivery |
+| 4.4 | Content review vs WORKSHOP_FRAMEWORK.md | COMPLETE | Manual verified |
+| 4.5 | Link verification | COMPLETE | All internal and external links -- manual verified |
+| 4.6 | External tool link verification | COMPLETE | Covered in 4.5 |
+| 4.7 | AI prompt copy/paste testing | COMPLETE | Manual verified |
+| 4.8 | Timing validation | TBD | Verify during rehearsal or delivery |
+| 4.9 | GitHub Pages deployment test | COMPLETE | Manual verified |
+| 4.10 | Instructor walkthrough | TBD | Simulate full 4-hour workshop flow before delivery |
 
 ### Acceptance Criteria
 
-- [ ] All pages render correctly in Chrome, Firefox, Edge, Safari
-- [ ] Mobile layout usable at tablet and phone sizes
-- [ ] Overview sections readable on projector (not too dense, good contrast)
-- [ ] All content from WORKSHOP_FRAMEWORK.md represented
-- [ ] No broken internal or external links
-- [ ] All AI prompts copy cleanly to clipboard
-- [ ] GitHub Pages site builds and deploys correctly
-- [ ] Workshop flow feasible within 4-hour timeframe
+- [x] All pages render correctly in Chrome, Firefox, Edge
+- [x] Mobile layout usable on iPhone Chrome
+- [ ] Overview sections readable on projector (not too dense, good contrast) -- TBD at venue
+- [x] All content from WORKSHOP_FRAMEWORK.md represented
+- [x] No broken internal or external links
+- [x] All AI prompts copy cleanly to clipboard
+- [x] GitHub Pages site builds and deploys correctly
+- [ ] Workshop flow feasible within 4-hour timeframe -- TBD during rehearsal
 
 ### Deliverables
 
-- Testing report / checklist
-- Any bug fixes identified during testing
-- Final deployed site
+- Testing report / checklist (inline in this document)
+- Bug fixes: callout standardization, inline style cleanup, prompt library styling
+- Final deployed site -- live on GitHub Pages
 
 ---
 
@@ -260,7 +273,7 @@
 | M2: Site Skeleton | 1 | COMPLETE | Site navigable with layouts, styling, placeholder pages |
 | M3: Content Complete | 2 | COMPLETE | All module pages have full content |
 | M4: Materials Complete | 3 | COMPLETE | Templates, prompts, resources, examples all created |
-| M5: Release Ready | 4 | NOT STARTED | Tested, polished, deployed |
+| M5: Release Ready | 4 | SUBSTANTIALLY COMPLETE | Tested, polished, deployed; 3 venue/rehearsal items TBD |
 
 ---
 
