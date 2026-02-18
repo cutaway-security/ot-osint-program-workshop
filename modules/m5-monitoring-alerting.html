@@ -95,6 +95,12 @@ next_module_title: "M6: Runbook Development"
   </ul>
 
   <p><strong>Start narrow, expand as you learn.</strong> Begin with a focused set of alerts covering your highest-priority assets and personnel. Overly broad alerting generates noise that trains you to ignore notifications -- the opposite of what you want. After a few weeks of triage, you will learn which alerts generate actionable findings and which are noise. Expand coverage gradually.</p>
+
+  <h3>Sustainability and Operational Fatigue</h3>
+
+  <p>Alert fatigue -- too many notifications -- is a recognized problem. Less discussed is <strong>operational fatigue</strong>: the cumulative burden of running a monitoring program week after week, month after month. Manual programs fail not because the first month was bad, but because by month six, the person responsible has changed roles, competing priorities have crowded out the weekly checks, execution becomes inconsistent, and nothing is documented well enough for a handoff.</p>
+
+  <p>Design for this from day one. Identify your <strong>minimum viable monitoring</strong> -- the 2-3 activities that, if nothing else runs, keep the program alive. This might be: process your push alerts daily, run the weekly KEV check, and update the baseline monthly. Everything beyond that is valuable but optional. Document procedures clearly enough that someone else can execute them without training. Share ownership so the program does not depend on a single person. Use realistic time estimates -- if your weekly checks consistently take 45 minutes instead of 30, update the schedule rather than skipping steps. And accept that some coverage gaps are acceptable. A monitoring program that runs consistently at 70% coverage is far more valuable than one designed for 100% that quietly stops after three months.</p>
 </section>
 
 <section class="module-lab">
