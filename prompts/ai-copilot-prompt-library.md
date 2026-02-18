@@ -17,7 +17,7 @@ Replace all `[bracketed placeholders]` with your organization-specific informati
 
 Generate a threat profile to establish context for your monitoring program.
 
-```
+{% capture pl_m1_prompt %}
 I work at a [organization type -- e.g., "rural electric cooperative",
 "municipal water utility", "food manufacturing company"]. We operate
 [OT/ICS systems -- e.g., "SCADA/EMS systems for grid management",
@@ -29,13 +29,56 @@ Generate a sector threat profile including:
    [organization type]
 3. Key personnel roles that adversaries would target
 4. Recent threat actor groups known to target [sector]
-```
+{% endcapture %}
+{% include prompt-block.html title="Sector Threat Profile Prompt" content=pl_m1_prompt %}
+
+Sector-specific starting points:
+
+{% capture pl_m1_nreca_prompt %}
+I work at a rural electric cooperative that operates generation,
+transmission, and distribution infrastructure. We are a member of
+NRECA and operate SCADA/EMS systems for grid management.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the electric cooperative sector
+2. Priority remote access technologies commonly deployed at cooperatives
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target the electric sector
+{% endcapture %}
+{% include prompt-block.html title="NRECA Sector Threat Profile Prompt" content=pl_m1_nreca_prompt %}
+
+{% capture pl_m1_water_prompt %}
+I work at a municipal water utility that operates water treatment
+and distribution infrastructure serving 50,000 customers. We use
+SCADA systems for plant process control and remote pump station
+monitoring.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the water/wastewater sector
+2. Priority remote access technologies commonly deployed at water utilities
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target water infrastructure
+{% endcapture %}
+{% include prompt-block.html title="Example: Water Utility" content=pl_m1_water_prompt %}
+
+{% capture pl_m1_mfg_prompt %}
+I work at a food and beverage manufacturing company with 12 plants
+across the Midwest. We operate DCS and PLC-based process control
+systems for batch production and packaging lines.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the food manufacturing sector
+2. Priority remote access technologies commonly deployed at manufacturing plants
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target manufacturing
+{% endcapture %}
+{% include prompt-block.html title="Example: Manufacturing" content=pl_m1_mfg_prompt %}
 
 ### Certificate Transparency Analysis (Module 2, Step 2a)
 
 Analyze certificate transparency JSON data from crt.sh.
 
-```
+{% capture pl_m2_ct_prompt %}
 I am analyzing certificate transparency data from crt.sh for
 [organization name]. The attached/pasted JSON contains certificate
 records for %.[yourdomain.com].
@@ -54,13 +97,14 @@ Analyze this data and provide:
 
 Output a clean categorized subdomain list organized by
 function/risk category.
-```
+{% endcapture %}
+{% include prompt-block.html title="CT JSON Analysis Prompt" content=pl_m2_ct_prompt %}
 
 ### Subdomain Enumeration Analysis (Module 2, Step 2c)
 
 Analyze subdomain enumeration results from multiple sources.
 
-```
+{% capture pl_m2_subdomain_prompt %}
 I am analyzing subdomain enumeration data for [organization name],
 a [sector] organization. The attached/pasted JSON files contain
 subdomain records for [domain1.com] and [domain2.com]. Each record
@@ -87,13 +131,14 @@ Analyze the combined data and provide:
 Output a categorized inventory organized by: authentication/
 identity, remote access, benefits/HR, financial/compliance,
 APIs/backend, staging/test, content/public, and other.
-```
+{% endcapture %}
+{% include prompt-block.html title="Subdomain Enumeration Analysis Prompt" content=pl_m2_subdomain_prompt %}
 
 ### Google Dork Query Generation (Module 2, Step 4a)
 
 Generate targeted Google dork queries for attack surface discovery.
 
-```
+{% capture pl_m2_dork_prompt %}
 I am performing external attack surface discovery on [organization
 name], a [sector] organization. I have identified these root
 domains: [domain1.com, domain2.com, domain3.com].
@@ -108,13 +153,14 @@ Based on these domains, generate Google dork queries to find:
 6. Pages referencing VPN, remote access, or SCADA/OT systems
 
 Format each query so I can paste it directly into Google.
-```
+{% endcapture %}
+{% include prompt-block.html title="Google Dork Query Generation Prompt" content=pl_m2_dork_prompt %}
 
 ### Attack Surface Consolidation (Module 2, Step 4b)
 
 Consolidate all discovery findings into a single baseline inventory.
 
-```
+{% capture pl_m2_consolidation_prompt %}
 I have completed external attack surface discovery for
 [organization name]. Here is a summary of all findings:
 
@@ -139,13 +185,14 @@ Consolidate all findings into a single attack surface baseline:
 4. A prioritized list of assets to carry forward to vulnerability
    correlation (Module 4) and monitoring (Module 5)
 5. A summary table suitable for use as a baseline document
-```
+{% endcapture %}
+{% include prompt-block.html title="Attack Surface Consolidation Prompt" content=pl_m2_consolidation_prompt %}
 
 ### Personnel Discovery and Categorization (Module 3, Step 1)
 
 Identify key personnel and assign priority tiers based on OT access.
 
-```
+{% capture pl_m3_discovery_prompt %}
 I am building a personnel exposure inventory for [organization
 name], a [sector] organization that operates [operations
 description].
@@ -179,13 +226,14 @@ IMPORTANT: For each person and the email format pattern, provide
 the specific URL where you found this information. If you cannot
 access a website directly, state that clearly rather than
 generating names from memory.
-```
+{% endcapture %}
+{% include prompt-block.html title="Personnel Discovery and Categorization Prompt" content=pl_m3_discovery_prompt %}
 
 ### Personnel Risk Prioritization (Module 3, Step 3)
 
 Rank breached personnel by risk and generate attack scenarios.
 
-```
+{% capture pl_m3_prioritization_prompt %}
 I found the following personnel from [organization name] in breach
 databases. Based on their roles at a [sector] organization that
 operates [OT/ICS systems], rank them by risk priority and explain
@@ -200,13 +248,14 @@ For each person found in breaches:
 3. Cross-reference their tier (1/2/3) with the severity of the
    breach data exposed
 4. Recommended immediate actions
-```
+{% endcapture %}
+{% include prompt-block.html title="Personnel Risk Prioritization Prompt" content=pl_m3_prioritization_prompt %}
 
 ### Professional Network Exposure Analysis (Module 3, Step 4)
 
 Analyze job postings and professional profiles for information leakage.
 
-```
+{% capture pl_m3_profnet_prompt %}
 Review the following job postings and professional profile
 information for [organization name]. Identify what an adversary
 could learn about the organization's:
@@ -218,13 +267,14 @@ could learn about the organization's:
 5. Information that could support targeted social engineering
 
 [paste job posting text or profile summaries]
-```
+{% endcapture %}
+{% include prompt-block.html title="Professional Network Exposure Analysis Prompt" content=pl_m3_profnet_prompt %}
 
 ### CPE Generation and Vulnerability Lookup (Module 4, Step 1)
 
 Generate CPE identifiers and query vulnerability databases for exposed products.
 
-```
+{% capture pl_m4_cpe_prompt %}
 I found the following product exposed to the internet during an
 external attack surface assessment:
 
@@ -245,13 +295,14 @@ external attack surface assessment:
    - Whether remote/unauthenticated exploitation is possible
 4. Highlight any CVEs that combine internet-facing exposure with
    active exploitation -- these are the highest priority findings
-```
+{% endcapture %}
+{% include prompt-block.html title="CPE Generation and Vulnerability Lookup Prompt" content=pl_m4_cpe_prompt %}
 
 ### Vulnerability Risk Summary (Module 4, Step 3)
 
 Generate an actionable risk summary for security team or management.
 
-```
+{% capture pl_m4_risk_prompt %}
 Write a one-paragraph risk summary for my security team about
 this finding:
 
@@ -269,7 +320,8 @@ Include:
    criticality)
 2. Recommended immediate actions (patch, mitigate, monitor)
 3. What to check for evidence of prior compromise
-```
+{% endcapture %}
+{% include prompt-block.html title="Vulnerability Risk Summary Prompt" content=pl_m4_risk_prompt %}
 
 ---
 
@@ -279,7 +331,7 @@ Include:
 
 Generate a customized monitoring checklist based on your findings.
 
-```
+{% capture pl_m5_schedule_prompt %}
 Create a pull-based OSINT monitoring schedule for [organization
 name], a [sector] organization focused on monitoring remote
 access and OT-adjacent infrastructure. Include weekly checks
@@ -305,13 +357,14 @@ For each check, specify:
 Prioritize checks covering remote access infrastructure and
 edge device vulnerability changes above general subdomain
 or personnel checks.
-```
+{% endcapture %}
+{% include prompt-block.html title="Pull-Based Monitoring Schedule Prompt" content=pl_m5_schedule_prompt %}
 
 ### Minimum Viable Monitoring (Module 5, Step 3)
 
 Identify the essential checks that survive when time is constrained.
 
-```
+{% capture pl_m5_sustainability_prompt %}
 Given this monitoring program covering [describe your setup --
 domains monitored, alert services configured, pull-based schedule,
 number of personnel tracked], I have limited time and need to
@@ -326,13 +379,14 @@ For each, specify:
 2. What finding would require immediate action (escalate now)
    vs. adding to a weekly review queue
 3. How long the check takes and what it would miss if skipped
-```
+{% endcapture %}
+{% include prompt-block.html title="Minimum Viable Monitoring Prompt" content=pl_m5_sustainability_prompt %}
 
 ### Runbook Generation (Module 6, Step 1)
 
 Generate a complete monitoring runbook with cadenced procedures.
 
-```
+{% capture pl_m6_runbook_prompt %}
 Generate an ICS/OT OSINT monitoring runbook for [organization name],
 a [sector] organization. Structure the runbook with daily, weekly,
 monthly, and quarterly procedures.
@@ -362,4 +416,5 @@ For each cadence, provide:
 Include specific tool references: Google Alerts, Shodan, Censys,
 crt.sh, CISA KEV, CISA ICS Advisories, HaveIBeenPwned, NVD.
 Format each procedure as a numbered checklist.
-```
+{% endcapture %}
+{% include prompt-block.html title="Runbook Generation Prompt" content=pl_m6_runbook_prompt %}
