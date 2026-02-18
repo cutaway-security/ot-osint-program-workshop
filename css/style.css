@@ -611,6 +611,17 @@ blockquote {
     background-color: #f8fafc;
 }
 
+.info-callout {
+    border-left: 4px solid var(--color-primary);
+    margin: 1.5em 0;
+    padding: 1em 1.25em;
+    background-color: #eef2f7;
+}
+
+.info-callout p:last-child {
+    margin-bottom: 0;
+}
+
 ul, ol {
     margin: 0 0 1em 0;
     padding-left: 1.5em;
