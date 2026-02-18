@@ -14,8 +14,8 @@
 |-------|------|--------|-------------|
 | 0 | Project Setup | COMPLETE | Framework files, repo structure, conventions |
 | 1 | Site Scaffolding | COMPLETE | Layouts, navigation, base templates, styling |
-| 2 | Module Content | NOT STARTED | Convert WORKSHOP_FRAMEWORK.md into module pages |
-| 3 | Supporting Materials | NOT STARTED | Templates, prompt library, resource pages |
+| 2 | Module Content | COMPLETE | Convert WORKSHOP_FRAMEWORK.md into module pages |
+| 3 | Supporting Materials | COMPLETE | Templates, prompt library, resource pages, examples |
 | 4 | Polish and Testing | NOT STARTED | Cross-browser, mobile, content review, links |
 
 ---
@@ -114,7 +114,7 @@
 
 ## Phase 2: Module Content
 
-**Status**: IN PROGRESS
+**Status**: COMPLETE
 
 **Objective**: Convert WORKSHOP_FRAMEWORK.md module specifications into full HTML pages with overview sections, worked examples, and structured lab steps.
 
@@ -140,7 +140,7 @@
 | 2.16 | M6: Runbook -- worked example | COMPLETE | NRECA runbook: daily triage, weekly checks, monthly review, quarterly assessment |
 | 2.17 | M6: Runbook -- lab | COMPLETE | 4 steps: AI generation, customize, mark MVM [CORE]/[FULL], peer review |
 | 2.18 | Summary page | COMPLETE | P0-P3 recap table, 8-artifact inventory table, next steps (playbooks, tabletop, automation, maturity), resources |
-| 2.19 | Content review vs WORKSHOP_FRAMEWORK.md | NOT STARTED | Verify completeness |
+| 2.19 | Content review vs WORKSHOP_FRAMEWORK.md | COMPLETE | No blocking issues; intentional deviations documented; 16 prompts inventoried for Phase 3 |
 
 ### Acceptance Criteria
 
@@ -168,7 +168,7 @@
 
 ## Phase 3: Supporting Materials
 
-**Status**: NOT STARTED
+**Status**: COMPLETE
 
 **Objective**: Create templates, prompt library, and resource pages that students can use during and after the workshop.
 
@@ -176,29 +176,31 @@
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 3.1 | Baseline document template | NOT STARTED | Consolidated M2-M4 outputs format |
-| 3.2 | Personnel exposure inventory template | NOT STARTED | Role-based tier model |
-| 3.3 | Vulnerability correlation table template | NOT STARTED | Asset-to-CVE-to-KEV format |
-| 3.4 | Runbook template | NOT STARTED | Daily/weekly/monthly/quarterly procedures |
-| 3.5 | Monitoring checklist template | NOT STARTED | Pull-based schedule format |
-| 3.6 | Templates index page | NOT STARTED | Links to all templates with descriptions |
-| 3.7 | AI Copilot Prompt Library | NOT STARTED | All prompts from M1-M6, organized by category |
-| 3.8 | Tool Reference page | NOT STARTED | All tools with URLs, purpose, account requirements |
-| 3.9 | Vulnerability Intelligence Resources | NOT STARTED | Primary sources, vendor PSIRTs, exploit intel |
-| 3.10 | NRECA domain discovery example | NOT STARTED | Standalone worked example page |
-| 3.11 | NRECA personnel analysis example | NOT STARTED | Standalone worked example page |
-| 3.12 | Fortinet vulnerability correlation example | NOT STARTED | Standalone worked example page |
-| 3.13 | Google Alerts configuration example | NOT STARTED | Standalone worked example page |
+| 3.1 | Baseline document template | COMPLETE | 4-section template with classification key |
+| 3.2 | Personnel exposure inventory template | COMPLETE | Tier-based inventory with prioritization matrix |
+| 3.3 | Vulnerability correlation table template | COMPLETE | Asset-to-CVE table with P0-P3 framework |
+| 3.4 | Runbook template | COMPLETE | 4-cadence structure with [CORE]/[FULL] labels |
+| 3.5 | Monitoring checklist template | COMPLETE | Weekly and monthly checklists with finding logs |
+| 3.6 | Templates index page | COMPLETE | Linked table with artifact numbers and descriptions |
+| 3.7 | AI Copilot Prompt Library | COMPLETE | 16 prompts organized by Discovery/Analysis and Monitoring/Operations |
+| 3.8 | Tool Reference page | COMPLETE | 15 tools in 5 categories with URLs, accounts, free tier limitations |
+| 3.9 | Vulnerability Intelligence Resources | COMPLETE | Primary sources, 5 vendor PSIRTs, 3 exploit intel sources |
+| 3.10 | NRECA domain discovery example | COMPLETE | CT analysis, subdomain enumeration, remote access, Google dorks |
+| 3.11 | NRECA personnel analysis example | COMPLETE | Personnel discovery, breach checks, risk prioritization |
+| 3.12 | Fortinet vulnerability correlation example | COMPLETE | CPE generation, vuln DB queries, P0 classification, risk summary |
+| 3.13 | Google Alerts configuration example | COMPLETE | 5 alert queries, config settings, alert routing, other push sources |
+| 3.14 | Examples index page | COMPLETE | Linked table with module attribution and descriptions |
+| 3.15 | Link examples from site navigation | COMPLETE | Supporting Materials card on index.html |
 
 ### Acceptance Criteria
 
-- [ ] All 5 templates created with clear formatting and instructions
-- [ ] Templates are copy/paste friendly (Markdown format)
-- [ ] Prompt library contains all prompts from all modules
-- [ ] Tool reference matches Appendix C of WORKSHOP_FRAMEWORK.md
-- [ ] Vulnerability resources match Appendix D of WORKSHOP_FRAMEWORK.md
-- [ ] All example pages contain complete worked examples
-- [ ] All pages linked from relevant module pages and navigation
+- [x] All 5 templates created with clear formatting and instructions
+- [x] Templates are copy/paste friendly (Markdown format)
+- [x] Prompt library contains all prompts from all modules
+- [x] Tool reference matches Appendix C of WORKSHOP_FRAMEWORK.md
+- [x] Vulnerability resources match Appendix D of WORKSHOP_FRAMEWORK.md
+- [x] All example pages contain complete worked examples
+- [x] All pages linked from relevant module pages and navigation
 
 ### Deliverables
 
@@ -256,8 +258,8 @@
 |-----------|--------|--------|-------------|
 | M1: Framework Ready | 0 | COMPLETE | Claude Code framework files, Jekyll config, clean build |
 | M2: Site Skeleton | 1 | COMPLETE | Site navigable with layouts, styling, placeholder pages |
-| M3: Content Complete | 2 | NOT STARTED | All module pages have full content |
-| M4: Materials Complete | 3 | NOT STARTED | Templates, prompts, resources all created |
+| M3: Content Complete | 2 | COMPLETE | All module pages have full content |
+| M4: Materials Complete | 3 | COMPLETE | Templates, prompts, resources, examples all created |
 | M5: Release Ready | 4 | NOT STARTED | Tested, polished, deployed |
 
 ---
