@@ -38,14 +38,15 @@ This document provides context for resuming development after a break or when st
 - 2 prompt blocks, 1 response block, 3 collapsible worked examples
 - Review updates (cee7631): internal asset inventory in workflow, ICSAP source with non-ICS vendor note, KEV patch-available caveat, NVD CPE Search validation, manual validation framing, re-validation closing
 
-**Task 2.12-2.14 - M5: Monitoring & Alerting Setup**: COMPLETE
-- Overview: push vs pull monitoring model, push-based alert sources table (Google Alerts, Shodan, CT monitors, CISA advisories, vendor PSIRTs, HIBP), pull-based checks with baseline comparison (5 check types mapped to M2-M4), alert aggregation guidance, signal-to-noise management
-- Lab: 3 steps following Lab-first pattern
-  - Step 1: Configure push-based alerts (Google Alerts patterns table, CISA/vendor subscriptions, HIBP domain, Shodan optional). Worked example: NRECA 5 Google Alert queries, Fortinet PSIRT subscription, HIBP nreca.coop domain setup
-  - Step 2: Pull-based monitoring schedule with AI-assisted checklist prompt. Worked example: NRECA schedule AI response (4 weekly checks totaling 25 min, 5 monthly checks totaling 90 min with specific tools and queries)
-  - Step 3: Baseline snapshot consolidation with 4-category classification table (known-good, accepted risk, needs remediation, needs investigation), baseline structure guide
-- Output: Artifacts 5 (configured alerts), 6 (pull schedule), 7 (baseline document)
-- 1 prompt block, 1 response block, 2 collapsible worked examples
+**Task 2.12-2.14 - M5: Monitoring & Alerting Setup**: COMPLETE (extensively revised 2026-02-18)
+- Overview: OT/remote access monitoring purpose framing, push vs pull model, push-based alert sources condensed 2-column reference table, ASM info callout ("Where Free Tools Hit Their Ceiling"), pull-based checks with baseline comparison, alert aggregation with 3-question triage test + 4 disposition categories + Needs Investigation time limit, sustainability and operational fatigue subsection (minimum viable monitoring concept)
+- Lab: 3 steps following Lab-first pattern (restructured from original 4 steps -- push alerts removed from lab, moved to read section reference)
+  - Step 1: OT-focused pull-based monitoring schedule with AI-assisted checklist prompt. Weekly checks reordered by OT relevance: Shodan/Censys first, KEV second, CT third, breach fourth. Monthly checks include OT boundary framing for Shodan/Censys. Worked example: NRECA schedule with "OT-relevant finding" labels
+  - Step 2: Baseline snapshot consolidation with 4-category classification table (known-good, accepted risk, needs remediation, needs investigation), OT-priority sorting paragraph (remote access first, OT personnel second, edge device CVEs third, remaining last), baseline structure guide with remote access assets listed first in M2 section, living document blockquote with highest-priority remote access emphasis
+  - Step 3: Sustainability assessment -- 4 questions (single point of failure, minimum viable monitoring, escalation path, program review cadence) + AI prompt for MVM set identification
+- Output: Artifacts 5 (pull schedule) and 6 (baseline document) + Looking Ahead automation paragraph
+- 2 prompt blocks, 1 response block, 2 collapsible worked examples
+- .info-callout CSS class added to style.css
 
 ### Next Task
 
@@ -142,7 +143,7 @@ None.
 - Updated Step 2 breach findings: hypothetical breaches now reference Manucy, Banunarayanan, McGurk, McNamara with OT-framed rationale
 - Added Step 2 scaling subsection: HIBP domain verification, API v3 reference, SpiderFoot + V1 workshop link
 - Updated Step 3 prioritization AI response: OT-focused attack scenarios (Manucy critical, Banunarayanan critical, McNamara high, McGurk monitor)
-- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content), cee7631 (M4 review updates), b6a9c4d (M5 content)
+- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content), cee7631 (M4 review updates), b6a9c4d (M5 content), e262406 (M5 sustainability), 6bedaaf (M5 ASM callout + info-callout CSS), e05d72a (M5 Step 4 sustainability), fbf3074 (M5 triage criteria), 3b60e4b (M5 looking ahead), 8a6e72c (M5 OT purpose framing), 42ba155 (M5 restructure: push to read, remove lab step 1), 1c49377 (M5 OT-focused pull schedule), 1253578 (M5 baseline OT-priority sorting)
 
 **Key decisions made**:
 - OT-centric tier model: prioritize by proximity to operational technology, not corporate rank
