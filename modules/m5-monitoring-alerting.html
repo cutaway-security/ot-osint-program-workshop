@@ -314,19 +314,23 @@ or personnel checks.
     </tbody>
   </table>
 
+  <h4>OT-Priority Sorting</h4>
+
+  <p>When classifying baseline entries, work through them in order of operational impact. Remote access portals, VPN endpoints, and administrative interfaces should be classified first -- these are the assets most likely to provide a direct path into OT networks. Tier 1 and Tier 2 personnel (those with OT system access or credentials) come next, followed by vulnerability correlation entries for edge devices and OT-adjacent systems. All remaining findings -- corporate subdomains, general personnel, and lower-priority vulnerabilities -- are classified last. This ordering ensures that the entries with the most direct OT impact receive attention even when time runs short.</p>
+
   <h4>Baseline Structure</h4>
 
   <p>Your baseline document should consolidate the key outputs from each preceding module:</p>
 
   <ul>
-    <li><strong>From Module 2 (Attack Surface):</strong> All discovered domains, subdomains, and exposed services with their current status. Include the asset documentation fields (hostname, IP, port, product, criticality, zone)</li>
+    <li><strong>From Module 2 (Attack Surface):</strong> All discovered domains, subdomains, and exposed services with their current status. Remote access portals, VPN login pages, and administrative interfaces should be listed first within this section. Include the asset documentation fields (hostname, IP, port, product, criticality, zone)</li>
     <li><strong>From Module 3 (Personnel):</strong> Tier 1 and Tier 2 personnel with email addresses, breach status, and monitoring priority. Team email addresses and email format pattern</li>
     <li><strong>From Module 4 (Vulnerabilities):</strong> Vulnerability correlation table with CVE details, KEV status, priority ratings, and remediation status</li>
     <li><strong>From this module:</strong> List of configured push alerts and pull-based schedule, so the next person running the monitoring process knows what is already set up</li>
   </ul>
 
   <blockquote>
-    <p><strong>The baseline is a living document.</strong> Every monitoring cycle should produce a comparison against the baseline and then update it. When a new subdomain appears, it starts as "Needs Investigation," gets analyzed, and then moves to one of the other three categories. When a vulnerability is patched, its status in the baseline changes to "Known-Good" with a note about the patch date. The baseline reflects your current understanding, not a historical snapshot.</p>
+    <p><strong>The baseline is a living document.</strong> Every monitoring cycle should produce a comparison against the baseline and then update it. When a new subdomain appears, it starts as "Needs Investigation," gets analyzed, and then moves to one of the other three categories. When a vulnerability is patched, its status in the baseline changes to "Known-Good" with a note about the patch date. The baseline reflects your current understanding, not a historical snapshot. The remote access and edge device entries are the highest-priority section of this document -- if nothing else is reviewed at each monitoring cycle, those entries should be.</p>
   </blockquote>
 
   <h3>Step 3: Sustainability Assessment</h3>
