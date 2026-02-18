@@ -139,7 +139,7 @@
 | 2.15 | M6: Runbook -- overview | COMPLETE | Runbook vs playbook, cadence structure table, writing-for-someone-else executability test |
 | 2.16 | M6: Runbook -- worked example | COMPLETE | NRECA runbook: daily triage, weekly checks, monthly review, quarterly assessment |
 | 2.17 | M6: Runbook -- lab | COMPLETE | 4 steps: AI generation, customize, mark MVM [CORE]/[FULL], peer review |
-| 2.18 | Summary page | NOT STARTED | Prioritization recap, artifacts list, next steps |
+| 2.18 | Summary page | COMPLETE | P0-P3 recap table, 8-artifact inventory table, next steps (playbooks, tabletop, automation, maturity), resources |
 | 2.19 | Content review vs WORKSHOP_FRAMEWORK.md | NOT STARTED | Verify completeness |
 
 ### Acceptance Criteria

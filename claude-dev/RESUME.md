@@ -58,9 +58,16 @@ This document provides context for resuming development after a break or when st
 - Output: Artifact 8 with cross-references to M2-M5 and link to Summary
 - 1 prompt block, 1 response block, 1 collapsible worked example
 
+**Task 2.18 - Summary & Next Steps page**: COMPLETE
+- P0-P3 remediation prioritization recap: 4-row table with criteria, response timeframes, and concrete examples (FortiGate P0, remote access P1, credential breach P2, information disclosure P3)
+- 8-artifact inventory: table with artifact number, name, module link, and purpose description. Closing paragraph explaining artifact interconnections
+- Next steps: response playbooks (3 scenario types), tabletop exercises, script automation (4 automation candidates starting with [CORE] procedures), program maturity (metrics, stakeholder reporting, integration, expansion)
+- Resource links: templates, AI copilot prompt library, tool reference, vulnerability intel
+- Also fixed: artifact numbering gap (restored push alerts as Artifact 5, renumbered pull schedule to 6, baseline to 7 across M5 and M6), index.html M5 timing (35->40 lab, 45->50 total)
+
 ### Next Task
 
-**Task**: 2.18 - Summary page
+**Task**: 2.19 - Content review vs WORKSHOP_FRAMEWORK.md
 **Status**: NOT STARTED
 
 ### Blockers
@@ -225,7 +232,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 2.9-2.11 | M4: Vulnerability Correlation | COMPLETE |
 | 2.12-2.14 | M5: Monitoring & Alerting | COMPLETE |
 | 2.15-2.17 | M6: Runbook Development | COMPLETE |
-| 2.18 | Summary page | NOT STARTED |
+| 2.18 | Summary page | COMPLETE |
 | 2.19 | Content review | NOT STARTED |
 
 ### Phase 3: Supporting Materials - NOT STARTED
