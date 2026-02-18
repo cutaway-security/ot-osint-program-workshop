@@ -29,15 +29,15 @@ next_module_title:
     <tbody>
       <tr>
         <td><strong>P0 -- Active Exploitation</strong></td>
-        <td>KEV-listed vulnerability on an internet-exposed asset</td>
+        <td>Direct exposure + confirmed active exploitation (CISA KEV, CISA ICS advisory, or vendor alert) + safety or operational impact</td>
         <td>Immediate action (hours, not days)</td>
-        <td>FortiGate CVE-2025-59718 on an internet-facing admin interface with active exploitation confirmed by CISA KEV</td>
+        <td>FortiGate CVE-2025-59718 on an internet-facing admin interface with active exploitation confirmed by CISA KEV and Fortinet PSIRT</td>
       </tr>
       <tr>
         <td><strong>P1 -- Critical</strong></td>
         <td>Direct exposure + known exploit + safety or operational impact</td>
         <td>Investigate within 24 hours</td>
-        <td>Internet-exposed remote access portal running a product version with a published exploit, but not yet KEV-listed</td>
+        <td>Internet-exposed remote access portal running a product version with a published exploit, but no confirmed active exploitation from CISA or vendor sources</td>
       </tr>
       <tr>
         <td><strong>P2 -- Urgent</strong></td>
@@ -140,7 +140,7 @@ next_module_title:
   <ul>
     <li><strong>Exposed remote access:</strong> A new VPN portal or admin interface appears in Shodan/Censys that is not in your baseline</li>
     <li><strong>Breached credentials:</strong> A Tier 1 or Tier 2 employee appears in a new breach with password or hash exposure</li>
-    <li><strong>Critical vulnerability on exposed asset:</strong> A P0 or P1 finding from your vulnerability correlation workflow -- KEV-listed CVE on an internet-facing edge device</li>
+    <li><strong>Critical vulnerability on exposed asset:</strong> A P0 or P1 finding from your vulnerability correlation workflow -- active exploitation confirmed by CISA KEV, CISA ICS advisory, or vendor PSIRT on an internet-facing edge device</li>
   </ul>
 
   <p>Each playbook should define: who is notified, what immediate containment actions are taken, how the finding is validated, and how remediation is tracked to resolution.</p>
