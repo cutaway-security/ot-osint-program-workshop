@@ -7,6 +7,8 @@ title: Personnel Exposure Inventory Template
 
 Role-based personnel exposure inventory for tracking credential risk to operational technology. This template supports the Module 3 workflow.
 
+**Download:** [Personnel Inventory Template (Excel)]({{ '/templates/downloads/personnel-inventory-template.xlsx' | relative_url }}) -- includes dropdown lists for Tier, Breach Status, Data Exposed, and Priority fields.
+
 **Instructions:** Copy this template and populate with your Module 3 findings. Prioritize personnel by tier (proximity to OT systems), not corporate rank.
 
 ---

@@ -7,6 +7,8 @@ title: Baseline Document Template
 
 Consolidated external exposure baseline for ongoing OSINT monitoring. This template combines outputs from Modules 2, 3, and 4 into a single reference document.
 
+**Download:** [Baseline Template (Excel)]({{ '/templates/downloads/baseline-template.xlsx' | relative_url }}) -- includes dropdown lists for Classification, Priority, Tier, and Status fields.
+
 **Instructions:** Copy this template and fill in each section with your workshop findings. Classify every entry using the four-category system. Update this document at each monitoring cycle.
 
 ---

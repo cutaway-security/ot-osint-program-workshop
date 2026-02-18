@@ -7,6 +7,10 @@ title: Monitoring Checklist Template
 
 Structured checklist for weekly and monthly pull-based OSINT monitoring. This template supports the Module 5 workflow.
 
+**Download:** [Monitoring Checklist Template (Word)]({{ '/templates/downloads/monitoring-checklist-template.docx' | relative_url }}) -- includes checkboxes, finding log tables, and cycle summary tracking.
+
+**NRECA Example:** [NRECA Monitoring Checklist (Word)]({{ '/examples/downloads/nreca-monitoring-checklist.docx' | relative_url }}) -- pre-filled example showing what a completed checklist looks like.
+
 **Instructions:** Copy this template and customize the queries, baseline references, and finding criteria for your organization. Use the checklist format during each monitoring cycle to ensure consistent execution.
 
 ---

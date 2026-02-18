@@ -7,6 +7,10 @@ title: Runbook Template
 
 Cadenced monitoring procedures for your OT OSINT program. This template supports the Module 6 workflow.
 
+**Download:** [Runbook Template (Word)]({{ '/templates/downloads/runbook-template.docx' | relative_url }}) -- includes [CORE]/[FULL] labels, checkboxes, and procedural structure.
+
+**NRECA Example:** [NRECA Runbook (Word)]({{ '/examples/downloads/nreca-runbook.docx' | relative_url }}) -- pre-filled example showing what a completed runbook looks like.
+
 **Instructions:** Copy this template and customize with your organization-specific details. Replace all [bracketed items] with actual tool queries, personnel names, and baseline references. Mark each procedure as [CORE] or [FULL].
 
 - **[CORE]** -- Runs no matter what. Part of your minimum viable monitoring set.

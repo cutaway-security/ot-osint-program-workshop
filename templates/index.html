@@ -5,7 +5,7 @@ title: Templates
 
 <h1>Workshop Templates</h1>
 
-<p>Artifact templates for the workshop. Copy and adapt these for your organization. All templates use Markdown table format for easy copy/paste into your preferred document tool.</p>
+<p>Artifact templates for the workshop. Download the Excel or Word file for your organization and fill it in during the lab exercises. Each template includes dropdown lists for defined field values. The Markdown reference on each template page shows the full field definitions and instructions.</p>
 
 <table>
   <thead>
@@ -13,6 +13,7 @@ title: Templates
       <th>Template</th>
       <th>Artifact</th>
       <th>Module</th>
+      <th>Download</th>
       <th>Description</th>
     </tr>
   </thead>
@@ -21,31 +22,65 @@ title: Templates
       <td><a href="{{ '/templates/baseline-template' | relative_url }}">Baseline Document</a></td>
       <td>7</td>
       <td>M5</td>
+      <td><a href="{{ '/templates/downloads/baseline-template.xlsx' | relative_url }}">Excel</a></td>
       <td>Consolidated external exposure baseline combining Module 2 (attack surface), Module 3 (personnel), and Module 4 (vulnerabilities) with four-category classification system</td>
     </tr>
     <tr>
       <td><a href="{{ '/templates/personnel-inventory-template' | relative_url }}">Personnel Exposure Inventory</a></td>
       <td>3</td>
       <td>M3</td>
+      <td><a href="{{ '/templates/downloads/personnel-inventory-template.xlsx' | relative_url }}">Excel</a></td>
       <td>Role-based personnel inventory with tier assignments, breach tracking, prioritization matrix, and professional network exposure</td>
     </tr>
     <tr>
       <td><a href="{{ '/templates/vuln-correlation-template' | relative_url }}">Vulnerability Correlation Table</a></td>
       <td>4</td>
       <td>M4</td>
+      <td><a href="{{ '/templates/downloads/vuln-correlation-template.xlsx' | relative_url }}">Excel</a></td>
       <td>Asset-to-CVE mapping with CPE identifiers, CISA KEV status, P0-P3 priority ratings, vendor PSIRT tracking, and source checklist</td>
-    </tr>
-    <tr>
-      <td><a href="{{ '/templates/runbook-template' | relative_url }}">Operational Runbook</a></td>
-      <td>8</td>
-      <td>M6</td>
-      <td>Cadenced monitoring procedures (daily, weekly, monthly, quarterly) with [CORE]/[FULL] labels, checklists, ownership, and escalation paths</td>
     </tr>
     <tr>
       <td><a href="{{ '/templates/monitoring-checklist-template' | relative_url }}">Monitoring Checklist</a></td>
       <td>6</td>
       <td>M5</td>
+      <td><a href="{{ '/templates/downloads/monitoring-checklist-template.docx' | relative_url }}">Word</a></td>
       <td>Pull-based weekly and monthly monitoring checklist with tool queries, baseline references, finding logs, and cycle summary tracking</td>
+    </tr>
+    <tr>
+      <td><a href="{{ '/templates/runbook-template' | relative_url }}">Operational Runbook</a></td>
+      <td>8</td>
+      <td>M6</td>
+      <td><a href="{{ '/templates/downloads/runbook-template.docx' | relative_url }}">Word</a></td>
+      <td>Cadenced monitoring procedures (daily, weekly, monthly, quarterly) with [CORE]/[FULL] labels, checklists, ownership, and escalation paths</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>NRECA Worked Examples</h2>
+
+<p>Pre-filled examples using NRECA data from the workshop. These show what completed templates look like with real organizational data.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Template</th>
+      <th>Download</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NRECA Monitoring Checklist</td>
+      <td>Monitoring Checklist</td>
+      <td><a href="{{ '/examples/downloads/nreca-monitoring-checklist.docx' | relative_url }}">Word</a></td>
+      <td>Weekly and monthly checklists pre-filled with NRECA queries (FortiGate, electric.coop/cooperative.com domains, Tier 1 personnel), hypothetical finding entries, and cycle summaries</td>
+    </tr>
+    <tr>
+      <td>NRECA Runbook</td>
+      <td>Operational Runbook</td>
+      <td><a href="{{ '/examples/downloads/nreca-runbook.docx' | relative_url }}">Word</a></td>
+      <td>Full runbook with NRECA-specific daily triage (5 Google Alert queries), weekly checks (FortiGate, KEV, CT for 4 domains, HIBP for 5 Tier 1 personnel), monthly review, and quarterly assessment with [CORE]/[FULL] labels</td>
     </tr>
   </tbody>
 </table>

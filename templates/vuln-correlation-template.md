@@ -7,6 +7,8 @@ title: Vulnerability Correlation Table Template
 
 Asset-to-vulnerability correlation table for tracking exposed products against known vulnerabilities. This template supports the Module 4 workflow.
 
+**Download:** [Vulnerability Correlation Template (Excel)]({{ '/templates/downloads/vuln-correlation-template.xlsx' | relative_url }}) -- includes dropdown lists for KEV, Priority (P0-P3), Status, and Network Zone fields.
+
 **Instructions:** Copy this template and populate with your Module 4 findings. Start with internet-exposed assets from Module 2, generate CPE identifiers, and query vulnerability databases for each product.
 
 ---
