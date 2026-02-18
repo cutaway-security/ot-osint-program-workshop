@@ -30,50 +30,6 @@ next_module_title: "M6: Runbook Development"
 
   <p>Neither approach is sufficient alone. Push alerts have gaps in coverage, and pull checks only find changes at the frequency you run them. Together they provide layered coverage.</p>
 
-  <h3>Push-Based Alert Sources</h3>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Source</th>
-        <th>What It Monitors</th>
-        <th>Setup</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Google Alerts</strong></td>
-        <td>Web mentions of your organization + security keywords (breach, hack, vulnerability, SCADA)</td>
-        <td><a href="https://www.google.com/alerts" target="_blank" rel="noopener">google.com/alerts</a> -- requires Google account. Free, unlimited alerts</td>
-      </tr>
-      <tr>
-        <td><strong>Shodan Alerts</strong></td>
-        <td>Changes to internet-exposed services on your IP ranges</td>
-        <td><a href="https://monitor.shodan.io/" target="_blank" rel="noopener">monitor.shodan.io</a> -- free tier allows monitoring up to 16 IPs</td>
-      </tr>
-      <tr>
-        <td><strong>Certificate Transparency</strong></td>
-        <td>New SSL/TLS certificates issued for your domains (new subdomains, shadow IT)</td>
-        <td><a href="https://crt.sh" target="_blank" rel="noopener">crt.sh</a> (manual/pull) or <a href="https://sslmate.com/certspotter/" target="_blank" rel="noopener">Cert Spotter</a> (push alerts)</td>
-      </tr>
-      <tr>
-        <td><strong>CISA Advisories</strong></td>
-        <td>New ICS advisories, KEV additions, vendor-specific security alerts</td>
-        <td><a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener">CISA advisories</a> -- email subscriptions and RSS feeds</td>
-      </tr>
-      <tr>
-        <td><strong>Vendor PSIRTs</strong></td>
-        <td>New vulnerabilities for specific products in your asset inventory</td>
-        <td>Subscribe to advisory mailing lists for vendors identified in Modules 2 and 4</td>
-      </tr>
-      <tr>
-        <td><strong>HaveIBeenPwned</strong></td>
-        <td>New data breaches containing email addresses from your domain</td>
-        <td><a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">HIBP Domain Search</a> -- requires domain verification. Sends notifications for new breaches</td>
-      </tr>
-    </tbody>
-  </table>
-
   <div class="info-callout">
     <p><strong>Where Free Tools Hit Their Ceiling</strong></p>
     <p>The free-tool approach in this workshop replicates roughly 60-70% of what commercial <strong>Attack Surface Management (ASM)</strong> platforms provide. Products in this category -- Censys ASM, Shodan Enterprise Monitor, GreyNoise, Recorded Future, Digital Shadows/ReliaQuest, and others -- automate continuous asset discovery, automatic CVE correlation against discovered assets, breach feed aggregation, and personnel exposure monitoring. What you are doing manually across Modules 2-5, these platforms do continuously and at scale.</p>
@@ -91,6 +47,47 @@ next_module_title: "M6: Runbook Development"
     <li><strong>New CVEs</strong> (Module 4) -- New vulnerabilities disclosed for products in your asset inventory. Check NVD, CISA KEV, and vendor PSIRTs for your specific products and versions</li>
     <li><strong>Personnel changes</strong> (Module 3) -- Leadership changes, new hires in key roles, departures. Role changes affect your tier assignments and monitoring priorities</li>
   </ul>
+
+  <h3>Push-Based Alert Sources</h3>
+
+  <p>Push-based services run continuously once configured. These complement your pull-based schedule by alerting you to changes between scheduled checks:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>What It Monitors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><a href="https://www.google.com/alerts" target="_blank" rel="noopener">Google Alerts</a></strong></td>
+        <td>Web mentions of your organization combined with security keywords (breach, hack, vulnerability, SCADA)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://monitor.shodan.io/" target="_blank" rel="noopener">Shodan Alerts</a></strong></td>
+        <td>Changes to internet-exposed services on your IP ranges (free tier: up to 16 IPs)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://crt.sh" target="_blank" rel="noopener">crt.sh</a> / <a href="https://sslmate.com/certspotter/" target="_blank" rel="noopener">Cert Spotter</a></strong></td>
+        <td>New SSL/TLS certificates issued for your domains, indicating new subdomains or shadow IT</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener">CISA ICS Advisories</a> + <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">KEV</a></strong></td>
+        <td>New ICS advisories, KEV additions, and vendor-specific security alerts (email and RSS)</td>
+      </tr>
+      <tr>
+        <td><strong>Vendor PSIRTs</strong></td>
+        <td>New vulnerabilities for specific products in your asset inventory (see Module 4 vendor PSIRT table)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">HaveIBeenPwned</a></strong></td>
+        <td>New data breaches containing email addresses from your domain (requires domain verification)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Configure any of these services that are not already active for your organization. The lab section below focuses on pull-based checks because those require structured practice to establish the baseline and schedule that make ongoing monitoring repeatable.</p>
 
   <h3>Alert Aggregation and Signal-to-Noise</h3>
 
@@ -121,7 +118,7 @@ next_module_title: "M6: Runbook Development"
     <li><strong>Tune or disable</strong> -- After 4+ weeks of consistently non-actionable results from a specific alert, adjust the query or remove it. An alert that never produces useful findings is consuming attention without providing value</li>
   </ul>
 
-  <p>One additional discipline: any item classified as "Needs Investigation" in your baseline (Step 3) should not sit indefinitely. If it remains unresolved for more than one full monitoring cycle -- weekly or monthly, depending on when it was added -- force a human decision: accept the risk, investigate further, or remediate. Unresolved items that linger become invisible, which is worse than a deliberate risk acceptance.</p>
+  <p>One additional discipline: any item classified as "Needs Investigation" in your baseline (Step 2) should not sit indefinitely. If it remains unresolved for more than one full monitoring cycle -- weekly or monthly, depending on when it was added -- force a human decision: accept the risk, investigate further, or remediate. Unresolved items that linger become invisible, which is worse than a deliberate risk acceptance.</p>
 
   <h3>Sustainability and Operational Fatigue</h3>
 
@@ -133,145 +130,11 @@ next_module_title: "M6: Runbook Development"
 <section class="module-lab">
   <h2>Lab: Configure Your Monitoring Infrastructure</h2>
 
-  <p>In this lab, you will set up push-based alerts, design a pull-based monitoring schedule, and consolidate your Modules 2-4 outputs into a baseline document. The outputs become Artifacts 5, 6, and 7.</p>
+  <p>In this lab, you will build an OT-focused pull-based monitoring schedule tailored to your findings from Modules 2-4, then consolidate those findings into a classified baseline document. The outputs become Artifacts 5 and 6.</p>
 
-  <h3>Step 1: Configure Push-Based Alerts</h3>
+  <h3>Step 1: Design Your Pull-Based Monitoring Schedule</h3>
 
-  <p>Set up automated alerts for your target organization. You will configure alerts across multiple services -- each covers a different aspect of your monitoring needs.</p>
-
-  <h4>Google Alerts</h4>
-
-  <p>Go to <a href="https://www.google.com/alerts" target="_blank" rel="noopener">google.com/alerts</a> and create 3-5 alerts using your organization name combined with security-relevant keywords. Use these patterns as starting points:</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Alert Pattern</th>
-        <th>Purpose</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>"[organization name]" breach OR hack OR compromised</code></td>
-        <td>Breach and compromise monitoring</td>
-      </tr>
-      <tr>
-        <td><code>"[domain]" vulnerability OR CVE OR exploit</code></td>
-        <td>Domain-specific vulnerability mentions</td>
-      </tr>
-      <tr>
-        <td><code>"[organization name]" VPN OR "remote access" OR SCADA</code></td>
-        <td>Remote access and OT exposure mentions</td>
-      </tr>
-      <tr>
-        <td><code>"[organization name]" cybersecurity incident OR ransomware</code></td>
-        <td>Incident monitoring</td>
-      </tr>
-      <tr>
-        <td><code>"[full organization name]" "data leak" OR "data breach"</code></td>
-        <td>Data exposure monitoring</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>For each alert, configure:</p>
-
-  <ul>
-    <li><strong>How often:</strong> "As-it-happens" for breach monitoring; "Once a day" for general monitoring</li>
-    <li><strong>Sources:</strong> "Automatic" captures the broadest range</li>
-    <li><strong>Language / Region:</strong> Match your organization's primary operating region</li>
-    <li><strong>How many:</strong> "All results" -- you can filter later, but you cannot retroactively see results that were not delivered</li>
-    <li><strong>Deliver to:</strong> Your monitoring email address or the dedicated monitoring folder</li>
-  </ul>
-
-  <h4>CISA and Vendor Subscriptions</h4>
-
-  <p>Based on the vendors identified in your Module 2 and Module 4 findings, subscribe to relevant advisory feeds:</p>
-
-  <ul>
-    <li><strong>CISA ICS Advisories:</strong> <a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener">cisa.gov advisories</a> -- subscribe via email or RSS for ICS-specific alerts</li>
-    <li><strong>CISA KEV Updates:</strong> Monitor for new additions to the <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">KEV catalog</a> -- RSS feed available</li>
-    <li><strong>Vendor PSIRTs:</strong> Subscribe to advisory mailing lists for each vendor in your Module 4 asset inventory (see Module 4 vendor PSIRT table)</li>
-    <li><strong>ICS Advisory Project:</strong> <a href="https://www.icsadvisoryproject.com/" target="_blank" rel="noopener">icsadvisoryproject.com</a> for aggregated ICS/OT advisories</li>
-  </ul>
-
-  <h4>HIBP Domain Notification</h4>
-
-  <p>If you have the ability to verify domain ownership (for your own organization), set up <a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">HIBP Domain Search</a> to receive automatic notifications when new breaches contain email addresses from your domain. This turns the manual process from Module 3 into an automated push alert.</p>
-
-  <h4>Shodan Alerts (Optional)</h4>
-
-  <p>If you have a Shodan account, configure <a href="https://monitor.shodan.io/" target="_blank" rel="noopener">Shodan Monitor</a> to track your organization's IP ranges. The free tier monitors up to 16 IPs and sends email alerts when new ports, services, or vulnerabilities are detected on those addresses.</p>
-
-<details>
-  <summary>Worked Example: NRECA Push Alert Configuration</summary>
-  <div class="worked-example-content">
-
-    <h4>Google Alerts</h4>
-
-    <p>Five alerts configured for NRECA monitoring:</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Alert Query</th>
-          <th>Purpose</th>
-          <th>Frequency</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>"NRECA" breach OR hack OR compromised</code></td>
-          <td>Breach monitoring</td>
-          <td>As-it-happens</td>
-        </tr>
-        <tr>
-          <td><code>"electric.coop" OR "cooperative.com" vulnerability</code></td>
-          <td>Domain-specific vulnerability mentions</td>
-          <td>Once a day</td>
-        </tr>
-        <tr>
-          <td><code>"NRECA" VPN OR "remote access" OR SCADA</code></td>
-          <td>Remote access exposure mentions</td>
-          <td>Once a day</td>
-        </tr>
-        <tr>
-          <td><code>"NRECA" cybersecurity incident</code></td>
-          <td>Incident monitoring</td>
-          <td>As-it-happens</td>
-        </tr>
-        <tr>
-          <td><code>"National Rural Electric Cooperative" data leak</code></td>
-          <td>Data exposure monitoring (full name variant)</td>
-          <td>Once a day</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p>Note the use of both "NRECA" (acronym) and "National Rural Electric Cooperative" (full name) across alerts. Organizations are referenced by different name forms in different contexts -- a breach disclosure might use the full legal name while a news article uses the acronym. Covering both reduces blind spots.</p>
-
-    <h4>CISA Subscriptions</h4>
-
-    <p>Based on the FortiGate finding from Module 4:</p>
-
-    <ul>
-      <li><strong>Fortinet FortiGuard PSIRT:</strong> <a href="https://fortiguard.fortinet.com/psirt" target="_blank" rel="noopener">fortiguard.fortinet.com/psirt</a> -- subscribe to advisory notifications for FortiOS, FortiProxy, and FortiWeb</li>
-      <li><strong>CISA ICS Advisories:</strong> Email subscription for all ICS-related advisories</li>
-      <li><strong>CISA KEV RSS:</strong> Monitor for new KEV additions affecting any product in the asset inventory</li>
-    </ul>
-
-    <p>If the Module 2 discovery identified additional vendors (e.g., Cisco for switches, Palo Alto for a secondary firewall), each vendor's PSIRT feed should also be subscribed.</p>
-
-    <h4>HIBP Domain Notification</h4>
-
-    <p>For NRECA's own use: verify the <code>nreca.coop</code> domain via HIBP Domain Search and enable ongoing breach notifications. This automates the Module 3 individual email lookups into a single push alert that fires whenever a new breach includes any <code>@nreca.coop</code> address.</p>
-
-  </div>
-</details>
-
-  <h3>Step 2: Design Your Pull-Based Monitoring Schedule</h3>
-
-  <p>Push alerts cover many scenarios, but they have gaps. Certificate transparency monitors may miss DNS-only changes. Shodan re-scans on its own schedule, not yours. Personnel changes do not generate automated alerts. A structured pull-based schedule fills these gaps.</p>
+  <p>Push alerts (configured per the read section above) cover many scenarios, but they have gaps. Certificate transparency monitors may miss DNS-only changes. Shodan re-scans on its own schedule, not yours. Personnel changes do not generate automated alerts. A structured pull-based schedule fills these gaps.</p>
 
   <p>Use your AI client to generate a customized monitoring checklist based on your specific findings from Modules 2-4:</p>
 
@@ -383,7 +246,7 @@ For each check, specify:
   </li>
   <li><strong>Baseline Document Update</strong> (15 min)
     <ul>
-      <li><strong>Action:</strong> Consolidate all weekly and monthly findings into the baseline document (Artifact 7). Reclassify items as needed. Archive resolved items</li>
+      <li><strong>Action:</strong> Consolidate all weekly and monthly findings into the baseline document (Artifact 6). Reclassify items as needed. Archive resolved items</li>
     </ul>
   </li>
 </ol>
@@ -396,7 +259,7 @@ For each check, specify:
   </div>
 </details>
 
-  <h3>Step 3: Create Your Baseline Snapshot</h3>
+  <h3>Step 2: Create Your Baseline Snapshot</h3>
 
   <p>Your pull-based monitoring is only useful if you have a baseline to compare against. Consolidate your outputs from Modules 2, 3, and 4 into a single baseline document that serves as the reference point for all future monitoring.</p>
 
@@ -449,13 +312,13 @@ For each check, specify:
     <p><strong>The baseline is a living document.</strong> Every monitoring cycle should produce a comparison against the baseline and then update it. When a new subdomain appears, it starts as "Needs Investigation," gets analyzed, and then moves to one of the other three categories. When a vulnerability is patched, its status in the baseline changes to "Known-Good" with a note about the patch date. The baseline reflects your current understanding, not a historical snapshot.</p>
   </blockquote>
 
-  <h3>Step 4: Sustainability Assessment</h3>
+  <h3>Step 3: Sustainability Assessment</h3>
 
-  <p>You have now configured alerts, designed a schedule, and created a baseline. Before leaving this module, spend five minutes making explicit decisions about how this program survives beyond today. Answer these four questions -- use your AI client to think through the tradeoffs, but the answers are yours to make:</p>
+  <p>You have now designed a monitoring schedule and created a baseline. Before leaving this module, spend five minutes making explicit decisions about how this program survives beyond today. Answer these four questions -- use your AI client to think through the tradeoffs, but the answers are yours to make:</p>
 
   <ol>
     <li><strong>Single point of failure:</strong> Is this program documented well enough that a teammate who was not here today could run it? If not, what is missing -- tool access, login credentials, the schedule itself, or context about why certain alerts were configured?</li>
-    <li><strong>Minimum viable monitoring:</strong> Of all the alerts and checks you configured in Steps 1-3, which 2-3 would you keep if your available time dropped by 75%? These are your non-negotiables -- the checks that keep the program alive even when everything else falls off.</li>
+    <li><strong>Minimum viable monitoring:</strong> Of all the push alerts and pull checks in your monitoring program, which 2-3 would you keep if your available time dropped by 75%? These are your non-negotiables -- the checks that keep the program alive even when everything else falls off. (Include both push alerts and pull checks in your consideration.)</li>
     <li><strong>Escalation path:</strong> When monitoring surfaces a P0 or P1 finding at 10pm on a Friday, who gets the call? Is that documented anywhere other than your own memory?</li>
     <li><strong>Program review cadence:</strong> When will you revisit the alert configurations themselves? Alert configs go stale too -- organizational changes, new domains, personnel turnover, and vendor product changes all require updates to what you are monitoring.</li>
   </ol>
@@ -487,11 +350,9 @@ For each, specify:
 <section class="module-output">
   <h2>Output</h2>
 
-  <p><strong>Artifact 5: Configured monitoring alerts.</strong> A documented set of push-based alerts (Google Alerts, CISA subscriptions, vendor PSIRTs, HIBP domain notification) actively monitoring for changes to your organization's exposure. These alerts run continuously and deliver findings to your aggregation point.</p>
+  <p><strong>Artifact 5: Pull-based monitoring schedule.</strong> A structured weekly and monthly checklist specifying which tools to use, which queries to run, and what to compare against your baseline. This schedule ensures monitoring happens consistently rather than only when someone remembers. Combined with the push-based alert sources documented in the read section, this provides layered monitoring coverage.</p>
 
-  <p><strong>Artifact 6: Pull-based monitoring schedule.</strong> A structured weekly and monthly checklist specifying which tools to use, which queries to run, and what to compare against your baseline. This schedule ensures monitoring happens consistently rather than only when someone remembers.</p>
-
-  <p><strong>Artifact 7: Consolidated baseline document.</strong> A single document consolidating your Module 2 attack surface inventory, Module 3 personnel exposure inventory, and Module 4 vulnerability correlation table, with each item classified as known-good, accepted risk, needs remediation, or needs investigation. This baseline is the reference point for all ongoing monitoring -- every future check asks "what has changed since the baseline?"</p>
+  <p><strong>Artifact 6: Consolidated baseline document.</strong> A single document consolidating your Module 2 attack surface inventory, Module 3 personnel exposure inventory, and Module 4 vulnerability correlation table, with each item classified as known-good, accepted risk, needs remediation, or needs investigation. This baseline is the reference point for all ongoing monitoring -- every future check asks "what has changed since the baseline?"</p>
 
   <p><strong>Looking ahead:</strong> The manual program you built here is a foundation, not the end state. Once you know what you are looking for and what normal looks like, automation becomes feasible. The same AI clients you have been using throughout this workshop can generate scripts that automate your pull-based checks -- Python scripts for crt.sh API queries, CISA KEV JSON feed parsing, HIBP API lookups (for those with API access), and Shodan API queries -- turning your manual schedule into a repeatable, scheduled process.</p>
 </section>
