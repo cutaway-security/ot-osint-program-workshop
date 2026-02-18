@@ -102,6 +102,25 @@ next_module_title: "M6: Runbook Development"
 
   <p><strong>Start narrow, expand as you learn.</strong> Begin with a focused set of alerts covering your highest-priority assets and personnel. Overly broad alerting generates noise that trains you to ignore notifications -- the opposite of what you want. After a few weeks of triage, you will learn which alerts generate actionable findings and which are noise. Expand coverage gradually.</p>
 
+  <p>When an alert arrives, run it through three questions:</p>
+
+  <ol>
+    <li><strong>Does this involve an asset or person in my baseline?</strong> If not, it may be informational but is not directly actionable against your monitored environment.</li>
+    <li><strong>Does this indicate a change from baseline?</strong> New asset, changed configuration, removed service, new breach appearance -- changes are what you are looking for. An alert confirming known state is not a finding.</li>
+    <li><strong>Is this actionable within my team's current capacity?</strong> A real finding that no one can act on is a backlog item, not an emergency. Be honest about capacity.</li>
+  </ol>
+
+  <p>Based on those answers, assign each alert a disposition:</p>
+
+  <ul>
+    <li><strong>Act now</strong> -- P0/P1 finding: escalate immediately per your escalation path</li>
+    <li><strong>Weekly review queue</strong> -- Notable change that is not urgent. Batch these for your weekly pull check</li>
+    <li><strong>Parking lot</strong> -- Interesting but low priority. Review monthly during your baseline update</li>
+    <li><strong>Tune or disable</strong> -- After 4+ weeks of consistently non-actionable results from a specific alert, adjust the query or remove it. An alert that never produces useful findings is consuming attention without providing value</li>
+  </ul>
+
+  <p>One additional discipline: any item classified as "Needs Investigation" in your baseline (Step 3) should not sit indefinitely. If it remains unresolved for more than one full monitoring cycle -- weekly or monthly, depending on when it was added -- force a human decision: accept the risk, investigate further, or remediate. Unresolved items that linger become invisible, which is worse than a deliberate risk acceptance.</p>
+
   <h3>Sustainability and Operational Fatigue</h3>
 
   <p>Alert fatigue -- too many notifications -- is a recognized problem. Less discussed is <strong>operational fatigue</strong>: the cumulative burden of running a monitoring program week after week, month after month. Manual programs fail not because the first month was bad, but because by month six, the person responsible has changed roles, competing priorities have crowded out the weekly checks, execution becomes inconsistent, and nothing is documented well enough for a handoff.</p>
