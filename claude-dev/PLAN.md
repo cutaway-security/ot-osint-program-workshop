@@ -133,9 +133,9 @@
 | 2.9 | M4: Vulnerability -- overview | COMPLETE | Asset-to-vuln workflow, KEV emphasis, edge device focus, vuln sources table |
 | 2.10 | M4: Vulnerability -- worked example | COMPLETE | FortiGate CVE-2025-59718/59719 correlation, KEV timeline, PSIRT, CISA alerts |
 | 2.11 | M4: Vulnerability -- lab | COMPLETE | 4 steps: CPE generation, multi-source queries, P0-P3 prioritization, documentation |
-| 2.12 | M5: Monitoring -- overview | NOT STARTED | Push vs pull, alert types, aggregation |
-| 2.13 | M5: Monitoring -- worked example | NOT STARTED | NRECA Google Alerts, CISA subscriptions |
-| 2.14 | M5: Monitoring -- lab | NOT STARTED | 3 structured steps, baseline snapshot |
+| 2.12 | M5: Monitoring -- overview | COMPLETE | Push vs pull model, alert sources table, pull-based checks, aggregation guidance |
+| 2.13 | M5: Monitoring -- worked example | COMPLETE | NRECA Google Alerts (5 queries), CISA subscriptions, pull-based schedule (weekly + monthly) |
+| 2.14 | M5: Monitoring -- lab | COMPLETE | 3 steps: push alerts, pull schedule, baseline snapshot with 4-category classification |
 | 2.15 | M6: Runbook -- overview | NOT STARTED | Runbook vs playbook, cadence structure |
 | 2.16 | M6: Runbook -- worked example | NOT STARTED | NRECA runbook excerpt (daily/weekly) |
 | 2.17 | M6: Runbook -- lab | NOT STARTED | 4 structured steps |

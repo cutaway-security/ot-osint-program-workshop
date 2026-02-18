@@ -38,9 +38,18 @@ This document provides context for resuming development after a break or when st
 - 2 prompt blocks, 1 response block, 3 collapsible worked examples
 - Review updates (cee7631): internal asset inventory in workflow, ICSAP source with non-ICS vendor note, KEV patch-available caveat, NVD CPE Search validation, manual validation framing, re-validation closing
 
+**Task 2.12-2.14 - M5: Monitoring & Alerting Setup**: COMPLETE
+- Overview: push vs pull monitoring model, push-based alert sources table (Google Alerts, Shodan, CT monitors, CISA advisories, vendor PSIRTs, HIBP), pull-based checks with baseline comparison (5 check types mapped to M2-M4), alert aggregation guidance, signal-to-noise management
+- Lab: 3 steps following Lab-first pattern
+  - Step 1: Configure push-based alerts (Google Alerts patterns table, CISA/vendor subscriptions, HIBP domain, Shodan optional). Worked example: NRECA 5 Google Alert queries, Fortinet PSIRT subscription, HIBP nreca.coop domain setup
+  - Step 2: Pull-based monitoring schedule with AI-assisted checklist prompt. Worked example: NRECA schedule AI response (4 weekly checks totaling 25 min, 5 monthly checks totaling 90 min with specific tools and queries)
+  - Step 3: Baseline snapshot consolidation with 4-category classification table (known-good, accepted risk, needs remediation, needs investigation), baseline structure guide
+- Output: Artifacts 5 (configured alerts), 6 (pull schedule), 7 (baseline document)
+- 1 prompt block, 1 response block, 2 collapsible worked examples
+
 ### Next Task
 
-**Task**: 2.12-2.14 - M5: Monitoring & Alerting
+**Task**: 2.15-2.17 - M6: Runbook Development
 **Status**: NOT STARTED
 
 ### Blockers
@@ -133,7 +142,7 @@ None.
 - Updated Step 2 breach findings: hypothetical breaches now reference Manucy, Banunarayanan, McGurk, McNamara with OT-framed rationale
 - Added Step 2 scaling subsection: HIBP domain verification, API v3 reference, SpiderFoot + V1 workshop link
 - Updated Step 3 prioritization AI response: OT-focused attack scenarios (Manucy critical, Banunarayanan critical, McNamara high, McGurk monitor)
-- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content), cee7631 (M4 review updates)
+- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content), cee7631 (M4 review updates), b6a9c4d (M5 content)
 
 **Key decisions made**:
 - OT-centric tier model: prioritize by proximity to operational technology, not corporate rank
@@ -203,7 +212,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 2.3-2.5 | M2: External Attack Surface | COMPLETE |
 | 2.6-2.8 | M3: Personnel & Credential Exposure | COMPLETE |
 | 2.9-2.11 | M4: Vulnerability Correlation | COMPLETE |
-| 2.12-2.14 | M5: Monitoring & Alerting | NOT STARTED |
+| 2.12-2.14 | M5: Monitoring & Alerting | COMPLETE |
 | 2.15-2.17 | M6: Runbook Development | NOT STARTED |
 | 2.18 | Summary page | NOT STARTED |
 | 2.19 | Content review | NOT STARTED |
