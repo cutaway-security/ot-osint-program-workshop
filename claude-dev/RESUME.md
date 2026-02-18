@@ -4,7 +4,7 @@
 
 This document provides context for resuming development after a break or when starting a new Claude Code session. It mirrors the PLAN.md structure but includes additional session-specific context.
 
-**Last Updated**: 2026-02-17
+**Last Updated**: 2026-02-18
 
 ---
 
@@ -17,12 +17,12 @@ This document provides context for resuming development after a break or when st
 
 ### What Was Just Completed
 
-**Task 2.6-2.8 - M3: Personnel & Credential Exposure**: COMPLETE
-- Overview: personnel exposure risks (credential stuffing, social engineering, BEC), breach database concepts, three-tier prioritization model table, professional network exposure
+**Task 2.6-2.8 - M3: Personnel & Credential Exposure**: COMPLETE (OT reframe applied 2026-02-18)
+- Overview: OT-centric personnel exposure framing -- credential risk to operational systems, not just corporate email. Tier model anchored on proximity to OT (SCADA engineers Tier 1, IT-OT bridge Tier 2, executives Tier 3).
 - Lab: 4 steps following Lab-first pattern
-  - Step 1: Personnel discovery + email format ID, generic categorization prompt, NRECA worked example (leadership table, email format discovery)
-  - Step 2: Breach database checks (HIBP individual + domain), documentation fields, NRECA worked example (hypothetical breach findings, clearly labeled)
-  - Step 3: Role-based prioritization with tier+breach severity matrix, generic prioritization prompt, NRECA worked example with AI response (CIO critical finding, CFO elevated, CEO monitor)
+  - Step 1: AI-automated personnel discovery + email format ID with source verification requirement. NRECA worked example: 8 OT-relevant personnel (Manucy, Banunarayanan, Metro, Miller, McGurk, Singh, McNamara, Loving), team inboxes, Angela Strickland stale-data teaching example.
+  - Step 2: Breach database checks (HIBP individual + domain). NRECA worked example: hypothetical OT personnel breach findings (Manucy critical, Banunarayanan critical, McGurk high, McNamara high). Scaling subsection: HIBP domain verification, API v3, SpiderFoot + V1 workshop link.
+  - Step 3: Role-based prioritization with tier+breach severity matrix. NRECA worked example AI response: Manucy (cybersecurity programs, critical), Banunarayanan (grid technology, critical), McNamara (security documentation, high), McGurk (IT-OT bridge, monitor).
   - Step 4: Professional network exposure (job postings, conferences, profiles), generic analysis prompt
 - Output: Artifact 3 description with cross-references to M2, M5, M6
 - 3 prompt blocks, 1 response block, 3 collapsible worked examples
@@ -110,6 +110,25 @@ None.
 - Color palette: navy primary (#1a365d), light bg (#f7f8fa), blue overview sections, green output sections, dark prompt blocks
 - Prompt-block include uses Liquid capture/content pattern for multi-line prompts
 - Supporting page placeholders created in Phase 1 so all nav links work during development
+
+### Session 5 (2026-02-18)
+
+**What was done**:
+- Completed M3 OT-centric reframing per user review feedback
+- Updated overview narrative: leads with operational impact, tier model anchored on OT proximity
+- Replaced Step 1 prompt with AI-automated discovery + source verification requirement + manual fallback
+- Replaced worked example personnel: 8 OT-relevant NRECA staff sourced from cooperative.com/electric.coop
+- Added team email addresses (membersecurity@, DistributionAutomation@) and source verification teaching (Angela Strickland)
+- Updated Step 2 breach findings: hypothetical breaches now reference Manucy, Banunarayanan, McGurk, McNamara with OT-framed rationale
+- Added Step 2 scaling subsection: HIBP domain verification, API v3 reference, SpiderFoot + V1 workshop link
+- Updated Step 3 prioritization AI response: OT-focused attack scenarios (Manucy critical, Banunarayanan critical, McNamara high, McGurk monitor)
+- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe)
+
+**Key decisions made**:
+- OT-centric tier model: prioritize by proximity to operational technology, not corporate rank
+- Intentional deviation from WORKSHOP_FRAMEWORK.md personnel data: used real NRECA OT-relevant staff per user input
+- AI-automated personnel discovery prompt with mandatory source citation and verification
+- HIBP API v3 and SpiderFoot as scaling approaches for ongoing monitoring (workshop lab uses individual lookups)
 
 ### What Needs To Happen Next
 
@@ -270,6 +289,10 @@ None.
 | 2026-02-17 | Color: navy #1a365d primary, #f7f8fa bg | High-contrast, professional palette with CSS variables |
 | 2026-02-17 | Prompt-block uses Liquid capture/content | Clean multi-line prompt integration in HTML module pages |
 | 2026-02-17 | Lab-first module layout with integrated worked examples | Students start working immediately; worked examples are collapsible references within lab steps, not a separate section |
+| 2026-02-18 | M3 OT-centric tier model (proximity to OT, not corporate rank) | Workshop audience is ICS/OT professionals; personnel risk should prioritize operational access |
+| 2026-02-18 | M3 personnel deviate from WORKSHOP_FRAMEWORK.md | Used real NRECA OT-relevant staff per user input; framework data was too IT/executive-focused |
+| 2026-02-18 | AI-automated personnel discovery with source verification | Prompt instructs AI to cite URLs; verification blockquote warns about hallucination risk |
+| 2026-02-18 | HIBP API v3 and SpiderFoot as scaling references | Workshop lab uses individual lookups; scaling approaches referenced for operationalization |
 
 ---
 
