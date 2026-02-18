@@ -130,7 +130,7 @@ next_module_title: "M6: Runbook Development"
 <section class="module-lab">
   <h2>Lab: Configure Your Monitoring Infrastructure</h2>
 
-  <p>In this lab, you will build an OT-focused pull-based monitoring schedule tailored to your findings from Modules 2-4, then consolidate those findings into a classified baseline document. The outputs become Artifacts 5 and 6.</p>
+  <p>In this lab, you will build an OT-focused pull-based monitoring schedule tailored to your findings from Modules 2-4, then consolidate those findings into a classified baseline document. The outputs become Artifacts 6 and 7.</p>
 
   <h3>Step 1: Design Your Pull-Based Monitoring Schedule</h3>
 
@@ -263,7 +263,7 @@ or personnel checks.
   </li>
   <li><strong>Baseline Document Update</strong> (15 min)
     <ul>
-      <li><strong>Action:</strong> Consolidate all weekly and monthly findings into the baseline document (Artifact 6). Reclassify items as needed. Archive resolved items</li>
+      <li><strong>Action:</strong> Consolidate all weekly and monthly findings into the baseline document (Artifact 7). Reclassify items as needed. Archive resolved items</li>
     </ul>
   </li>
 </ol>
@@ -371,9 +371,11 @@ For each, specify:
 <section class="module-output">
   <h2>Output</h2>
 
-  <p><strong>Artifact 5: Pull-based monitoring schedule.</strong> A structured weekly and monthly checklist specifying which tools to use, which queries to run, and what to compare against your baseline. This schedule ensures monitoring happens consistently rather than only when someone remembers. Combined with the push-based alert sources documented in the read section, this provides layered monitoring coverage.</p>
+  <p><strong>Artifact 5: Push-based alert configuration.</strong> The alert sources documented in the read section -- Google Alerts, CISA ICS Advisory subscriptions, vendor PSIRT feeds, and breach notification services -- configured to deliver ongoing notifications without recurring effort. These push-based alerts form the daily triage queue that your Module 6 runbook will operationalize.</p>
 
-  <p><strong>Artifact 6: Consolidated baseline document.</strong> A single document consolidating your Module 2 attack surface inventory, Module 3 personnel exposure inventory, and Module 4 vulnerability correlation table, with each item classified as known-good, accepted risk, needs remediation, or needs investigation. This baseline is the reference point for all ongoing monitoring -- every future check asks "what has changed since the baseline?"</p>
+  <p><strong>Artifact 6: Pull-based monitoring schedule.</strong> A structured weekly and monthly checklist specifying which tools to use, which queries to run, and what to compare against your baseline. This schedule ensures monitoring happens consistently rather than only when someone remembers. Combined with the push-based alert sources documented in the read section, this provides layered monitoring coverage.</p>
+
+  <p><strong>Artifact 7: Consolidated baseline document.</strong> A single document consolidating your Module 2 attack surface inventory, Module 3 personnel exposure inventory, and Module 4 vulnerability correlation table, with each item classified as known-good, accepted risk, needs remediation, or needs investigation. This baseline is the reference point for all ongoing monitoring -- every future check asks "what has changed since the baseline?"</p>
 
   <p><strong>Looking ahead:</strong> The manual program you built here is a foundation, not the end state. Once you know what you are looking for and what normal looks like, automation becomes feasible. The same AI clients you have been using throughout this workshop can generate scripts that automate your pull-based checks -- Python scripts for crt.sh API queries, CISA KEV JSON feed parsing, HIBP API lookups (for those with API access), and Shodan API queries -- turning your manual schedule into a repeatable, scheduled process.</p>
 </section>

@@ -52,7 +52,7 @@ next_module_title: "Summary & Next Steps"
         <td><strong>Weekly</strong></td>
         <td>Active monitoring checks</td>
         <td>25-30 min</td>
-        <td>Run pull-based schedule (Module 5 Artifact 5), process alert backlog, update baseline for changes found</td>
+        <td>Run pull-based schedule (Module 5 Artifact 6), process alert backlog, update baseline for changes found</td>
       </tr>
       <tr>
         <td><strong>Monthly</strong></td>
@@ -92,7 +92,7 @@ next_module_title: "Summary & Next Steps"
     <li><strong>Module 2:</strong> Remote access services, edge device hostnames/IPs, organization domains</li>
     <li><strong>Module 3:</strong> Tier 1 and Tier 2 personnel names, email domain, breach monitoring targets</li>
     <li><strong>Module 4:</strong> Vulnerability correlation table -- products, CPEs, CVEs, KEV status, priority ratings</li>
-    <li><strong>Module 5:</strong> Push-based alert sources (read section), pull-based schedule (Artifact 5), baseline document (Artifact 6)</li>
+    <li><strong>Module 5:</strong> Push-based alert sources (read section), pull-based schedule (Artifact 6), baseline document (Artifact 7)</li>
   </ul>
 
 {% capture m6_runbook_prompt %}
@@ -104,9 +104,9 @@ Inputs from prior modules:
 - Push-based alert sources configured: [list from Module 5 read
   section -- Google Alerts queries, CISA subscriptions, vendor
   PSIRT feeds, HIBP monitoring]
-- Pull-based monitoring schedule: [from Module 5 Artifact 5 --
+- Pull-based monitoring schedule: [from Module 5 Artifact 6 --
   weekly and monthly check lists with tools and queries]
-- Baseline document: [from Module 5 Artifact 6 -- classified
+- Baseline document: [from Module 5 Artifact 7 -- classified
   entries for domains, personnel, vulnerabilities]
 - Remote access and edge devices: [from Module 2 -- VPN portals,
   firewall management interfaces, specific IPs/hostnames]
@@ -158,7 +158,7 @@ Format each procedure as a numbered checklist.
 
 <p><strong>Weekly Active Monitoring (25-30 minutes):</strong></p>
 
-<p>Run the pull-based schedule from Module 5 Artifact 5. Checks ordered by OT relevance:</p>
+<p>Run the pull-based schedule from Module 5 Artifact 6. Checks ordered by OT relevance:</p>
 
 <ol>
   <li><strong>Shodan/Censys Remote Access Check</strong> (5 min) -- Query known VPN portal and firewall management IPs from Module 2 baseline. Compare port, service, and version to baseline entries. Flag any new ports, service changes, or version changes on remote access infrastructure</li>
@@ -166,7 +166,7 @@ Format each procedure as a numbered checklist.
   <li><strong>Certificate Transparency Check</strong> (5 min) -- Run crt.sh queries for <code>%.electric.coop</code> and <code>%.cooperative.com</code>. Compare to Module 2 baseline subdomain list. Flag new subdomains, especially those suggesting remote access services (vpn2.*, ras.*, remote.*)</li>
   <li><strong>Breach Database Check</strong> (5 min) -- Check HaveIBeenPwned for domain <code>nreca.coop</code> or spot-check Tier 1 personnel emails. Compare to Module 3 breach findings baseline. Flag any Tier 1 or Tier 2 personnel in new breaches</li>
   <li><strong>Alert Backlog Processing</strong> (5 min) -- Review items deferred during daily triage. Investigate or close each item. No item should remain in the backlog for more than one week</li>
-  <li><strong>Baseline Update</strong> (5 min) -- If any check surfaced changes, update the baseline document (Module 5 Artifact 6) with new classifications. Record the date and nature of each change</li>
+  <li><strong>Baseline Update</strong> (5 min) -- If any check surfaced changes, update the baseline document (Module 5 Artifact 7) with new classifications. Record the date and nature of each change</li>
 </ol>
 
 <p><strong>Monthly Full Review (60-90 minutes):</strong></p>
@@ -199,7 +199,7 @@ Format each procedure as a numbered checklist.
 
   <ul>
     <li><strong>Tool queries:</strong> Replace generic descriptions with the exact queries from your Module 2-4 work. "Check Shodan for your IPs" becomes "Run Shodan query <code>net:x.x.x.x/24 port:443,8443,10443</code> and check results against baseline rows 4-12 (remote access services)"</li>
-    <li><strong>Baseline references:</strong> Point each procedure to specific sections of your baseline document (Module 5 Artifact 6). "Compare to baseline" becomes "Compare to baseline Section 2: Remote Access Services, entries 1-8"</li>
+    <li><strong>Baseline references:</strong> Point each procedure to specific sections of your baseline document (Module 5 Artifact 7). "Compare to baseline" becomes "Compare to baseline Section 2: Remote Access Services, entries 1-8"</li>
     <li><strong>Personnel:</strong> Name the Tier 1 and Tier 2 individuals being monitored for breach exposure. Name the person responsible for each cadence. Name the escalation contact for P0 and P1 findings</li>
     <li><strong>Decision criteria:</strong> Apply the triage framework from Module 5. Specify which finding types are P0 (immediate escalation), which are P1 (investigate within 24 hours), and which go to the weekly backlog</li>
     <li><strong>Ownership:</strong> Assign a primary owner and backup for each cadence. If you are the only person running this program, the runbook is how you eventually hand it off -- make it complete enough that someone else can take over without a briefing</li>
