@@ -296,6 +296,7 @@
 | 2026-02-17 | Build modules one at a time for review | Each module completed and reviewed before starting the next |
 | 2026-02-17 | Example data: public business info only | Include publicly available org data; no personal accounts; sanitize AI response examples |
 | 2026-02-17 | Prompt blocks include example responses | Students reading along (not running prompts) need to see expected output; also useful for comparing their results |
+| 2026-02-17 | Lab-first module layout with integrated worked examples | Lab is primary section; worked examples are collapsible details blocks within lab steps; not all steps need a worked example |
 
 ---
 

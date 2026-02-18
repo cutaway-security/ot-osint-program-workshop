@@ -17,11 +17,12 @@ This document provides context for resuming development after a break or when st
 
 ### What Was Just Completed
 
-**Task 2.3-2.5 - M2: External Attack Surface Discovery**: COMPLETE
-- Overview: attack surface concepts, 4-technique discovery table (CT, DNS, device search, dorking), naming convention patterns table
-- Worked Example: NRECA domain discovery -- crt.sh CT search, 9-domain mapping table, Shodan/Censys remote access identification, AI analysis prompt with response block
-- Lab: 5 structured steps with tool tables (crt.sh, DNSDumpster, SecurityTrails, Shodan, Censys), account requirements, 3 copyable prompt blocks (query generation, subdomain analysis, findings analysis)
-- Output: Artifact 2 description with cross-references to M3, M4, M5
+**Module layout restructure (M1 + M2)**: COMPLETE
+- Restructured all module pages to Lab-first pattern: Lab is the primary section, worked examples are collapsible `<details>` blocks integrated within individual lab steps
+- M2: Eliminated separate Worked Example section. Merged instructional content into 4 lab steps. Created generic prompts with [placeholders]. Moved NRECA examples into 3 collapsible worked examples (Steps 2, 3, 4). Deleted redundant old Lab Step 2 (AI-Assisted Query Generation).
+- M1: Consolidated old Steps 2-3 into single Step 2 (Generate Your Sector Threat Profile) with generic prompt template. NRECA example is collapsible worked example within Step 2. Renumbered to 3 steps.
+- Updated ARCHITECTURE.md: new module layout diagram, new "Worked Example Integration Pattern" section, updated content development workflow
+- Added CSS: `.worked-example-content` class for padding inside worked example `<details>` blocks
 
 ### Next Task
 
@@ -265,6 +266,7 @@ None.
 | 2026-02-17 | Simple templates index page | List all templates with descriptions; usability tested later |
 | 2026-02-17 | Color: navy #1a365d primary, #f7f8fa bg | High-contrast, professional palette with CSS variables |
 | 2026-02-17 | Prompt-block uses Liquid capture/content | Clean multi-line prompt integration in HTML module pages |
+| 2026-02-17 | Lab-first module layout with integrated worked examples | Students start working immediately; worked examples are collapsible references within lab steps, not a separate section |
 
 ---
 

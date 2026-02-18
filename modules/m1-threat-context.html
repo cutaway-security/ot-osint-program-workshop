@@ -76,11 +76,32 @@ next_module_title: "M2: Attack Surface Discovery"
 
   <p>Open your preferred AI assistant (ChatGPT, Claude, or other). You will use this throughout the workshop as a working partner for analysis, query generation, and document drafting.</p>
 
-  <h3>Step 2: Review the Example Prompt</h3>
+  <h3>Step 2: Generate Your Sector Threat Profile</h3>
 
-  <p>The instructor will demonstrate this prompt using NRECA (National Rural Electric Cooperative Association) as the example target organization:</p>
+  <p>Use the prompt template below, customized with your organization's sector, operational technology, and environment. Replace the bracketed fields with your own details:</p>
 
 {% capture m1_prompt %}
+I work at a [organization type -- e.g., "rural electric cooperative",
+"municipal water utility", "food manufacturing company"]. We operate
+[OT/ICS systems -- e.g., "SCADA/EMS systems for grid management",
+"SCADA for plant process control", "DCS and PLC-based control systems"].
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the [sector] sector
+2. Priority remote access technologies commonly deployed at
+   [organization type]
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target [sector]
+{% endcapture %}
+{% include prompt-block.html title="Sector Threat Profile Prompt" content=m1_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Electric Cooperative Sector</summary>
+  <div class="worked-example-content">
+
+    <p>Using the prompt above for a rural electric cooperative (NRECA member):</p>
+
+{% capture m1_nreca_prompt %}
 I work at a rural electric cooperative that operates generation,
 transmission, and distribution infrastructure. We are a member of
 NRECA and operate SCADA/EMS systems for grid management.
@@ -91,8 +112,10 @@ Generate a sector threat profile including:
 3. Key personnel roles that adversaries would target
 4. Recent threat actor groups known to target the electric sector
 {% endcapture %}
-{% include prompt-block.html title="Sector Threat Profile Prompt" content=m1_prompt %}
+{% include prompt-block.html title="NRECA Sector Threat Profile Prompt" content=m1_nreca_prompt %}
 
+<details>
+  <summary>Example AI Response (Electric Cooperative Sector)</summary>
 {% capture m1_response %}
 <h4>Electric Cooperative Sector Threat Profile</h4>
 
@@ -129,14 +152,13 @@ Generate a sector threat profile including:
   <li><strong>Various ransomware groups</strong> -- financially motivated attacks on utilities via exposed RDP and VPN credentials from breach databases</li>
 </ul>
 {% endcapture %}
-<details>
-  <summary>Example AI Response (Electric Cooperative Sector)</summary>
 {% include response-block.html title="Example AI Response (Electric Cooperative Sector)" content=m1_response %}
 </details>
 
-  <h3>Step 3: Customize for Your Organization</h3>
+  </div>
+</details>
 
-  <p>Modify the prompt to match your own sector and environment. Replace the sector description, operational technology, and organizational details. Here are examples for other sectors:</p>
+  <p>If you work in a different sector, here are additional starting points:</p>
 
 {% capture m1_water_prompt %}
 I work at a municipal water utility that operates water treatment
@@ -167,7 +189,7 @@ Generate a sector threat profile including:
 
   <p>Generate your sector threat profile and save the output. You will reference this document in every remaining module.</p>
 
-  <h3>Step 4: Review and Refine</h3>
+  <h3>Step 3: Review and Refine</h3>
 
   <p>Review the AI-generated profile for accuracy. Consider:</p>
 

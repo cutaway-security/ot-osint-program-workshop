@@ -200,15 +200,13 @@ Extends default.html. Provides consistent structure for all 6 module pages:
 | (What this module covers and why it matters)                      |
 | (Brief, scannable from a projector -- sets up what follows)       |
 |                                                                   |
-| WORKED EXAMPLE                                                    |
-| -----------------------------------------------------------------|
-| (Step-by-step demonstration using NRECA / Fortinet)               |
-| (AI prompts in copyable code blocks)                              |
-|                                                                   |
 | LAB                                                               |
 | -----------------------------------------------------------------|
 | (Numbered structured steps for student hands-on work)             |
 | (Tool links, AI prompts, expected outputs)                        |
+|                                                                   |
+|   [v] Worked Example: NRECA/Fortinet (collapsible)                |
+|   (Step-specific demonstration with example AI responses)         |
 |                                                                   |
 | OUTPUT                                                            |
 | -----------------------------------------------------------------|
@@ -218,6 +216,34 @@ Extends default.html. Provides consistent structure for all 6 module pages:
 | [<< Previous Module]                         [Next Module >>]     |
 +------------------------------------------------------------------+
 ```
+
+### Worked Example Integration Pattern
+
+Worked examples (NRECA, Fortinet) are integrated directly into the Lab section as collapsible `<details>` blocks within individual lab steps, rather than appearing as a separate section before the lab.
+
+**Design rationale:**
+- Students start working immediately instead of reading a long example first
+- Students who get stuck can expand the worked example for that specific step
+- The instructor can project the overview to frame the module, then tell students to begin the lab
+- Each worked example is scoped to its lab step, keeping context tight
+
+**Structure within a lab step:**
+
+```html
+<h3>Step N: Step Title</h3>
+<!-- Student instructions, tool links, AI prompts -->
+
+<details>
+  <summary>Worked Example: NRECA Step Title</summary>
+  <!-- NRECA-specific URLs, data, AI response examples -->
+</details>
+```
+
+**Guidelines:**
+- Not every lab step needs a worked example -- only include one where it adds value (showing expected output, demonstrating a non-obvious workflow, or providing contrast)
+- The lab step must be self-contained: a student should be able to complete the step using only the instructions and prompts, without expanding the worked example
+- Worked examples use the `response-block` include for AI response formatting and are wrapped in `<details>` for collapsibility
+- Generic prompts with `[placeholders]` appear in the lab step; the worked example shows NRECA/Fortinet-specific results
 
 ### Index Page
 
@@ -413,9 +439,9 @@ git push origin main
 1. Create `modules/mN-module-name.html` with front matter
 2. Use `module` layout
 3. Write overview section (from WORKSHOP_FRAMEWORK.md)
-4. Write worked example section (from WORKSHOP_FRAMEWORK.md)
-5. Write lab section with numbered steps
-6. Add AI prompts as copyable code blocks
+4. Write lab section with numbered steps -- this is the primary content
+5. For each lab step, add generic AI prompts as copyable code blocks with `[placeholders]`
+6. Where a worked example adds value, add a collapsible `<details>` block after the step instructions with NRECA/Fortinet-specific data and example AI responses
 7. Add output/deliverable description
 8. Update previous module's `next_module` front matter
 9. Update index page if needed

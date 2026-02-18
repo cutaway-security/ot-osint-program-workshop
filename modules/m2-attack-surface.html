@@ -109,33 +109,42 @@ next_module_title: "M3: Personnel Exposure"
   </table>
 </section>
 
-<section class="module-worked-example">
-  <h2>Worked Example: NRECA Domain Discovery</h2>
+<section class="module-lab">
+  <h2>Lab: Build Your External Attack Surface Inventory</h2>
 
-  <p>We will walk through external attack surface discovery for NRECA (National Rural Electric Cooperative Association) using publicly available tools. This demonstrates the complete workflow you will replicate for your own organization in the lab.</p>
+  <p>In this lab, you will discover your target organization's external attack surface using browser-based tools and AI-assisted analysis. Follow each step and document your findings -- the output becomes Artifact 2.</p>
 
-  <h3>Step 1: Certificate Transparency Search</h3>
+  <h3>Step 1: Target Selection</h3>
 
-  <p>Certificate transparency (CT) logs record every SSL/TLS certificate issued by public certificate authorities. When an organization requests a certificate for a subdomain, that subdomain becomes permanently recorded in CT logs -- even if the subdomain is not linked from any public page.</p>
+  <p>Select your target organization for this exercise:</p>
 
-  <p><strong>1a. Query the crt.sh JSON API</strong></p>
+  <ul>
+    <li><strong>Your own organization</strong> (with authorization) -- provides the most operationally relevant results</li>
+    <li><strong>NRECA</strong> (practice target) -- follow along using the worked examples included in each step</li>
+  </ul>
 
-  <p>crt.sh provides a JSON API that returns structured certificate data. Appending <code>&amp;output=json</code> to any crt.sh query returns JSON instead of an HTML table -- this makes it easy to feed results directly to your AI client for analysis.</p>
+  <p>Identify <strong>all root domains</strong> you will investigate. Most organizations have more than one -- check the main website, email domain, and any known portals. The primary website domain often reveals the least infrastructure; member portals, internal service domains, and email domains are typically far richer targets.</p>
 
-  <p>Visit the JSON endpoint for electric.coop:</p>
+  <h3>Step 2: Domain and Subdomain Enumeration</h3>
 
-  <p><a href="https://crt.sh/?q=%25.electric.coop&output=json" target="_blank" rel="noopener">https://crt.sh/?q=%25.electric.coop&amp;output=json</a></p>
+  <p>This step uses two complementary approaches: certificate transparency (CT) logs reveal subdomains from SSL certificate issuance records, and subdomain enumeration tools aggregate results from multiple sources with IP address data. Together they provide comprehensive domain discovery.</p>
 
-  <p>Save the JSON response to a local file using your browser's Save Page As (Ctrl+S / Cmd+S). Name it something descriptive like <code>electric_coop_crt.json</code>.</p>
+  <p><strong>2a. Certificate transparency search</strong></p>
 
-  <p><strong>1b. AI-assisted CT analysis</strong></p>
+  <p>Certificate transparency logs record every SSL/TLS certificate issued by public certificate authorities. When an organization requests a certificate for a subdomain, that subdomain becomes permanently recorded in CT logs -- even if the subdomain is not linked from any public page.</p>
 
-  <p>Attach or paste the saved JSON file into your AI client with this prompt:</p>
+  <p><a href="https://crt.sh/" target="_blank" rel="noopener">crt.sh</a> provides a JSON API that returns structured certificate data. Appending <code>&amp;output=json</code> to any crt.sh query returns JSON instead of an HTML table -- this makes it easy to feed results directly to your AI client for analysis.</p>
+
+  <p>Query the JSON endpoint for each of your root domains:</p>
+
+  <p><code>https://crt.sh/?q=%25.[yourdomain.com]&amp;output=json</code></p>
+
+  <p>Save the JSON response to a local file using your browser's Save Page As (Ctrl+S / Cmd+S). Name it something descriptive like <code>yourdomain_crt.json</code>. Then attach or paste the saved JSON file into your AI client with this prompt:</p>
 
 {% capture m2_ct_prompt %}
-I am analyzing certificate transparency data from crt.sh for an
-electric cooperative organization. The attached/pasted JSON contains
-certificate records for %.electric.coop.
+I am analyzing certificate transparency data from crt.sh for
+[organization name]. The attached/pasted JSON contains certificate
+records for %.[yourdomain.com].
 
 Analyze this data and provide:
 1. A deduplicated list of all unique subdomain and domain names
@@ -144,8 +153,8 @@ Analyze this data and provide:
    VPN/remote access, dev/staging environments, or API endpoints
 4. Any wildcard certificates and what infrastructure they might
    cover
-5. Certificate authorities used (this can reveal vendor
-   relationships and hosting providers)
+5. Certificate authorities used (reveals vendor relationships
+   and hosting providers)
 6. Anything unusual or potentially sensitive that a human reviewer
    would miss scrolling through hundreds of certificate rows
 
@@ -154,7 +163,90 @@ function/risk category.
 {% endcapture %}
 {% include prompt-block.html title="CT JSON Analysis Prompt" content=m2_ct_prompt %}
 
-  <p><strong>Timeout fallback:</strong> crt.sh JSON responses can be slow for domains with large result sets. If the endpoint times out or returns an error, use the standard HTML view at <a href="https://crt.sh/?q=%25.electric.coop" target="_blank" rel="noopener">crt.sh/?q=%25.electric.coop</a>, select all results in the table (Ctrl+A), copy (Ctrl+C), and paste into your AI client instead.</p>
+  <p><strong>Timeout fallback:</strong> crt.sh JSON responses can be slow for domains with large result sets. If the endpoint times out or returns an error, use the standard HTML view at <code>https://crt.sh/?q=%25.[yourdomain.com]</code>, select all results in the table (Ctrl+A), copy (Ctrl+C), and paste into your AI client instead.</p>
+
+  <p><strong>2b. Subdomain enumeration</strong></p>
+
+  <p>CT logs reveal certificate-level data but may miss subdomains covered by wildcard certificates. Subdomain enumeration tools aggregate results from multiple sources and provide IP address data that CT logs do not include.</p>
+
+  <p><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">subdomainfinder.c99.nl</a> is a subdomain enumeration tool that exports JSON with subdomain, IP address, and Cloudflare status for each result:</p>
+
+  <pre><code>{"subdomain":"portal.example.com","ip":"203.0.113.50","cloudflare":"false"}</code></pre>
+
+  <p>Search each of your root domains and save the JSON results. Use additional DNS enumeration tools to supplement:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>What to Do</th>
+        <th>Account Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">Subdomain Finder</a></td>
+        <td>Search each root domain -- export/save JSON results (includes IP addresses and Cloudflare status)</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a></td>
+        <td>Enter root domain -- review DNS records, subdomains, and network map</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></td>
+        <td>Search domain -- review historical DNS records and subdomain history</td>
+        <td>Free tier</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>2c. AI-assisted analysis of combined results</strong></p>
+
+  <p>Attach or paste the saved JSON files from all enumerated domains into your AI client. The combined analysis across all root domains is where the most valuable patterns emerge:</p>
+
+{% capture m2_subdomain_prompt %}
+I am analyzing subdomain enumeration data for [organization name],
+a [sector] organization. The attached/pasted JSON files contain
+subdomain records for [domain1.com] and [domain2.com]. Each record
+includes subdomain name, IP address, and Cloudflare status.
+
+Analyze the combined data and provide:
+1. All unique subdomains grouped by root domain
+2. IP address clustering -- which subdomains share the same IP
+   (suggests shared hosting or load balancer)
+3. Authentication and identity infrastructure (SSO portals,
+   federation servers, access management)
+4. Remote access or VPN-related subdomains
+5. API endpoints and what backend systems they suggest
+6. Staging, test, or development environments
+7. Blue/green or canary deployment patterns that reveal
+   infrastructure architecture
+8. Subdomains revealing sensitive business functions (benefits,
+   payroll, financial, compliance, HR)
+9. Which subdomains use cloud provider IPs vs on-premise IP
+   ranges
+10. Which root domain reveals the most infrastructure detail
+    and why that matters for reconnaissance
+
+Output a categorized inventory organized by: authentication/
+identity, remote access, benefits/HR, financial/compliance,
+APIs/backend, staging/test, content/public, and other.
+{% endcapture %}
+{% include prompt-block.html title="Subdomain Enumeration Analysis Prompt" content=m2_subdomain_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Domain and Subdomain Enumeration</summary>
+  <div class="worked-example-content">
+
+    <h4>Certificate Transparency: electric.coop</h4>
+
+    <p>Query the crt.sh JSON API for NRECA's primary domain:</p>
+
+    <p><a href="https://crt.sh/?q=%25.electric.coop&output=json" target="_blank" rel="noopener">https://crt.sh/?q=%25.electric.coop&amp;output=json</a></p>
+
+    <p>Save the JSON response and attach it to your AI client using the CT JSON Analysis Prompt above.</p>
 
 <details>
   <summary>Example AI Response (CT JSON Analysis for electric.coop)</summary>
@@ -215,59 +307,16 @@ function/risk category.
 {% include response-block.html title="Example AI Response (CT JSON Analysis)" content=m2_ct_response %}
 </details>
 
-  <h3>Step 2: Subdomain Enumeration Across All Root Domains</h3>
+    <h4>Subdomain Enumeration: cooperative.com vs electric.coop</h4>
 
-  <p>CT logs from Step 1 reveal certificate-level data, but comprehensive discovery requires <strong>subdomain enumeration across every root domain</strong> the organization uses. NRECA operates across at least three root domains: <strong>electric.coop</strong> (public website), <strong>cooperative.com</strong> (member services), and <strong>nreca.coop</strong> (email). Each reveals different infrastructure -- and the most "obvious" domain often reveals the least.</p>
+    <p>NRECA operates across at least three root domains: <strong>electric.coop</strong> (public website), <strong>cooperative.com</strong> (member services), and <strong>nreca.coop</strong> (email). Searching each with <a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">Subdomain Finder</a> reveals a critical lesson:</p>
 
-  <p><strong>2a. Enumerate subdomains with Subdomain Finder</strong></p>
+    <ul>
+      <li>Search <strong>cooperative.com</strong>: returns 100+ subdomains with rich infrastructure detail</li>
+      <li>Search <strong>electric.coop</strong>: returns only ~2 subdomains (www, careers)</li>
+    </ul>
 
-  <p><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">subdomainfinder.c99.nl</a> is a subdomain enumeration tool that aggregates results from multiple sources and exports JSON. Search each of NRECA's root domains:</p>
-
-  <ul>
-    <li>Search <strong>cooperative.com</strong>: <a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">subdomainfinder.c99.nl</a> -- this returns 100+ subdomains with rich infrastructure detail</li>
-    <li>Search <strong>electric.coop</strong>: same tool -- this returns only ~2 subdomains (www, careers)</li>
-  </ul>
-
-  <p>The contrast is the key lesson: <strong>the public-facing website domain (electric.coop) reveals almost nothing, while the member-services domain (cooperative.com) exposes the entire internal infrastructure</strong>. An adversary who only searches the primary website domain misses most of the attack surface -- and so will a defender who does the same.</p>
-
-  <p>Save the JSON results for each domain. Results pages follow the pattern <code>subdomainfinder.c99.nl/scans/YYYY-MM-DD/domain.com</code>. Use your browser's Save Page As (Ctrl+S / Cmd+S) to save each result set. The JSON structure contains objects with subdomain, IP address, and Cloudflare status:</p>
-
-  <pre><code>{"subdomain":"okta.cooperative.com","ip":"15.197.134.95","cloudflare":"false"}</code></pre>
-
-  <p><strong>2b. AI-assisted subdomain analysis</strong></p>
-
-  <p>Attach or paste the saved JSON files from all enumerated domains into your AI client with this prompt:</p>
-
-{% capture m2_subdomain_prompt %}
-I am analyzing subdomain enumeration data for an electric
-cooperative association (NRECA). The attached/pasted JSON files
-contain subdomain records for cooperative.com and electric.coop.
-Each record includes subdomain name, IP address, and Cloudflare
-status.
-
-Analyze the combined data and provide:
-1. All unique subdomains grouped by root domain
-2. IP address clustering -- which subdomains share the same IP
-   (suggests shared hosting or load balancer)
-3. Authentication and identity infrastructure (SSO portals,
-   federation servers, access management)
-4. Remote access or VPN-related subdomains
-5. API endpoints and what backend systems they suggest
-6. Staging, test, or development environments
-7. Blue/green or canary deployment patterns that reveal
-   infrastructure architecture
-8. Subdomains revealing sensitive business functions (benefits,
-   payroll, financial, compliance, HR)
-9. Which subdomains use cloud provider IPs vs on-premise IP
-   ranges
-10. Which root domain reveals the most infrastructure detail
-    and why that matters for reconnaissance
-
-Output a categorized inventory organized by: authentication/
-identity, remote access, benefits/HR, financial/compliance,
-APIs/backend, staging/test, content/public, and other.
-{% endcapture %}
-{% include prompt-block.html title="Subdomain Enumeration Analysis Prompt" content=m2_subdomain_prompt %}
+    <p><strong>The public-facing website domain (electric.coop) reveals almost nothing, while the member-services domain (cooperative.com) exposes the entire internal infrastructure.</strong> An adversary who only searches the primary website domain misses most of the attack surface -- and so will a defender who does the same.</p>
 
 <details>
   <summary>Example AI Response (Subdomain Analysis for NRECA)</summary>
@@ -334,72 +383,75 @@ APIs/backend, staging/test, content/public, and other.
 {% include response-block.html title="Example AI Response (Subdomain Enumeration Analysis)" content=m2_subdomain_response %}
 </details>
 
-  <p><strong>2c. Validation checkpoint</strong></p>
+    <h4>Validation Checkpoint</h4>
 
-  <p>Compare your AI-generated inventory against what you already knew from public website analysis. The table below shows domains identifiable from NRECA's public website and contact pages:</p>
+    <p>Compare the AI-generated inventory against what is identifiable from NRECA's public website and contact pages:</p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Domain</th>
-        <th>Purpose</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>electric.coop</td>
-        <td>Public website (WordPress)</td>
-        <td>News, advocacy, public-facing</td>
-      </tr>
-      <tr>
-        <td>cooperative.com</td>
-        <td>Member portal (SharePoint)</td>
-        <td>Login required -- attack surface</td>
-      </tr>
-      <tr>
-        <td>nreca.coop</td>
-        <td>Email domain</td>
-        <td>Confirmed format: firstname.lastname@nreca.coop</td>
-      </tr>
-      <tr>
-        <td>benefits.cooperative.com</td>
-        <td>Employee benefits portal</td>
-        <td>Login required -- sensitive</td>
-      </tr>
-      <tr>
-        <td>careers.electric.coop</td>
-        <td>Job postings</td>
-        <td>Reveals tech stack, org structure</td>
-      </tr>
-      <tr>
-        <td>resap.cooperative.com</td>
-        <td>Safety program portal</td>
-        <td>Member login</td>
-      </tr>
-      <tr>
-        <td>ecba.cooperative.com</td>
-        <td>Bar Association portal</td>
-        <td>Member login</td>
-      </tr>
-      <tr>
-        <td>remagazine.cooperative.com</td>
-        <td>RE Magazine</td>
-        <td>Content platform</td>
-      </tr>
-      <tr>
-        <td>nrecainternational.coop</td>
-        <td>International programs</td>
-        <td>Separate org site</td>
-      </tr>
-    </tbody>
-  </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Domain</th>
+          <th>Purpose</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>electric.coop</td>
+          <td>Public website (WordPress)</td>
+          <td>News, advocacy, public-facing</td>
+        </tr>
+        <tr>
+          <td>cooperative.com</td>
+          <td>Member portal (SharePoint)</td>
+          <td>Login required -- attack surface</td>
+        </tr>
+        <tr>
+          <td>nreca.coop</td>
+          <td>Email domain</td>
+          <td>Confirmed format: firstname.lastname@nreca.coop</td>
+        </tr>
+        <tr>
+          <td>benefits.cooperative.com</td>
+          <td>Employee benefits portal</td>
+          <td>Login required -- sensitive</td>
+        </tr>
+        <tr>
+          <td>careers.electric.coop</td>
+          <td>Job postings</td>
+          <td>Reveals tech stack, org structure</td>
+        </tr>
+        <tr>
+          <td>resap.cooperative.com</td>
+          <td>Safety program portal</td>
+          <td>Member login</td>
+        </tr>
+        <tr>
+          <td>ecba.cooperative.com</td>
+          <td>Bar Association portal</td>
+          <td>Member login</td>
+        </tr>
+        <tr>
+          <td>remagazine.cooperative.com</td>
+          <td>RE Magazine</td>
+          <td>Content platform</td>
+        </tr>
+        <tr>
+          <td>nrecainternational.coop</td>
+          <td>International programs</td>
+          <td>Separate org site</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <p>Manual website review found 9 domains. Subdomain enumeration of cooperative.com alone found 100+, including authentication infrastructure (Okta, PingFederate), benefits/PII systems, financial portals, and staging environments that do not appear anywhere on the public website. <strong>Enumeration always finds infrastructure that manual review misses.</strong></p>
+    <p>Manual website review found 9 domains. Subdomain enumeration of cooperative.com alone found 100+, including authentication infrastructure (Okta, PingFederate), benefits/PII systems, financial portals, and staging environments that do not appear anywhere on the public website. <strong>Enumeration always finds infrastructure that manual review misses.</strong></p>
+
+  </div>
+</details>
 
   <h3>Step 3: Remote Access Identification</h3>
 
-  <p>Use <a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a> or <a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a> browser search to identify what services are exposed on NRECA's known domains or IP ranges. Look for:</p>
+  <p>Use internet device search engines to identify what services are exposed on your target's known domains or IP ranges. Look for:</p>
 
   <ul>
     <li><strong>Web servers</strong> -- identified by HTTP response headers (Server, X-Powered-By)</li>
@@ -409,8 +461,39 @@ APIs/backend, staging/test, content/public, and other.
   </ul>
 
   <blockquote>
-    <p><strong>Manual verification required.</strong> This step must be performed by the student using browser-based tools. AI clients cannot access Shodan, Censys, or live internet infrastructure -- they will generate plausible but fabricated results if asked to identify exposed services. Use AI for analyzing data you have already collected (Steps 1, 2, and 4), not for discovering live services.</p>
+    <p><strong>Manual verification required.</strong> This step must be performed using browser-based tools. AI clients cannot access Shodan, Censys, or live internet infrastructure -- they will generate plausible but fabricated results if asked to identify exposed services. Use AI for analyzing data you have already collected (Steps 2 and 4), not for discovering live services.</p>
   </blockquote>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>What to Do</th>
+        <th>Account Required</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a></td>
+        <td>Search by domain, hostname, or organization name -- review banners for product identification</td>
+        <td>Free tier</td>
+      </tr>
+      <tr>
+        <td><a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a></td>
+        <td>Search by domain or IP -- review certificates and service details</td>
+        <td>Free tier</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Focus on identifying:</p>
+
+  <ul>
+    <li><strong>VPN login portals</strong> -- FortiGate, Cisco ASA/AnyConnect, Palo Alto GlobalProtect, SonicWall</li>
+    <li><strong>Remote desktop services</strong> -- RDP, Citrix, VMware Horizon</li>
+    <li><strong>Vendor remote support tools</strong> -- TeamViewer, AnyDesk, ConnectWise ScreenConnect</li>
+    <li><strong>Web application login pages</strong> -- OWA, SharePoint, custom applications</li>
+  </ul>
 
   <p>Organizations with Shodan or Censys API access (paid tiers) can automate and scale these queries programmatically -- that is a natural next step beyond this workshop.</p>
 
@@ -446,33 +529,40 @@ APIs/backend, staging/test, content/public, and other.
 
   <p>You will not be able to fill in every field from external discovery alone -- ownership and some operational context require internal knowledge. Record what you can from Shodan/Censys results and flag the gaps. The complete baseline template is provided in the <a href="{{ site.baseurl }}/templates/">Templates</a> section.</p>
 
-  <p>Here is how a single discovered service would be documented:</p>
-
-  <blockquote>
-    <p><strong>Example: FortiGate VPN Portal</strong></p>
-    <p>Hostname: vpn.example-coop.com | IP: 203.0.113.50 | Port: 443/TCP | Product: Fortinet FortiGate, FortiOS 7.4.6 | Cert: DigiCert, expires 2026-09-15, SAN includes vpn.example-coop.com | Owner: IT Security (confirm) | Facility: Main office | Designation: IT perimeter | Function: SSL-VPN remote access for staff and vendors | Criticality: High -- primary remote access path to internal network | Zone: Internet-facing | Management: Internal IT staff</p>
-  </blockquote>
-
-  <p>This FortiGate finding connects directly to Module 4, where you will correlate the product and version against vulnerability databases.</p>
-
   <p><strong>3b. Connecting to asset management</strong></p>
 
   <p>Many organizations maintain IT asset inventories in platforms like ServiceNow, but OT assets are frequently absent from these systems. External discovery often reveals OT-adjacent assets -- VPN concentrators serving SCADA networks, historian web interfaces, vendor remote access portals -- that should be tracked alongside IT assets.</p>
 
-  <p>External OSINT findings can justify and accelerate including OT assets in existing asset management programs. If your organization has an asset management system, cross-reference your external findings against it. Gaps between what you discovered externally and what appears in your inventory are themselves a finding -- they represent assets that exist on the internet but are not being tracked, patched, or managed through your standard processes.</p>
+  <p>If your organization has an asset management system, cross-reference your external findings against it. Gaps between what you discovered externally and what appears in your inventory are themselves a finding -- they represent assets that exist on the internet but are not being tracked, patched, or managed through your standard processes.</p>
+
+<details>
+  <summary>Worked Example: NRECA Remote Access Documentation</summary>
+  <div class="worked-example-content">
+
+    <p>Here is how a single discovered service would be documented using the three-category framework above:</p>
+
+    <blockquote>
+      <p><strong>Example: FortiGate VPN Portal</strong></p>
+      <p>Hostname: vpn.example-coop.com | IP: 203.0.113.50 | Port: 443/TCP | Product: Fortinet FortiGate, FortiOS 7.4.6 | Cert: DigiCert, expires 2026-09-15, SAN includes vpn.example-coop.com | Owner: IT Security (confirm) | Facility: Main office | Designation: IT perimeter | Function: SSL-VPN remote access for staff and vendors | Criticality: High -- primary remote access path to internal network | Zone: Internet-facing | Management: Internal IT staff</p>
+    </blockquote>
+
+    <p>This FortiGate finding connects directly to Module 4, where you will correlate the product and version against vulnerability databases.</p>
+
+  </div>
+</details>
 
   <h3>Step 4: Consolidation and Google Dorking</h3>
 
-  <p>At this point you have three sets of findings: certificate transparency data (Step 1), subdomain enumeration with IP mapping (Step 2), and manually verified exposed services with product identification (Step 3). This step consolidates everything and uses Google dorking to find resources that the other techniques miss -- indexed documents, login pages, directory listings, and configuration files.</p>
+  <p>At this point you have three sets of findings: certificate transparency data, subdomain enumeration with IP mapping, and manually verified exposed services with product identification. This step uses Google dorking to find resources that the other techniques miss, then consolidates everything into a single baseline.</p>
 
   <p><strong>4a. Google dorking</strong></p>
 
   <p>Search engine dorking uses Google's advanced search operators to find pages and files that the organization may not intend to be publicly accessible. Use your AI client to generate targeted dork queries based on your discoveries so far:</p>
 
 {% capture m2_dork_prompt %}
-I am performing external attack surface discovery on NRECA, an
-electric cooperative association. I have identified these root
-domains: electric.coop, cooperative.com, nreca.coop.
+I am performing external attack surface discovery on [organization
+name], a [sector] organization. I have identified these root
+domains: [domain1.com, domain2.com, domain3.com].
 
 Based on these domains, generate Google dork queries to find:
 1. Login pages and authentication portals
@@ -487,8 +577,50 @@ Format each query so I can paste it directly into Google.
 {% endcapture %}
 {% include prompt-block.html title="Google Dork Query Generation Prompt" content=m2_dork_prompt %}
 
+  <p>Run the generated queries in Google and review the first 2-3 pages of results. Add any new findings to your inventory. Google dorking frequently surfaces resources that subdomain enumeration and Shodan/Censys miss -- particularly indexed documents, forgotten login pages, and configuration files.</p>
+
+  <p><strong>4b. Consolidated analysis</strong></p>
+
+  <p>Feed your combined findings from all steps into your AI client to produce the final attack surface inventory:</p>
+
+{% capture m2_consolidation_prompt %}
+I have completed external attack surface discovery for
+[organization name]. Here is a summary of all findings:
+
+CERTIFICATE TRANSPARENCY (crt.sh):
+[paste or summarize CT findings]
+
+SUBDOMAIN ENUMERATION:
+[paste or summarize subdomain/IP findings]
+
+EXPOSED SERVICES (Shodan/Censys):
+[paste or summarize service discovery findings]
+
+GOOGLE DORKING:
+[paste or summarize any additional findings]
+
+Consolidate all findings into a single attack surface baseline:
+1. A categorized inventory of all discovered assets organized by:
+   remote access, authentication/identity, email, web applications,
+   benefits/HR/financial, APIs, staging/test, content/public
+2. For each category, note the highest-risk assets and why
+3. Gaps in my discovery -- what should I investigate further
+4. A prioritized list of assets to carry forward to vulnerability
+   correlation (Module 4) and monitoring (Module 5)
+5. A summary table suitable for use as a baseline document
+{% endcapture %}
+{% include prompt-block.html title="Attack Surface Consolidation Prompt" content=m2_consolidation_prompt %}
+
+  <p>Review and correct the AI-generated baseline. This consolidated inventory becomes your Artifact 2.</p>
+
 <details>
-  <summary>Example AI Response (Google Dork Queries)</summary>
+  <summary>Worked Example: NRECA Consolidation and Google Dorking</summary>
+  <div class="worked-example-content">
+
+    <p>Using the Google Dork Query Generation Prompt above with NRECA's three root domains (electric.coop, cooperative.com, nreca.coop):</p>
+
+<details>
+  <summary>Example AI Response (Google Dork Queries for NRECA)</summary>
 {% capture m2_dork_response %}
 <h4>Google Dork Queries for NRECA Domains</h4>
 
@@ -530,218 +662,9 @@ Format each query so I can paste it directly into Google.
 {% include response-block.html title="Example AI Response (Google Dork Queries)" content=m2_dork_response %}
 </details>
 
-  <p>Run the generated queries in Google and add any new findings to your inventory. Google dorking frequently surfaces resources that subdomain enumeration and Shodan/Censys miss -- particularly indexed documents, forgotten login pages, and configuration files.</p>
+  </div>
+</details>
 
-  <p><strong>4b. Consolidated analysis</strong></p>
-
-  <p>Feed your combined findings from all steps into your AI client to produce the final attack surface inventory:</p>
-
-{% capture m2_consolidation_prompt %}
-I have completed external attack surface discovery for NRECA, an
-electric cooperative association. Here is a summary of all findings:
-
-CERTIFICATE TRANSPARENCY (crt.sh):
-[paste or summarize CT findings from Step 1]
-
-SUBDOMAIN ENUMERATION (Subdomain Finder):
-[paste or summarize subdomain/IP findings from Step 2]
-
-EXPOSED SERVICES (Shodan/Censys):
-[paste or summarize service discovery from Step 3]
-
-GOOGLE DORKING:
-[paste or summarize any additional findings from Step 4a]
-
-Consolidate all findings into a single attack surface baseline:
-1. A categorized inventory of all discovered assets organized by:
-   remote access, authentication/identity, email, web applications,
-   benefits/HR/financial, APIs, staging/test, content/public
-2. For each category, note the highest-risk assets and why
-3. Gaps in my discovery -- what should I investigate further
-4. A prioritized list of assets to carry forward to vulnerability
-   correlation (Module 4) and monitoring (Module 5)
-5. A summary table suitable for use as a baseline document
-{% endcapture %}
-{% include prompt-block.html title="Attack Surface Consolidation Prompt" content=m2_consolidation_prompt %}
-
-  <p>Review and correct the AI-generated baseline. This consolidated inventory becomes Artifact 2 and feeds directly into the remaining modules.</p>
-</section>
-
-<section class="module-lab">
-  <h2>Lab: Build Your External Attack Surface Inventory</h2>
-
-  <p>In this lab, you will discover your target organization's external attack surface using the same techniques demonstrated in the worked example. Follow each step and document your findings -- the output becomes Artifact 2.</p>
-
-  <h3>Step 1: Target Selection</h3>
-
-  <p>Select your target organization for this exercise:</p>
-
-  <ul>
-    <li><strong>Your own organization</strong> (with authorization) -- provides the most operationally relevant results</li>
-    <li><strong>NRECA</strong> (practice target) -- use the domains from the worked example to follow along</li>
-  </ul>
-
-  <p>Identify the primary domain(s) you will investigate. Most organizations have more than one -- check the main website, email domain, and any known portals.</p>
-
-  <h3>Step 2: AI-Assisted Query Generation</h3>
-
-  <p>Use your AI client to generate discovery queries tailored to your target:</p>
-
-{% capture m2_query_prompt %}
-I am performing external attack surface discovery on [organization
-name], a [sector] organization. Their primary domain is
-[domain.com].
-
-Generate:
-1. Certificate transparency search queries for crt.sh
-2. Google dork queries to find login pages, exposed documents,
-   and directory listings
-3. Shodan/Censys search queries to identify their internet-facing
-   services
-4. A list of subdomain naming patterns I should look for based on
-   their sector
-{% endcapture %}
-{% include prompt-block.html title="Query Generation Prompt" content=m2_query_prompt %}
-
-  <p>Save the generated queries. You will use them in the following steps.</p>
-
-  <h3>Step 3: Domain and Subdomain Enumeration</h3>
-
-  <p><strong>Important:</strong> Enumerate <strong>all known root domains</strong> for your target organization, not just the primary website. As the NRECA example demonstrated, member portals, internal service domains, and email domains often reveal far more infrastructure than the public website.</p>
-
-  <p><strong>3a. crt.sh with AI analysis:</strong> Query the crt.sh JSON API for each root domain and save the results:</p>
-
-  <p><code>https://crt.sh/?q=%25.yourdomain.com&amp;output=json</code></p>
-
-  <p>Save the JSON to a local file (Ctrl+S / Cmd+S), then attach or paste it into your AI client:</p>
-
-{% capture m2_lab_ct_prompt %}
-I am analyzing certificate transparency data from crt.sh for
-[organization name]. The attached/pasted JSON contains certificate
-records for %.[yourdomain.com].
-
-Analyze this data and provide:
-1. A deduplicated list of all unique subdomain and domain names
-2. Naming patterns and conventions the organization uses
-3. Subdomains suggesting admin interfaces, login portals,
-   VPN/remote access, dev/staging environments, or API endpoints
-4. Any wildcard certificates and what infrastructure they might
-   cover
-5. Certificate authorities used (reveals vendor relationships)
-6. Anything unusual or potentially sensitive
-
-Output a clean categorized subdomain list organized by
-function/risk category.
-{% endcapture %}
-{% include prompt-block.html title="CT JSON Analysis Prompt (Your Organization)" content=m2_lab_ct_prompt %}
-
-  <p>If the JSON endpoint times out, use the standard HTML view at <code>https://crt.sh/?q=%25.yourdomain.com</code>, select all results (Ctrl+A), copy, and paste into your AI client instead.</p>
-
-  <p><strong>3b. Subdomain enumeration:</strong> CT logs reveal certificate-level data but may miss subdomains covered by wildcard certificates. Use enumeration tools to find additional subdomains and collect IP address data. Run each tool against <strong>every known root domain</strong> for your target:</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Tool</th>
-        <th>What to Do</th>
-        <th>Account Required</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a href="https://subdomainfinder.c99.nl" target="_blank" rel="noopener">Subdomain Finder</a></td>
-        <td>Search each root domain -- export/save JSON results (includes IP addresses and Cloudflare status)</td>
-        <td>No</td>
-      </tr>
-      <tr>
-        <td><a href="https://dnsdumpster.com/" target="_blank" rel="noopener">DNSDumpster</a></td>
-        <td>Enter root domain -- review DNS records, subdomains, and network map</td>
-        <td>No</td>
-      </tr>
-      <tr>
-        <td><a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></td>
-        <td>Search domain -- review historical DNS records and subdomain history</td>
-        <td>Free tier</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p><strong>3c. Combined AI analysis:</strong> Feed the combined JSON results from all domains into your AI client using the Subdomain Enumeration Analysis Prompt from the worked example. The AI will categorize subdomains, identify IP clustering, flag authentication infrastructure, and highlight the most revealing domains.</p>
-
-  <h3>Step 4: Remote Access Identification</h3>
-
-  <p>Use internet device search engines to identify exposed services and the technologies behind them. This step is manual -- verify what is actually exposed using browser-based tools, not AI.</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Tool</th>
-        <th>What to Do</th>
-        <th>Account Required</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a></td>
-        <td>Search by domain, hostname, or organization name -- review banners for product identification</td>
-        <td>Free tier</td>
-      </tr>
-      <tr>
-        <td><a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a></td>
-        <td>Search by domain or IP -- review certificates and service details</td>
-        <td>Free tier</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p>Focus on identifying:</p>
-
-  <ul>
-    <li><strong>VPN login portals</strong> -- FortiGate, Cisco ASA/AnyConnect, Palo Alto GlobalProtect, SonicWall</li>
-    <li><strong>Remote desktop services</strong> -- RDP, Citrix, VMware Horizon</li>
-    <li><strong>Vendor remote support tools</strong> -- TeamViewer, AnyDesk, ConnectWise ScreenConnect</li>
-    <li><strong>Web application login pages</strong> -- OWA, SharePoint, custom applications</li>
-  </ul>
-
-  <p>For each discovered service, capture the asset documentation fields from the worked example: hostname, IP, port, product/version, certificate details, and whatever ownership and operational context you can determine. Flag fields you cannot fill from external discovery -- these become questions for internal teams.</p>
-
-  <p>If your organization has an asset management system, note which discovered assets appear in your inventory and which do not. Untracked assets -- especially OT-adjacent infrastructure like VPN concentrators or vendor remote access portals -- are a key finding in themselves.</p>
-
-  <h3>Step 5: Consolidation and Google Dorking</h3>
-
-  <p><strong>5a. Google dorking:</strong> Use the Google Dork Query Generation Prompt from the worked example, adapted with your target's domains. Run the generated queries and add new findings to your inventory.</p>
-
-  <p><strong>5b. Consolidated analysis:</strong> Feed all findings from Steps 3-4 into your AI client for final consolidation:</p>
-
-{% capture m2_findings_prompt %}
-I have completed external attack surface discovery for
-[organization name]. Here is a summary of all findings:
-
-CERTIFICATE TRANSPARENCY (crt.sh):
-[paste or summarize CT findings]
-
-SUBDOMAIN ENUMERATION:
-[paste or summarize subdomain/IP findings]
-
-EXPOSED SERVICES (Shodan/Censys):
-[paste or summarize service discovery findings]
-
-GOOGLE DORKING:
-[paste or summarize any additional findings]
-
-Consolidate all findings into a single attack surface baseline:
-1. A categorized inventory of all discovered assets organized by:
-   remote access, authentication/identity, email, web applications,
-   benefits/HR/financial, APIs, staging/test, content/public
-2. For each category, note the highest-risk assets and why
-3. Gaps in my discovery -- what should I investigate further
-4. A prioritized list of assets to carry forward to vulnerability
-   correlation (Module 4) and monitoring (Module 5)
-5. A summary table suitable for use as a baseline document
-{% endcapture %}
-{% include prompt-block.html title="Attack Surface Consolidation Prompt (Your Organization)" content=m2_findings_prompt %}
-
-  <p>Review and correct the AI-generated baseline. This consolidated inventory becomes your Artifact 2.</p>
 </section>
 
 <section class="module-output">

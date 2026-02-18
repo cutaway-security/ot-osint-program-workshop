@@ -542,6 +542,14 @@ details .response-block {
     border-radius: 0;
 }
 
+.worked-example-content {
+    padding: 0.5rem 1rem 1rem;
+}
+
+.worked-example-content h4:first-child {
+    margin-top: 0.5rem;
+}
+
 /* ============================================================
    Generic Content Styles
    ============================================================ */
