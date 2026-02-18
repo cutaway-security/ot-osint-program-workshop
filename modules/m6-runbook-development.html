@@ -14,32 +14,232 @@ next_module_title: "Summary & Next Steps"
 
 <section class="module-overview">
   <h2>Overview</h2>
-  <!-- TODO: Read section content from WORKSHOP_FRAMEWORK.md Module 6 Read Section
-       - What a runbook is: step-by-step operational procedures for routine monitoring
-       - Runbook vs playbook distinction
-       - Runbook cadence structure: daily, weekly, monthly, quarterly -->
-  <p>Content will be added in Phase 2.</p>
-</section>
 
-<section class="module-worked-example">
-  <h2>Worked Example: NRECA Runbook Excerpt</h2>
-  <!-- TODO: Worked example from WORKSHOP_FRAMEWORK.md Module 6
-       - Daily check procedure (5-10 min)
-       - Weekly check procedure (30 min) -->
-  <p>Content will be added in Phase 2.</p>
+  <p>Over the past five modules you built a monitoring program: an attack surface inventory, personnel exposure analysis, vulnerability correlation, alert configurations, a pull-based schedule, and a classified baseline document. The problem is that none of this runs itself. People change roles, priorities shift, and institutional memory fades. Without documented procedures, the monitoring program degrades within weeks -- the alert inbox goes unchecked, pull-based queries stop getting run, and the baseline goes stale.</p>
+
+  <p>A <strong>runbook</strong> solves this by codifying your monitoring program into step-by-step procedures that anyone on the team can execute. The runbook answers the questions that otherwise live only in someone's head: what to check, how often, which tools to use, what constitutes a finding, and who to escalate to.</p>
+
+  <h3>Runbook vs. Playbook</h3>
+
+  <p>These terms are often confused. For this workshop, the distinction matters:</p>
+
+  <ul>
+    <li><strong>Runbook</strong> -- routine operational procedures. How to run the monitoring program day-to-day: check the alert queue, run weekly pull queries, update the baseline. Runbooks define the cadence and mechanics of normal operations. This is what you build today.</li>
+    <li><strong>Playbook</strong> -- incident response procedures. How to respond when monitoring surfaces a specific finding type: breached credentials for a Tier 1 operator, a new internet-exposed OT management interface, a P0 vulnerability on an edge device. Playbooks are a logical next step after this workshop, built on top of the runbook foundation.</li>
+  </ul>
+
+  <h3>Cadence Structure</h3>
+
+  <p>An effective runbook organizes procedures by frequency. Each cadence serves a different purpose:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Cadence</th>
+        <th>Purpose</th>
+        <th>Typical Time</th>
+        <th>Key Activities</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Daily</strong></td>
+        <td>Triage incoming alerts</td>
+        <td>5-10 min</td>
+        <td>Review push alert queue, triage new items against baseline, escalate critical findings</td>
+      </tr>
+      <tr>
+        <td><strong>Weekly</strong></td>
+        <td>Active monitoring checks</td>
+        <td>25-30 min</td>
+        <td>Run pull-based schedule (Module 5 Artifact 5), process alert backlog, update baseline for changes found</td>
+      </tr>
+      <tr>
+        <td><strong>Monthly</strong></td>
+        <td>Full review cycle</td>
+        <td>60-90 min</td>
+        <td>Complete re-enumeration of attack surface, vulnerability re-correlation, personnel exposure refresh, alert configuration review</td>
+      </tr>
+      <tr>
+        <td><strong>Quarterly</strong></td>
+        <td>Program health assessment</td>
+        <td>2-3 hours</td>
+        <td>Full baseline refresh, program metrics review, stakeholder briefing, runbook itself reviewed and updated</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The daily and weekly cadences are the operational core -- they keep the program running. The monthly and quarterly cadences prevent drift by forcing a complete re-evaluation of what you are monitoring and whether the program is still aligned with your organization's risk profile.</p>
+
+  <h3>Writing for Someone Else</h3>
+
+  <p>The most important test of a runbook is whether someone who was not in this workshop can pick it up and execute the procedures. This means every step needs to specify the tool, the exact query or URL, what to compare the results against, and what to do with what you find. "Check Shodan" is not a procedure. "Log into Shodan, search for <code>net:x.x.x.x/24 port:443,8443,10443</code>, compare results to baseline rows 4-12 (remote access services), escalate any new open ports on VPN gateway IPs" is a procedure.</p>
+
 </section>
 
 <section class="module-lab">
-  <h2>Lab: Operational Runbook</h2>
-  <!-- TODO: Lab section from WORKSHOP_FRAMEWORK.md Module 6 Lab
-       - Step 1: AI-Assisted Runbook Generation (prompt)
-       - Step 2: Customize to Environment
-       - Step 3: Define Minimum Viable Monitoring (prompt)
-       - Step 4: Peer Review (if time allows) -->
-  <p>Content will be added in Phase 2.</p>
+  <h2>Lab: Build Your Operational Runbook</h2>
+
+  <p>In this lab, you will generate a complete monitoring runbook using your AI client, then customize it with organization-specific details from your work in Modules 2-5. The runbook becomes Artifact 8 -- the final deliverable that ties your monitoring program into a sustainable, repeatable operation.</p>
+
+  <h3>Step 1: AI-Assisted Runbook Generation</h3>
+
+  <p>Your runbook needs to incorporate the specific assets, personnel, vulnerabilities, and monitoring configurations you documented in the previous modules. Use your AI client to generate a structured runbook as a starting point, then refine it in Step 2.</p>
+
+  <p>Gather these inputs before running the prompt:</p>
+
+  <ul>
+    <li><strong>Module 2:</strong> Remote access services, edge device hostnames/IPs, organization domains</li>
+    <li><strong>Module 3:</strong> Tier 1 and Tier 2 personnel names, email domain, breach monitoring targets</li>
+    <li><strong>Module 4:</strong> Vulnerability correlation table -- products, CPEs, CVEs, KEV status, priority ratings</li>
+    <li><strong>Module 5:</strong> Push-based alert sources (read section), pull-based schedule (Artifact 5), baseline document (Artifact 6)</li>
+  </ul>
+
+{% capture m6_runbook_prompt %}
+Generate an ICS/OT OSINT monitoring runbook for [organization name],
+a [sector] organization. Structure the runbook with daily, weekly,
+monthly, and quarterly procedures.
+
+Inputs from prior modules:
+- Push-based alert sources configured: [list from Module 5 read
+  section -- Google Alerts queries, CISA subscriptions, vendor
+  PSIRT feeds, HIBP monitoring]
+- Pull-based monitoring schedule: [from Module 5 Artifact 5 --
+  weekly and monthly check lists with tools and queries]
+- Baseline document: [from Module 5 Artifact 6 -- classified
+  entries for domains, personnel, vulnerabilities]
+- Remote access and edge devices: [from Module 2 -- VPN portals,
+  firewall management interfaces, specific IPs/hostnames]
+- Tier 1 and Tier 2 personnel: [count and roles from Module 3]
+- Vulnerability correlation table: [from Module 4 -- products,
+  CVEs, KEV status, priority ratings]
+
+For each cadence, provide:
+1. Step-by-step procedures a new team member could follow with
+   no prior context
+2. Which tools to use and what queries to run
+3. What to compare results against (baseline entries)
+4. Decision criteria for escalation vs. routine logging
+5. Estimated time
+
+Include specific tool references: Google Alerts, Shodan, Censys,
+crt.sh, CISA KEV, CISA ICS Advisories, HaveIBeenPwned, NVD.
+Format each procedure as a numbered checklist.
+{% endcapture %}
+{% include prompt-block.html title="Runbook Generation Prompt" content=m6_runbook_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Monitoring Runbook</summary>
+  <div class="worked-example-content">
+
+  <p>The following example shows what a generated runbook looks like for NRECA, incorporating outputs from Modules 2-5. Your runbook should be equally specific -- naming the exact tools, queries, personnel, and baseline references for your organization.</p>
+
+<details>
+  <summary>Example AI Response (NRECA Operational Runbook)</summary>
+{% capture m6_runbook_response %}
+<h4>NRECA ICS/OT OSINT Monitoring Runbook</h4>
+
+<p><strong>Daily Alert Triage (5-10 minutes):</strong></p>
+
+<ol>
+  <li>Open the designated alert aggregation point (email folder, Slack channel, or shared inbox configured in Module 5)</li>
+  <li>Review new Google Alerts for: "NRECA" breach OR hack OR vulnerability, "electric cooperative" SCADA OR ICS, nreca.coop exposed OR leak. Scan subject lines for breach mentions, exposure reports, or SCADA/ICS references</li>
+  <li>Review CISA ICS Advisory emails -- check whether any new advisories affect Fortinet FortiGate or other vendors in the Module 4 asset inventory</li>
+  <li><strong>Triage each alert using the Module 5 framework:</strong>
+    <ul>
+      <li>Known baseline item -- mark as reviewed, no action required</li>
+      <li>New finding, low priority -- add to weekly review queue with a one-line note on why it was deferred</li>
+      <li>New finding, elevated priority -- investigate immediately using the P0-P3 framework from Module 4</li>
+      <li>New finding, critical (P0) -- escalate per escalation procedures</li>
+    </ul>
+  </li>
+  <li>Log triage decisions: date, alert source, one-line summary, disposition (baseline / deferred / investigated / escalated)</li>
+</ol>
+
+<p><strong>Weekly Active Monitoring (25-30 minutes):</strong></p>
+
+<p>Run the pull-based schedule from Module 5 Artifact 5. Checks ordered by OT relevance:</p>
+
+<ol>
+  <li><strong>Shodan/Censys Remote Access Check</strong> (5 min) -- Query known VPN portal and firewall management IPs from Module 2 baseline. Compare port, service, and version to baseline entries. Flag any new ports, service changes, or version changes on remote access infrastructure</li>
+  <li><strong>CISA KEV Review</strong> (5 min) -- Review KEV additions from the past 7 days. Cross-reference each new entry against Module 4 asset inventory. Any match on an internet-exposed asset is a P0 finding requiring immediate escalation</li>
+  <li><strong>Certificate Transparency Check</strong> (5 min) -- Run crt.sh queries for <code>%.electric.coop</code> and <code>%.cooperative.com</code>. Compare to Module 2 baseline subdomain list. Flag new subdomains, especially those suggesting remote access services (vpn2.*, ras.*, remote.*)</li>
+  <li><strong>Breach Database Check</strong> (5 min) -- Check HaveIBeenPwned for domain <code>nreca.coop</code> or spot-check Tier 1 personnel emails. Compare to Module 3 breach findings baseline. Flag any Tier 1 or Tier 2 personnel in new breaches</li>
+  <li><strong>Alert Backlog Processing</strong> (5 min) -- Review items deferred during daily triage. Investigate or close each item. No item should remain in the backlog for more than one week</li>
+  <li><strong>Baseline Update</strong> (5 min) -- If any check surfaced changes, update the baseline document (Module 5 Artifact 6) with new classifications. Record the date and nature of each change</li>
+</ol>
+
+<p><strong>Monthly Full Review (60-90 minutes):</strong></p>
+
+<ol>
+  <li><strong>Attack Surface Re-enumeration</strong> (20 min) -- Re-run full Module 2 discovery: crt.sh, DNSDumpster, SecurityTrails for all organization domains. Compare complete results to baseline. Identify new subdomains, decommissioned subdomains, and service changes</li>
+  <li><strong>Deep Shodan/Censys Scan</strong> (15 min) -- Run broader queries: full organization name, ASN ranges, netblock searches. Pay particular attention to new management interfaces and remote access systems on the OT boundary</li>
+  <li><strong>Vulnerability Re-correlation</strong> (20 min) -- Re-run Module 4 process for all edge devices and OT-adjacent systems. Check NVD, CISA KEV, vendor PSIRTs, and ICS Advisory Project for new CVEs. Update correlation table and re-evaluate priority ratings</li>
+  <li><strong>Personnel Exposure Refresh</strong> (15 min) -- Re-check Tier 1 and Tier 2 personnel against breach databases. Review for new hires, departures, and role changes. Add new Tier 1 personnel to breach monitoring immediately</li>
+  <li><strong>Alert Configuration Review</strong> (10 min) -- Verify all push-based alerts are still active and delivering. Review Google Alert queries for relevance. Add new queries for organizational changes, new domains, or new vendors</li>
+</ol>
+
+<p><strong>Quarterly Program Assessment (2-3 hours):</strong></p>
+
+<ol>
+  <li><strong>Full Baseline Refresh</strong> (60 min) -- Complete re-run of Modules 2-4 as if starting fresh. Compare comprehensive results to current baseline. Reclassify all entries</li>
+  <li><strong>Program Metrics</strong> (30 min) -- Total alerts received vs. actionable findings, average triage time, number of baseline changes per cycle, open remediation items and aging</li>
+  <li><strong>Stakeholder Briefing</strong> (30 min) -- Summary for management: key findings, remediation progress, emerging risks, resource requests. Use P0-P3 framework to frame priorities</li>
+  <li><strong>Runbook Review</strong> (30 min) -- Review this document. Are procedures still accurate? Have tools changed? Are there new data sources to incorporate? Update cadences, queries, and contacts</li>
+</ol>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (NRECA Operational Runbook)" content=m6_runbook_response %}
+
+  </div>
+</details>
+
+  <h3>Step 2: Customize to Your Environment</h3>
+
+  <p>The AI-generated runbook is a template. Your job now is to replace every generic placeholder with organization-specific details that make the procedures executable without additional context.</p>
+
+  <ul>
+    <li><strong>Tool queries:</strong> Replace generic descriptions with the exact queries from your Module 2-4 work. "Check Shodan for your IPs" becomes "Run Shodan query <code>net:x.x.x.x/24 port:443,8443,10443</code> and check results against baseline rows 4-12 (remote access services)"</li>
+    <li><strong>Baseline references:</strong> Point each procedure to specific sections of your baseline document (Module 5 Artifact 6). "Compare to baseline" becomes "Compare to baseline Section 2: Remote Access Services, entries 1-8"</li>
+    <li><strong>Personnel:</strong> Name the Tier 1 and Tier 2 individuals being monitored for breach exposure. Name the person responsible for each cadence. Name the escalation contact for P0 and P1 findings</li>
+    <li><strong>Decision criteria:</strong> Apply the triage framework from Module 5. Specify which finding types are P0 (immediate escalation), which are P1 (investigate within 24 hours), and which go to the weekly backlog</li>
+    <li><strong>Ownership:</strong> Assign a primary owner and backup for each cadence. If you are the only person running this program, the runbook is how you eventually hand it off -- make it complete enough that someone else can take over without a briefing</li>
+  </ul>
+
+  <h3>Step 3: Mark Minimum Viable Procedures</h3>
+
+  <p>In Module 5 Step 3, you identified your minimum viable monitoring set -- the 2-3 checks that survive even when available time drops by 75%. Now embed that decision into the runbook itself.</p>
+
+  <p>Go through your runbook and mark each procedure with one of two labels:</p>
+
+  <ul>
+    <li><strong>[CORE]</strong> -- This procedure runs no matter what. It is part of the minimum viable monitoring set. If everything else falls off, these continue. Typical core procedures: daily alert triage, weekly KEV review, weekly Shodan check on remote access IPs</li>
+    <li><strong>[FULL]</strong> -- This procedure runs during normal operations but can be deferred when time is constrained. Typical full procedures: monthly personnel exposure refresh, quarterly stakeholder briefing, alert configuration review</li>
+  </ul>
+
+  <p>This labeling makes the program resilient. When a team member is covering for someone else, or when competing priorities compress available time, they can scan the runbook and immediately see what must happen versus what can wait.</p>
+
+  <h3>Step 4: Peer Review</h3>
+
+  <p><em>If time allows (5 minutes).</em> Exchange runbooks with another participant and review for:</p>
+
+  <ul>
+    <li><strong>Executability:</strong> Can you follow the procedures without asking the author for clarification? Are tool names, queries, and URLs specific enough?</li>
+    <li><strong>Completeness:</strong> Are all four cadences present? Does each procedure specify what to compare results against?</li>
+    <li><strong>Escalation:</strong> Is it clear who to contact for a P0 finding? Is that contact information in the runbook itself, not just in someone's memory?</li>
+    <li><strong>Time realism:</strong> Do the estimated times feel achievable? Does the daily cadence actually fit in 5-10 minutes?</li>
+  </ul>
+
+  <blockquote>
+    <p><strong>The peer review test is simple:</strong> if you handed this runbook to a competent analyst who has never seen your environment, could they execute the daily and weekly procedures on day one? If not, the runbook needs more detail.</p>
+  </blockquote>
+
 </section>
 
 <section class="module-output">
   <h2>Output</h2>
-  <p><strong>Artifact 8:</strong> Operational runbook with cadenced procedures.</p>
+
+  <p><strong>Artifact 8: Operational runbook with cadenced procedures.</strong> A structured document defining daily, weekly, monthly, and quarterly monitoring procedures with specific tools, queries, baseline references, triage criteria, and escalation paths. Each procedure is labeled [CORE] or [FULL] to support minimum viable monitoring when time is constrained. This is the artifact that turns your monitoring program from a one-time workshop exercise into a sustainable, repeatable operation.</p>
+
+  <p>With all eight artifacts complete, your OT OSINT monitoring program has the full chain: you know what to watch (Modules 2-4), how to watch it (Module 5), and how to keep watching it (this module). The <a href="{{ '/modules/summary' | relative_url }}">Summary</a> reviews the complete artifact set and identifies next steps beyond this workshop.</p>
+
 </section>
