@@ -48,9 +48,19 @@ This document provides context for resuming development after a break or when st
 - 2 prompt blocks, 1 response block, 2 collapsible worked examples
 - .info-callout CSS class added to style.css
 
+**Task 2.15-2.17 - M6: Runbook Development**: COMPLETE
+- Overview: runbook definition and institutional memory framing, runbook vs playbook distinction, cadence structure table (daily 5-10 min, weekly 25-30 min, monthly 60-90 min, quarterly 2-3 hours), "Writing for Someone Else" executability test
+- Lab: 4 steps following Lab-first pattern
+  - Step 1: AI-assisted runbook generation with prompt referencing all M2-M5 artifacts. NRECA worked example: full daily alert triage (5 steps), weekly active monitoring (6 checks ordered by OT relevance), monthly full review (5 items), quarterly program assessment (4 items)
+  - Step 2: Customize to environment -- specific guidance on tool queries, baseline references, personnel naming, decision criteria, cadence ownership
+  - Step 3: Mark minimum viable procedures -- [CORE] and [FULL] labels, references M5 Step 3 sustainability assessment
+  - Step 4: Peer review (if time allows) -- executability, completeness, escalation, time realism
+- Output: Artifact 8 with cross-references to M2-M5 and link to Summary
+- 1 prompt block, 1 response block, 1 collapsible worked example
+
 ### Next Task
 
-**Task**: 2.15-2.17 - M6: Runbook Development
+**Task**: 2.18 - Summary page
 **Status**: NOT STARTED
 
 ### Blockers
@@ -214,7 +224,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 2.6-2.8 | M3: Personnel & Credential Exposure | COMPLETE |
 | 2.9-2.11 | M4: Vulnerability Correlation | COMPLETE |
 | 2.12-2.14 | M5: Monitoring & Alerting | COMPLETE |
-| 2.15-2.17 | M6: Runbook Development | NOT STARTED |
+| 2.15-2.17 | M6: Runbook Development | COMPLETE |
 | 2.18 | Summary page | NOT STARTED |
 | 2.19 | Content review | NOT STARTED |
 
