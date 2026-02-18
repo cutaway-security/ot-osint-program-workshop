@@ -17,16 +17,19 @@ This document provides context for resuming development after a break or when st
 
 ### What Was Just Completed
 
-**Module layout restructure (M1 + M2)**: COMPLETE
-- Restructured all module pages to Lab-first pattern: Lab is the primary section, worked examples are collapsible `<details>` blocks integrated within individual lab steps
-- M2: Eliminated separate Worked Example section. Merged instructional content into 4 lab steps. Created generic prompts with [placeholders]. Moved NRECA examples into 3 collapsible worked examples (Steps 2, 3, 4). Deleted redundant old Lab Step 2 (AI-Assisted Query Generation).
-- M1: Consolidated old Steps 2-3 into single Step 2 (Generate Your Sector Threat Profile) with generic prompt template. NRECA example is collapsible worked example within Step 2. Renumbered to 3 steps.
-- Updated ARCHITECTURE.md: new module layout diagram, new "Worked Example Integration Pattern" section, updated content development workflow
-- Added CSS: `.worked-example-content` class for padding inside worked example `<details>` blocks
+**Task 2.6-2.8 - M3: Personnel & Credential Exposure**: COMPLETE
+- Overview: personnel exposure risks (credential stuffing, social engineering, BEC), breach database concepts, three-tier prioritization model table, professional network exposure
+- Lab: 4 steps following Lab-first pattern
+  - Step 1: Personnel discovery + email format ID, generic categorization prompt, NRECA worked example (leadership table, email format discovery)
+  - Step 2: Breach database checks (HIBP individual + domain), documentation fields, NRECA worked example (hypothetical breach findings, clearly labeled)
+  - Step 3: Role-based prioritization with tier+breach severity matrix, generic prioritization prompt, NRECA worked example with AI response (CIO critical finding, CFO elevated, CEO monitor)
+  - Step 4: Professional network exposure (job postings, conferences, profiles), generic analysis prompt
+- Output: Artifact 3 description with cross-references to M2, M5, M6
+- 3 prompt blocks, 1 response block, 3 collapsible worked examples
 
 ### Next Task
 
-**Task**: 2.6-2.8 - M3: Personnel & Credential Exposure
+**Task**: 2.9-2.11 - M4: Vulnerability Correlation
 **Status**: NOT STARTED
 
 ### Blockers
@@ -168,7 +171,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 |---|------|--------|
 | 2.1-2.2 | M1: Threat Context | COMPLETE |
 | 2.3-2.5 | M2: External Attack Surface | COMPLETE |
-| 2.6-2.8 | M3: Personnel & Credential Exposure | NOT STARTED |
+| 2.6-2.8 | M3: Personnel & Credential Exposure | COMPLETE |
 | 2.9-2.11 | M4: Vulnerability Correlation | NOT STARTED |
 | 2.12-2.14 | M5: Monitoring & Alerting | NOT STARTED |
 | 2.15-2.17 | M6: Runbook Development | NOT STARTED |
@@ -298,4 +301,4 @@ When starting next session:
 3. [ ] Read claude-dev/PLAN.md
 4. [ ] Read this file (claude-dev/RESUME.md)
 5. [ ] Set GEM_HOME and PATH for Ruby
-6. [ ] Continue Phase 2: Module Content (task 2.3-2.5 - M2: External Attack Surface)
+6. [ ] Continue Phase 2: Module Content (task 2.9-2.11 - M4: Vulnerability Correlation)

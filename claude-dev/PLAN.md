@@ -127,9 +127,9 @@
 | 2.3 | M2: Attack Surface -- overview | COMPLETE | Attack surface concepts, discovery techniques table, naming conventions table |
 | 2.4 | M2: Attack Surface -- worked example | COMPLETE | NRECA: crt.sh, 9-domain mapping, Shodan/Censys, AI analysis prompt + response |
 | 2.5 | M2: Attack Surface -- lab | COMPLETE | 5 steps with tool tables, 3 prompt blocks, account requirements noted |
-| 2.6 | M3: Personnel -- overview | NOT STARTED | Why personnel exposure matters, tier model |
-| 2.7 | M3: Personnel -- worked example | NOT STARTED | NRECA leadership analysis, breach check, prioritization |
-| 2.8 | M3: Personnel -- lab | NOT STARTED | 4 structured steps |
+| 2.6 | M3: Personnel -- overview | COMPLETE | Personnel exposure risks, breach databases, 3-tier model, professional networks |
+| 2.7 | M3: Personnel -- worked example | COMPLETE | NRECA leadership table, email format, hypothetical breach findings, AI prioritization |
+| 2.8 | M3: Personnel -- lab | COMPLETE | 4 steps: discovery, breach checks, prioritization, professional exposure |
 | 2.9 | M4: Vulnerability -- overview | NOT STARTED | Asset-to-vuln workflow, KEV emphasis |
 | 2.10 | M4: Vulnerability -- worked example | NOT STARTED | FortiGate CVE-2025-59718 correlation |
 | 2.11 | M4: Vulnerability -- lab | NOT STARTED | 4 structured steps |
