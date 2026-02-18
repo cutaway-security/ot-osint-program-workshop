@@ -130,9 +130,9 @@
 | 2.6 | M3: Personnel -- overview | COMPLETE | Personnel exposure risks, breach databases, 3-tier model, professional networks |
 | 2.7 | M3: Personnel -- worked example | COMPLETE | NRECA leadership table, email format, hypothetical breach findings, AI prioritization |
 | 2.8 | M3: Personnel -- lab | COMPLETE | 4 steps: discovery, breach checks, prioritization, professional exposure |
-| 2.9 | M4: Vulnerability -- overview | NOT STARTED | Asset-to-vuln workflow, KEV emphasis |
-| 2.10 | M4: Vulnerability -- worked example | NOT STARTED | FortiGate CVE-2025-59718 correlation |
-| 2.11 | M4: Vulnerability -- lab | NOT STARTED | 4 structured steps |
+| 2.9 | M4: Vulnerability -- overview | COMPLETE | Asset-to-vuln workflow, KEV emphasis, edge device focus, vuln sources table |
+| 2.10 | M4: Vulnerability -- worked example | COMPLETE | FortiGate CVE-2025-59718/59719 correlation, KEV timeline, PSIRT, CISA alerts |
+| 2.11 | M4: Vulnerability -- lab | COMPLETE | 4 steps: CPE generation, multi-source queries, P0-P3 prioritization, documentation |
 | 2.12 | M5: Monitoring -- overview | NOT STARTED | Push vs pull, alert types, aggregation |
 | 2.13 | M5: Monitoring -- worked example | NOT STARTED | NRECA Google Alerts, CISA subscriptions |
 | 2.14 | M5: Monitoring -- lab | NOT STARTED | 3 structured steps, baseline snapshot |

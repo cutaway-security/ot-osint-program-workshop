@@ -27,9 +27,19 @@ This document provides context for resuming development after a break or when st
 - Output: Artifact 3 description with cross-references to M2, M5, M6
 - 3 prompt blocks, 1 response block, 3 collapsible worked examples
 
+**Task 2.9-2.11 - M4: Vulnerability Correlation**: COMPLETE
+- Overview: asset-to-vulnerability workflow (product/version -> CPE -> vuln databases), vulnerability intelligence sources table (NVD, CISA KEV, ICS Advisories, vendor PSIRTs), KEV as highest-priority signal, edge device emphasis for ICS/OT
+- Lab: 4 steps following Lab-first pattern
+  - Step 1: Product/version extraction from M2 findings + AI-assisted CPE generation. Worked example: FortiGate FortiOS 7.4.6 CPE identifier, Shodan search query
+  - Step 2: Multi-source vulnerability queries with source table + ICS/OT vendor PSIRT table (Fortinet, Siemens, Schneider, Rockwell, ABB). Worked example: FortiGate NVD results (CVE-2025-59718/59719, CVE-2026-24858), KEV timeline (3 days to exploitation), Fortinet PSIRT FG-IR-25-647, CISA alerts
+  - Step 3: P0-P3 prioritization framework table + risk summary prompt. Worked example: FortiGate risk summary AI response with remediation steps
+  - Step 4: Correlation table documentation format (8 fields), cross-module connections (M2 assets, M3 personnel, M5 monitoring, M6 runbook)
+- Output: Artifact 4 with cross-references to M2, M3, M5, M6
+- 2 prompt blocks, 1 response block, 3 collapsible worked examples
+
 ### Next Task
 
-**Task**: 2.9-2.11 - M4: Vulnerability Correlation
+**Task**: 2.12-2.14 - M5: Monitoring & Alerting
 **Status**: NOT STARTED
 
 ### Blockers
@@ -122,7 +132,7 @@ None.
 - Updated Step 2 breach findings: hypothetical breaches now reference Manucy, Banunarayanan, McGurk, McNamara with OT-framed rationale
 - Added Step 2 scaling subsection: HIBP domain verification, API v3 reference, SpiderFoot + V1 workshop link
 - Updated Step 3 prioritization AI response: OT-focused attack scenarios (Manucy critical, Banunarayanan critical, McNamara high, McGurk monitor)
-- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe)
+- Commits: 56c6bfd (M1+M2 restructure), 84977ac (M3 initial), 81f9725 (M3 OT reframe), 0703823 (M4 content)
 
 **Key decisions made**:
 - OT-centric tier model: prioritize by proximity to operational technology, not corporate rank
@@ -191,7 +201,7 @@ This section mirrors PLAN.md for quick reference during session startup.
 | 2.1-2.2 | M1: Threat Context | COMPLETE |
 | 2.3-2.5 | M2: External Attack Surface | COMPLETE |
 | 2.6-2.8 | M3: Personnel & Credential Exposure | COMPLETE |
-| 2.9-2.11 | M4: Vulnerability Correlation | NOT STARTED |
+| 2.9-2.11 | M4: Vulnerability Correlation | COMPLETE |
 | 2.12-2.14 | M5: Monitoring & Alerting | NOT STARTED |
 | 2.15-2.17 | M6: Runbook Development | NOT STARTED |
 | 2.18 | Summary page | NOT STARTED |
