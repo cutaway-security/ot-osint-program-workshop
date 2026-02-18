@@ -461,63 +461,110 @@ APIs/backend, staging/test, content/public, and other.
 
   <p>External OSINT findings can justify and accelerate including OT assets in existing asset management programs. If your organization has an asset management system, cross-reference your external findings against it. Gaps between what you discovered externally and what appears in your inventory are themselves a finding -- they represent assets that exist on the internet but are not being tracked, patched, or managed through your standard processes.</p>
 
-  <h3>Step 4: AI-Assisted Analysis</h3>
+  <h3>Step 4: Consolidation and Google Dorking</h3>
 
-  <p>Feed your discovery results to your AI client for categorization and gap identification:</p>
+  <p>At this point you have three sets of findings: certificate transparency data (Step 1), subdomain enumeration with IP mapping (Step 2), and manually verified exposed services with product identification (Step 3). This step consolidates everything and uses Google dorking to find resources that the other techniques miss -- indexed documents, login pages, directory listings, and configuration files.</p>
 
-{% capture m2_analysis_prompt %}
-I performed subdomain enumeration on an electric cooperative
-organization and found these subdomains:
+  <p><strong>4a. Google dorking</strong></p>
 
-- benefits.cooperative.com
-- resap.cooperative.com
-- ecba.cooperative.com
-- careers.electric.coop
-- remagazine.cooperative.com
+  <p>Search engine dorking uses Google's advanced search operators to find pages and files that the organization may not intend to be publicly accessible. Use your AI client to generate targeted dork queries based on your discoveries so far:</p>
 
-Analyze these subdomains and identify:
-1. Which suggest administrative or login interfaces
-2. Which might contain sensitive employee/member data
-3. What additional subdomains I should look for at a large
-   electric utility association
-4. Suggested Google dork queries to find additional exposed resources
+{% capture m2_dork_prompt %}
+I am performing external attack surface discovery on NRECA, an
+electric cooperative association. I have identified these root
+domains: electric.coop, cooperative.com, nreca.coop.
+
+Based on these domains, generate Google dork queries to find:
+1. Login pages and authentication portals
+2. Exposed documents (PDF, DOCX, XLSX) that may contain
+   sensitive information
+3. Directory listings that reveal file structures
+4. Error pages or debug output that reveals technology stack
+5. Configuration files, backup files, or admin panels
+6. Pages referencing VPN, remote access, or SCADA/OT systems
+
+Format each query so I can paste it directly into Google.
 {% endcapture %}
-{% include prompt-block.html title="Subdomain Analysis Prompt" content=m2_analysis_prompt %}
+{% include prompt-block.html title="Google Dork Query Generation Prompt" content=m2_dork_prompt %}
 
-{% capture m2_analysis_response %}
-<h4>Subdomain Analysis</h4>
+<details>
+  <summary>Example AI Response (Google Dork Queries)</summary>
+{% capture m2_dork_response %}
+<h4>Google Dork Queries for NRECA Domains</h4>
 
-<p><strong>1. Administrative / Login Interfaces:</strong></p>
+<p><strong>Login Pages and Authentication Portals:</strong></p>
 <ul>
-  <li><strong>benefits.cooperative.com</strong> -- almost certainly requires employee login for benefits enrollment, payroll, and personal information. High-value target for credential stuffing.</li>
-  <li><strong>resap.cooperative.com</strong> -- RESAP (Rural Electric Safety Achievement Program) likely requires member cooperative login for safety reporting and program participation.</li>
-  <li><strong>ecba.cooperative.com</strong> -- ECBA (Electric Cooperative Bar Association) likely requires member login. Lower sensitivity but still an authentication endpoint.</li>
+  <li><code>site:cooperative.com inurl:login</code></li>
+  <li><code>site:cooperative.com intitle:"sign in" OR intitle:"log in"</code></li>
+  <li><code>site:electric.coop inurl:auth OR inurl:sso OR inurl:portal</code></li>
 </ul>
 
-<p><strong>2. Sensitive Employee/Member Data:</strong></p>
+<p><strong>Exposed Documents:</strong></p>
 <ul>
-  <li><strong>benefits.cooperative.com</strong> -- highest sensitivity. Employee benefits portals typically contain SSNs, salary data, health insurance information, and banking details for direct deposit.</li>
-  <li><strong>careers.electric.coop</strong> -- contains job descriptions that reveal internal technology stack, team structure, and hiring priorities. May also expose applicant personal data.</li>
+  <li><code>site:electric.coop filetype:pdf "confidential" OR "internal use only"</code></li>
+  <li><code>site:cooperative.com filetype:xlsx OR filetype:csv</code></li>
+  <li><code>site:nreca.coop filetype:docx "draft" OR "not for distribution"</code></li>
 </ul>
 
-<p><strong>3. Additional Subdomains to Investigate:</strong></p>
+<p><strong>Directory Listings:</strong></p>
 <ul>
-  <li>vpn.*, remote.*, access.* -- remote access portals for staff and member cooperatives</li>
-  <li>mail.*, owa.*, webmail.* -- email login interfaces</li>
-  <li>api.*, services.* -- application programming interfaces that may expose data</li>
-  <li>training.*, learning.*, lms.* -- learning management systems (often contain employee rosters)</li>
-  <li>helpdesk.*, support.*, tickets.* -- IT support portals</li>
+  <li><code>site:electric.coop intitle:"index of" OR intitle:"directory listing"</code></li>
+  <li><code>site:cooperative.com intitle:"index of" inurl:uploads OR inurl:files</code></li>
 </ul>
 
-<p><strong>4. Suggested Google Dork Queries:</strong></p>
+<p><strong>Technology Stack and Debug Information:</strong></p>
 <ul>
-  <li><code>site:cooperative.com inurl:login</code> -- find login pages across cooperative.com subdomains</li>
-  <li><code>site:electric.coop filetype:pdf "confidential"</code> -- find potentially sensitive documents</li>
-  <li><code>site:electric.coop intitle:"index of"</code> -- find directory listings</li>
-  <li><code>"electric.coop" "nreca.coop" inurl:vpn OR inurl:remote</code> -- find remote access portals</li>
+  <li><code>site:cooperative.com inurl:error OR inurl:debug OR intitle:"500"</code></li>
+  <li><code>site:electric.coop ext:xml OR ext:json OR ext:conf</code></li>
 </ul>
+
+<p><strong>VPN / Remote Access / OT References:</strong></p>
+<ul>
+  <li><code>"electric.coop" OR "cooperative.com" inurl:vpn OR inurl:remote</code></li>
+  <li><code>site:electric.coop "SCADA" OR "EMS" OR "substation" OR "FortiGate"</code></li>
+  <li><code>"nreca.coop" "remote access" OR "VPN" filetype:pdf</code></li>
+</ul>
+
+<p><strong>Note:</strong> Run each query in Google and review the first 2-3 pages of results. Look for pages that expose internal information, login endpoints not found through subdomain enumeration, or documents that reveal technology choices, vendor relationships, or organizational structure.</p>
 {% endcapture %}
-{% include response-block.html title="Example AI Response (Subdomain Analysis)" content=m2_analysis_response %}
+{% include response-block.html title="Example AI Response (Google Dork Queries)" content=m2_dork_response %}
+</details>
+
+  <p>Run the generated queries in Google and add any new findings to your inventory. Google dorking frequently surfaces resources that subdomain enumeration and Shodan/Censys miss -- particularly indexed documents, forgotten login pages, and configuration files.</p>
+
+  <p><strong>4b. Consolidated analysis</strong></p>
+
+  <p>Feed your combined findings from all steps into your AI client to produce the final attack surface inventory:</p>
+
+{% capture m2_consolidation_prompt %}
+I have completed external attack surface discovery for NRECA, an
+electric cooperative association. Here is a summary of all findings:
+
+CERTIFICATE TRANSPARENCY (crt.sh):
+[paste or summarize CT findings from Step 1]
+
+SUBDOMAIN ENUMERATION (Subdomain Finder):
+[paste or summarize subdomain/IP findings from Step 2]
+
+EXPOSED SERVICES (Shodan/Censys):
+[paste or summarize service discovery from Step 3]
+
+GOOGLE DORKING:
+[paste or summarize any additional findings from Step 4a]
+
+Consolidate all findings into a single attack surface baseline:
+1. A categorized inventory of all discovered assets organized by:
+   remote access, authentication/identity, email, web applications,
+   benefits/HR/financial, APIs, staging/test, content/public
+2. For each category, note the highest-risk assets and why
+3. Gaps in my discovery -- what should I investigate further
+4. A prioritized list of assets to carry forward to vulnerability
+   correlation (Module 4) and monitoring (Module 5)
+5. A summary table suitable for use as a baseline document
+{% endcapture %}
+{% include prompt-block.html title="Attack Surface Consolidation Prompt" content=m2_consolidation_prompt %}
+
+  <p>Review and correct the AI-generated baseline. This consolidated inventory becomes Artifact 2 and feeds directly into the remaining modules.</p>
 </section>
 
 <section class="module-lab">
@@ -660,27 +707,41 @@ function/risk category.
 
   <p>If your organization has an asset management system, note which discovered assets appear in your inventory and which do not. Untracked assets -- especially OT-adjacent infrastructure like VPN concentrators or vendor remote access portals -- are a key finding in themselves.</p>
 
-  <h3>Step 5: AI-Assisted Analysis</h3>
+  <h3>Step 5: Consolidation and Google Dorking</h3>
 
-  <p>Feed your combined findings back to your AI client for categorization, risk prioritization, and gap identification:</p>
+  <p><strong>5a. Google dorking:</strong> Use the Google Dork Query Generation Prompt from the worked example, adapted with your target's domains. Run the generated queries and add new findings to your inventory.</p>
+
+  <p><strong>5b. Consolidated analysis:</strong> Feed all findings from Steps 3-4 into your AI client for final consolidation:</p>
 
 {% capture m2_findings_prompt %}
-Here are the results of my external attack surface discovery for
-[organization name]:
+I have completed external attack surface discovery for
+[organization name]. Here is a summary of all findings:
 
-Domains found: [list your domains]
-Subdomains found: [list your subdomains]
-Exposed services: [list services with product/version where known]
+CERTIFICATE TRANSPARENCY (crt.sh):
+[paste or summarize CT findings]
 
-Analyze these findings and provide:
-1. A categorized inventory (remote access, email, web apps, other)
-2. Which services represent the highest risk for initial access
-3. What gaps in my discovery I should investigate further
-4. A summary table I can use as my external attack surface baseline
+SUBDOMAIN ENUMERATION:
+[paste or summarize subdomain/IP findings]
+
+EXPOSED SERVICES (Shodan/Censys):
+[paste or summarize service discovery findings]
+
+GOOGLE DORKING:
+[paste or summarize any additional findings]
+
+Consolidate all findings into a single attack surface baseline:
+1. A categorized inventory of all discovered assets organized by:
+   remote access, authentication/identity, email, web applications,
+   benefits/HR/financial, APIs, staging/test, content/public
+2. For each category, note the highest-risk assets and why
+3. Gaps in my discovery -- what should I investigate further
+4. A prioritized list of assets to carry forward to vulnerability
+   correlation (Module 4) and monitoring (Module 5)
+5. A summary table suitable for use as a baseline document
 {% endcapture %}
-{% include prompt-block.html title="Findings Analysis Prompt" content=m2_findings_prompt %}
+{% include prompt-block.html title="Attack Surface Consolidation Prompt (Your Organization)" content=m2_findings_prompt %}
 
-  <p>Review the AI-generated analysis and correct any mischaracterizations. The categorized inventory becomes the foundation of your Artifact 2.</p>
+  <p>Review and correct the AI-generated baseline. This consolidated inventory becomes your Artifact 2.</p>
 </section>
 
 <section class="module-output">
