@@ -134,30 +134,36 @@ next_module_title: "M6: Runbook Development"
 
   <h3>Step 1: Design Your Pull-Based Monitoring Schedule</h3>
 
-  <p>Push alerts (configured per the read section above) cover many scenarios, but they have gaps. Certificate transparency monitors may miss DNS-only changes. Shodan re-scans on its own schedule, not yours. Personnel changes do not generate automated alerts. A structured pull-based schedule fills these gaps.</p>
+  <p>Your pull-based schedule should target the remote access infrastructure, edge devices, and OT-adjacent personnel identified in Modules 2-4. This is not a general IT monitoring checklist -- generic changes like marketing website updates or unrelated subdomain additions are out of scope. The focus is on the systems and credentials that, if compromised, create a path to operational technology: VPN portals, firewall management interfaces, Tier 1 and Tier 2 personnel credentials, and the vulnerability status of edge devices sitting on the IT/OT boundary.</p>
 
-  <p>Use your AI client to generate a customized monitoring checklist based on your specific findings from Modules 2-4:</p>
+  <p>Use your AI client to generate a customized monitoring checklist based on your specific findings:</p>
 
 {% capture m5_schedule_prompt %}
-Create a pull-based OSINT monitoring checklist for [organization
-name], a [sector] organization. The checklist should include
-weekly checks (under 30 minutes) and monthly checks (up to 2
-hours).
+Create a pull-based OSINT monitoring schedule for [organization
+name], a [sector] organization focused on monitoring remote
+access and OT-adjacent infrastructure. Include weekly checks
+(under 30 minutes) and monthly checks (up to 2 hours).
 
-Based on our monitoring program findings:
-- External domains: [list primary domains from Module 2]
-- Key exposed services: [list from Module 2, e.g., VPN portal,
-  webmail, admin interfaces]
-- Edge device vendors: [list from Module 4, e.g., Fortinet,
-  Cisco]
-- Personnel count in monitoring: [number from Module 3]
-- Email domain: [domain from Module 3]
+From our prior modules:
+- Remote access and OT-adjacent services discovered: [list
+  from Module 2 -- VPN portals, admin interfaces, remote
+  desktop, firewall management pages]
+- Edge device vendors with internet-exposed assets: [list
+  from Module 4, e.g., Fortinet, Cisco]
+- Tier 1 and Tier 2 personnel (OT/IT access): [count and
+  roles from Module 3]
+- Email domain for breach monitoring: [domain from Module 3]
+- Primary domains and subdomains to watch: [from Module 2]
 
 For each check, specify:
-1. The tool to use and the specific query to run
-2. What to compare against (baseline from initial assessment)
-3. What constitutes a notable finding vs expected noise
-4. Estimated time for the check
+1. The tool and exact query to run
+2. What to compare against (the baseline from today)
+3. What constitutes an OT-relevant finding vs. expected noise
+4. Estimated time
+
+Prioritize checks covering remote access infrastructure and
+edge device vulnerability changes above general subdomain
+or personnel checks.
 {% endcapture %}
 {% include prompt-block.html title="Pull-Based Monitoring Schedule Prompt" content=m5_schedule_prompt %}
 
@@ -172,13 +178,33 @@ For each check, specify:
 
 <p><strong>Weekly Checks (estimated 25 minutes):</strong></p>
 
+<p>Checks are ordered by OT relevance: remote access exposure and edge device vulnerabilities first, credential risk second, infrastructure changes third.</p>
+
 <ol>
+  <li><strong>Shodan/Censys Quick Check</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> Shodan</li>
+      <li><strong>Query:</strong> Check known VPN portal and admin interface IPs from Module 2 baseline for port, service, or version changes</li>
+      <li><strong>Compare to:</strong> Module 2 baseline service inventory (remote access entries)</li>
+      <li><strong>OT-relevant finding:</strong> Any change to a VPN login page, new port on a firewall management IP, or version change on an edge device. A version downgrade or unexpected service on a known remote access IP warrants immediate investigation</li>
+      <li><strong>Expected noise:</strong> Minor HTTP header changes, certificate renewals on the same service</li>
+    </ul>
+  </li>
+  <li><strong>CISA KEV Review</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> CISA KEV catalog</li>
+      <li><strong>Query:</strong> Review additions from the past 7 days. Check each new entry against your Module 4 asset inventory</li>
+      <li><strong>Compare to:</strong> Module 4 vulnerability correlation table</li>
+      <li><strong>OT-relevant finding:</strong> Any new KEV entry matching a product/vendor in your asset inventory -- this is a P0 finding if the asset is internet-exposed</li>
+      <li><strong>Expected noise:</strong> KEV additions for products not in your environment</li>
+    </ul>
+  </li>
   <li><strong>Certificate Transparency Check</strong> (5 min)
     <ul>
       <li><strong>Tool:</strong> crt.sh</li>
       <li><strong>Query:</strong> <code>%.electric.coop</code> and <code>%.cooperative.com</code></li>
       <li><strong>Compare to:</strong> Module 2 baseline subdomain list</li>
-      <li><strong>Notable finding:</strong> Any new subdomain not in your baseline -- especially subdomains suggesting new services (vpn2., staging., dev., api.), new applications, or shadow IT</li>
+      <li><strong>OT-relevant finding:</strong> Any new subdomain not in your baseline -- especially subdomains suggesting new remote access services (vpn2., ras., remote.), new OT-adjacent applications, or shadow IT</li>
       <li><strong>Expected noise:</strong> Certificate renewals for existing subdomains (same name, new cert serial)</li>
     </ul>
   </li>
@@ -187,24 +213,15 @@ For each check, specify:
       <li><strong>Tool:</strong> HaveIBeenPwned</li>
       <li><strong>Query:</strong> Domain search for <code>nreca.coop</code> (if verified) or spot-check Tier 1 personnel emails</li>
       <li><strong>Compare to:</strong> Module 3 breach findings baseline</li>
-      <li><strong>Notable finding:</strong> Any Tier 1 or Tier 2 personnel appearing in a new breach, especially if passwords or hashes were exposed</li>
+      <li><strong>OT-relevant finding:</strong> Any Tier 1 or Tier 2 personnel appearing in a new breach, especially if passwords or hashes were exposed. These are the credentials that could unlock remote access to OT-adjacent systems</li>
       <li><strong>Expected noise:</strong> Previously known breaches appearing in HIBP updates (no new data, just re-processed)</li>
     </ul>
   </li>
-  <li><strong>CISA KEV Review</strong> (5 min)
-    <ul>
-      <li><strong>Tool:</strong> CISA KEV catalog</li>
-      <li><strong>Query:</strong> Review additions from the past 7 days. Check each new entry against your Module 4 asset inventory</li>
-      <li><strong>Compare to:</strong> Module 4 vulnerability correlation table</li>
-      <li><strong>Notable finding:</strong> Any new KEV entry matching a product/vendor in your asset inventory -- this is a P0 finding if the asset is internet-exposed</li>
-      <li><strong>Expected noise:</strong> KEV additions for products not in your environment</li>
-    </ul>
-  </li>
-  <li><strong>Alert Backlog Processing</strong> (10 min)
+  <li><strong>Alert Backlog Processing</strong> (5 min)
     <ul>
       <li><strong>Tool:</strong> Your alert aggregation point (email folder, Slack channel)</li>
       <li><strong>Action:</strong> Review and triage any push alerts that were flagged during daily checks but deferred for weekly review</li>
-      <li><strong>Notable finding:</strong> Patterns across multiple alerts (e.g., several mentions of your organization in security forums, multiple new subdomains in one week)</li>
+      <li><strong>OT-relevant finding:</strong> Patterns across multiple alerts (e.g., several mentions of your organization in security forums, multiple new subdomains in one week)</li>
     </ul>
   </li>
 </ol>
@@ -225,7 +242,7 @@ For each check, specify:
       <li><strong>Tools:</strong> Shodan, Censys</li>
       <li><strong>Query:</strong> Re-run Module 2 queries for organization IP ranges and domain names</li>
       <li><strong>Compare to:</strong> Module 2 baseline service inventory</li>
-      <li><strong>Action:</strong> Identify new services, changed ports, or version changes. Flag any new administrative interfaces exposed to the internet</li>
+      <li><strong>Action:</strong> Identify new services, changed ports, or version changes. Flag any new administrative interfaces exposed to the internet. Pay particular attention to any changes in VPN login pages, admin interfaces, or management ports -- these directly affect OT network boundary security</li>
     </ul>
   </li>
   <li><strong>Vulnerability Correlation Update</strong> (20 min)
