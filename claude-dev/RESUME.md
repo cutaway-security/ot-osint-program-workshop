@@ -75,6 +75,16 @@ This document provides context for resuming development after a break or when st
 **Phase 3 - Supporting Materials**: COMPLETE
 - Batch 1 (0e1738a): AI Copilot Prompt Library (16 prompts in 2 categories), Tool Reference (15 tools in 5 categories), Vulnerability Intelligence Resources (primary sources, 5 vendor PSIRTs, 3 exploit intel), 5 templates (baseline, personnel inventory, vuln correlation, runbook, monitoring checklist) + templates index
 - Batch 2 (4b4d7d8): 4 worked example pages (NRECA domain discovery, NRECA personnel analysis, Fortinet vulnerability correlation, Google Alerts configuration) + examples index page + Supporting Materials card on index.html linking to examples
+- Batch 3 (c5ed87f): Downloadable template files and site integration
+  - 3 Excel templates (.xlsx) with data validation dropdowns: baseline, personnel inventory, vuln correlation
+  - 2 Word templates (.docx) with checkboxes and [CORE]/[FULL] labels: monitoring checklist, runbook
+  - 2 NRECA example Word documents (.docx): monitoring checklist and runbook pre-filled with workshop data
+  - Templates nav dropdown (matching Modules dropdown pattern)
+  - Download links on all 5 template Markdown pages
+  - Templates index updated with Download column and NRECA Worked Examples section
+  - Template download references added to M2-M6 module output sections
+  - Python generator scripts stored alongside generated files for reproducibility
+  - _config.yml excludes .py files from Jekyll build output
 
 ### Next Task
 
