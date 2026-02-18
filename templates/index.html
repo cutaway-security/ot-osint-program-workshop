@@ -5,13 +5,47 @@ title: Templates
 
 <h1>Workshop Templates</h1>
 
-<p>Artifact templates for the workshop. Copy and adapt these for your organization.</p>
+<p>Artifact templates for the workshop. Copy and adapt these for your organization. All templates use Markdown table format for easy copy/paste into your preferred document tool.</p>
 
-<!-- TODO: Phase 3 -- Create template files and link them here
-     - Baseline document template
-     - Personnel exposure inventory template
-     - Vulnerability correlation table template
-     - Runbook template
-     - Monitoring checklist template -->
-
-<p>Templates will be added in a future update.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Template</th>
+      <th>Artifact</th>
+      <th>Module</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="{{ '/templates/baseline-template' | relative_url }}">Baseline Document</a></td>
+      <td>7</td>
+      <td>M5</td>
+      <td>Consolidated external exposure baseline combining Module 2 (attack surface), Module 3 (personnel), and Module 4 (vulnerabilities) with four-category classification system</td>
+    </tr>
+    <tr>
+      <td><a href="{{ '/templates/personnel-inventory-template' | relative_url }}">Personnel Exposure Inventory</a></td>
+      <td>3</td>
+      <td>M3</td>
+      <td>Role-based personnel inventory with tier assignments, breach tracking, prioritization matrix, and professional network exposure</td>
+    </tr>
+    <tr>
+      <td><a href="{{ '/templates/vuln-correlation-template' | relative_url }}">Vulnerability Correlation Table</a></td>
+      <td>4</td>
+      <td>M4</td>
+      <td>Asset-to-CVE mapping with CPE identifiers, CISA KEV status, P0-P3 priority ratings, vendor PSIRT tracking, and source checklist</td>
+    </tr>
+    <tr>
+      <td><a href="{{ '/templates/runbook-template' | relative_url }}">Operational Runbook</a></td>
+      <td>8</td>
+      <td>M6</td>
+      <td>Cadenced monitoring procedures (daily, weekly, monthly, quarterly) with [CORE]/[FULL] labels, checklists, ownership, and escalation paths</td>
+    </tr>
+    <tr>
+      <td><a href="{{ '/templates/monitoring-checklist-template' | relative_url }}">Monitoring Checklist</a></td>
+      <td>6</td>
+      <td>M5</td>
+      <td>Pull-based weekly and monthly monitoring checklist with tool queries, baseline references, finding logs, and cycle summary tracking</td>
+    </tr>
+  </tbody>
+</table>
