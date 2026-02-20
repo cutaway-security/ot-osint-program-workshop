@@ -1,0 +1,381 @@
+---
+layout: module
+title: "Module 5: Monitoring & Alerting Setup"
+module_number: 5
+read_time: 10
+lab_time: 40
+total_time: 50
+block: 2
+prev_module: m4-vulnerability-correlation
+prev_module_title: "M4: Vulnerability Correlation"
+next_module: m6-runbook-development
+next_module_title: "M6: Runbook Development"
+---
+
+<section class="module-overview">
+  <h2>Overview</h2>
+
+  <p>Modules 2 through 4 built a point-in-time picture of your organization's external exposure -- attack surface, personnel risk, and vulnerability correlation. That picture starts going stale the moment you close your browser. This module establishes <strong>ongoing monitoring</strong> so you are alerted when things change rather than discovering problems during the next quarterly review.</p>
+
+  <p>The goal is not comprehensive IT monitoring -- it is targeted monitoring of the specific external signals that indicate risk to <strong>OT operations and remote access infrastructure</strong>. Specifically, this program watches for changes to: internet-facing remote access systems and VPN portals; edge devices with OT network connectivity such as firewalls, VPN concentrators, and remote access gateways; credentials belonging to Tier 1 and Tier 2 personnel with OT or IT/OT interface access (Module 3); and new vulnerabilities in the products identified in Modules 2 and 4 that sit on the boundary between IT and OT networks. Everything configured in this module -- every alert, every scheduled check, every baseline entry -- should connect back to one of these categories. If a monitoring activity does not inform your understanding of risk to operational systems, it belongs in a different program.</p>
+
+  <h3>Push + Pull: Two Monitoring Models</h3>
+
+  <p>Sustainable monitoring combines two approaches:</p>
+
+  <ul>
+    <li><strong>Push-based (alerts come to you)</strong> -- Services that notify you when something new appears: a new breach containing your domain, a new CVE for a product you use, a mention of your organization in a security context. These require initial setup but then run continuously with no recurring effort.</li>
+    <li><strong>Pull-based (you go check periodically)</strong> -- Scheduled re-runs of the same queries from Modules 2-4: subdomain enumeration, Shodan/Censys checks, breach database lookups, vulnerability correlation. These catch changes that push-based alerts miss and provide a structured baseline comparison.</li>
+  </ul>
+
+  <p>Neither approach is sufficient alone. Push alerts have gaps in coverage, and pull checks only find changes at the frequency you run them. Together they provide layered coverage.</p>
+
+  <div class="info-callout">
+    <p><strong>Where Free Tools Hit Their Ceiling</strong></p>
+    <p>The free-tool approach in this workshop replicates roughly 60-70% of what commercial <strong>Attack Surface Management (ASM)</strong> platforms provide. Products in this category -- Censys ASM, Shodan Enterprise Monitor, GreyNoise, Recorded Future, Digital Shadows/ReliaQuest, and others -- automate continuous asset discovery, automatic CVE correlation against discovered assets, breach feed aggregation, and personnel exposure monitoring. What you are doing manually across Modules 2-5, these platforms do continuously and at scale.</p>
+    <p>The tradeoff is cost versus analyst time. For small teams monitoring a handful of domains, the manual approach works well. When alert triage and pull-based checks are consuming more than 2-3 hours per week, a paid platform likely pays for itself in analyst time alone -- and provides coverage that manual checks cannot match. Treat this workshop as the foundation: you will know exactly what to evaluate and what questions to ask when that threshold arrives.</p>
+  </div>
+
+  <h3>Pull-Based Checks</h3>
+
+  <p>Pull-based monitoring means re-running the same discovery and correlation queries on a schedule. The value is in <strong>comparison to baseline</strong> -- not the raw results, but what has changed since your last check:</p>
+
+  <ul>
+    <li><strong>Subdomain changes</strong> (Module 2) -- New subdomains appearing in certificate transparency logs or DNS enumeration. A new subdomain may indicate a new service, a development/staging environment, or shadow IT</li>
+    <li><strong>Exposure changes</strong> (Module 2) -- New ports or services appearing on Shodan/Censys for your IP ranges. Services that were internal-only may have been accidentally exposed</li>
+    <li><strong>New breach appearances</strong> (Module 3) -- Personnel email addresses appearing in newly disclosed breaches. Breaches are disclosed continuously; a weekly HIBP check catches new exposure</li>
+    <li><strong>New CVEs</strong> (Module 4) -- New vulnerabilities disclosed for products in your asset inventory. Check NVD, CISA KEV, and vendor PSIRTs for your specific products and versions</li>
+    <li><strong>Personnel changes</strong> (Module 3) -- Leadership changes, new hires in key roles, departures. Role changes affect your tier assignments and monitoring priorities</li>
+  </ul>
+
+  <h3>Push-Based Alert Sources</h3>
+
+  <p>Push-based services run continuously once configured. These complement your pull-based schedule by alerting you to changes between scheduled checks:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>What It Monitors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><a href="https://www.google.com/alerts" target="_blank" rel="noopener">Google Alerts</a></strong></td>
+        <td>Web mentions of your organization combined with security keywords (breach, hack, vulnerability, SCADA)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://monitor.shodan.io/" target="_blank" rel="noopener">Shodan Alerts</a></strong></td>
+        <td>Changes to internet-exposed services on your IP ranges (free tier: up to 16 IPs)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://crt.sh" target="_blank" rel="noopener">crt.sh</a> / <a href="https://sslmate.com/certspotter/" target="_blank" rel="noopener">Cert Spotter</a></strong></td>
+        <td>New SSL/TLS certificates issued for your domains, indicating new subdomains or shadow IT</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener">CISA ICS Advisories</a> + <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">KEV</a></strong></td>
+        <td>New ICS advisories, KEV additions, and vendor-specific security alerts (email and RSS)</td>
+      </tr>
+      <tr>
+        <td><strong>Vendor PSIRTs</strong></td>
+        <td>New vulnerabilities for specific products in your asset inventory (see Module 4 vendor PSIRT table)</td>
+      </tr>
+      <tr>
+        <td><strong><a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">HaveIBeenPwned</a></strong></td>
+        <td>New data breaches containing email addresses from your domain (requires domain verification)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Configure any of these services that are not already active for your organization. The lab section below focuses on pull-based checks because those require structured practice to establish the baseline and schedule that make ongoing monitoring repeatable.</p>
+
+  <h3>Alert Aggregation and Signal-to-Noise</h3>
+
+  <p>Without aggregation, monitoring alerts scatter across email, Slack, RSS feeds, and browser bookmarks -- making it easy to miss critical notifications. Establish a single collection point:</p>
+
+  <ul>
+    <li><strong>Dedicated email folder</strong> -- Filter all monitoring alerts (Google Alerts, CISA, vendor PSIRTs, HIBP) into a single folder. Simple, works with any email system</li>
+    <li><strong>Slack or Teams channel</strong> -- A dedicated channel for monitoring alerts, with email-to-channel integration for services that only support email delivery</li>
+    <li><strong>RSS reader</strong> -- For CISA advisories and vendor feeds that publish RSS. Aggregates multiple feeds into a single reading interface</li>
+  </ul>
+
+  <p><strong>Start narrow, expand as you learn.</strong> Begin with a focused set of alerts covering your highest-priority assets and personnel. Overly broad alerting generates noise that trains you to ignore notifications -- the opposite of what you want. After a few weeks of triage, you will learn which alerts generate actionable findings and which are noise. Expand coverage gradually.</p>
+
+  <p>When an alert arrives, run it through three questions:</p>
+
+  <ol>
+    <li><strong>Does this involve an asset or person in my baseline?</strong> If not, it may be informational but is not directly actionable against your monitored environment.</li>
+    <li><strong>Does this indicate a change from baseline?</strong> New asset, changed configuration, removed service, new breach appearance -- changes are what you are looking for. An alert confirming known state is not a finding.</li>
+    <li><strong>Is this actionable within my team's current capacity?</strong> A real finding that no one can act on is a backlog item, not an emergency. Be honest about capacity.</li>
+  </ol>
+
+  <p>Based on those answers, assign each alert a disposition:</p>
+
+  <ul>
+    <li><strong>Act now</strong> -- P0/P1 finding: escalate immediately per your escalation path</li>
+    <li><strong>Weekly review queue</strong> -- Notable change that is not urgent. Batch these for your weekly pull check</li>
+    <li><strong>Parking lot</strong> -- Interesting but low priority. Review monthly during your baseline update</li>
+    <li><strong>Tune or disable</strong> -- After 4+ weeks of consistently non-actionable results from a specific alert, adjust the query or remove it. An alert that never produces useful findings is consuming attention without providing value</li>
+  </ul>
+
+  <p>One additional discipline: any item classified as "Needs Investigation" in your baseline (Step 2) should not sit indefinitely. If it remains unresolved for more than one full monitoring cycle -- weekly or monthly, depending on when it was added -- force a human decision: accept the risk, investigate further, or remediate. Unresolved items that linger become invisible, which is worse than a deliberate risk acceptance.</p>
+
+  <h3>Sustainability and Operational Fatigue</h3>
+
+  <p>Alert fatigue -- too many notifications -- is a recognized problem. Less discussed is <strong>operational fatigue</strong>: the cumulative burden of running a monitoring program week after week, month after month. Manual programs fail not because the first month was bad, but because by month six, the person responsible has changed roles, competing priorities have crowded out the weekly checks, execution becomes inconsistent, and nothing is documented well enough for a handoff.</p>
+
+  <p>Design for this from day one. Identify your <strong>minimum viable monitoring</strong> -- the 2-3 activities that, if nothing else runs, keep the program alive. This might be: process your push alerts daily, run the weekly KEV check, and update the baseline monthly. Everything beyond that is valuable but optional. Document procedures clearly enough that someone else can execute them without training. Share ownership so the program does not depend on a single person. Use realistic time estimates -- if your weekly checks consistently take 45 minutes instead of 30, update the schedule rather than skipping steps. And accept that some coverage gaps are acceptable. A monitoring program that runs consistently at 70% coverage is far more valuable than one designed for 100% that quietly stops after three months.</p>
+</section>
+
+<section class="module-lab">
+  <h2>Lab: Configure Your Monitoring Infrastructure</h2>
+
+  <p>In this lab, you will build an OT-focused pull-based monitoring schedule tailored to your findings from Modules 2-4, then consolidate those findings into a classified baseline document. The outputs become Artifacts 6 and 7.</p>
+
+  <h3>Step 1: Design Your Pull-Based Monitoring Schedule</h3>
+
+  <p>Your pull-based schedule should target the remote access infrastructure, edge devices, and OT-adjacent personnel identified in Modules 2-4. This is not a general IT monitoring checklist -- generic changes like marketing website updates or unrelated subdomain additions are out of scope. The focus is on the systems and credentials that, if compromised, create a path to operational technology: VPN portals, firewall management interfaces, Tier 1 and Tier 2 personnel credentials, and the vulnerability status of edge devices sitting on the IT/OT boundary.</p>
+
+  <p>Use your AI client to generate a customized monitoring checklist based on your specific findings:</p>
+
+{% capture m5_schedule_prompt %}
+Create a pull-based OSINT monitoring schedule for [organization
+name], a [sector] organization focused on monitoring remote
+access and OT-adjacent infrastructure. Include weekly checks
+(under 30 minutes) and monthly checks (up to 2 hours).
+
+From our prior modules:
+- Remote access and OT-adjacent services discovered: [list
+  from Module 2 -- VPN portals, admin interfaces, remote
+  desktop, firewall management pages]
+- Edge device vendors with internet-exposed assets: [list
+  from Module 4, e.g., Fortinet, Cisco]
+- Tier 1 and Tier 2 personnel (OT/IT access): [count and
+  roles from Module 3]
+- Email domain for breach monitoring: [domain from Module 3]
+- Primary domains and subdomains to watch: [from Module 2]
+
+For each check, specify:
+1. The tool and exact query to run
+2. What to compare against (the baseline from today)
+3. What constitutes an OT-relevant finding vs. expected noise
+4. Estimated time
+
+Prioritize checks covering remote access infrastructure and
+edge device vulnerability changes above general subdomain
+or personnel checks.
+{% endcapture %}
+{% include prompt-block.html title="Pull-Based Monitoring Schedule Prompt" content=m5_schedule_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Pull-Based Monitoring Schedule</summary>
+  <div class="worked-example-content">
+
+<details>
+  <summary>Example AI Response (NRECA Monitoring Schedule)</summary>
+{% capture m5_schedule_response %}
+<h4>NRECA Pull-Based OSINT Monitoring Schedule</h4>
+
+<p><strong>Weekly Checks (estimated 25 minutes):</strong></p>
+
+<p>Checks are ordered by OT relevance: remote access exposure and edge device vulnerabilities first, credential risk second, infrastructure changes third.</p>
+
+<ol>
+  <li><strong>Shodan/Censys Quick Check</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> Shodan</li>
+      <li><strong>Query:</strong> Check known VPN portal and admin interface IPs from Module 2 baseline for port, service, or version changes</li>
+      <li><strong>Compare to:</strong> Module 2 baseline service inventory (remote access entries)</li>
+      <li><strong>OT-relevant finding:</strong> Any change to a VPN login page, new port on a firewall management IP, or version change on an edge device. A version downgrade or unexpected service on a known remote access IP warrants immediate investigation</li>
+      <li><strong>Expected noise:</strong> Minor HTTP header changes, certificate renewals on the same service</li>
+    </ul>
+  </li>
+  <li><strong>CISA KEV Review</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> CISA KEV catalog</li>
+      <li><strong>Query:</strong> Review additions from the past 7 days. Check each new entry against your Module 4 asset inventory</li>
+      <li><strong>Compare to:</strong> Module 4 vulnerability correlation table</li>
+      <li><strong>OT-relevant finding:</strong> Any new KEV entry matching a product/vendor in your asset inventory -- this is a P0 finding if the asset is internet-exposed</li>
+      <li><strong>Expected noise:</strong> KEV additions for products not in your environment</li>
+    </ul>
+  </li>
+  <li><strong>Certificate Transparency Check</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> crt.sh</li>
+      <li><strong>Query:</strong> <code>%.electric.coop</code> and <code>%.cooperative.com</code></li>
+      <li><strong>Compare to:</strong> Module 2 baseline subdomain list</li>
+      <li><strong>OT-relevant finding:</strong> Any new subdomain not in your baseline -- especially subdomains suggesting new remote access services (vpn2., ras., remote.), new OT-adjacent applications, or shadow IT</li>
+      <li><strong>Expected noise:</strong> Certificate renewals for existing subdomains (same name, new cert serial)</li>
+    </ul>
+  </li>
+  <li><strong>Breach Database Check</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> HaveIBeenPwned</li>
+      <li><strong>Query:</strong> Domain search for <code>nreca.coop</code> (if verified) or spot-check Tier 1 personnel emails</li>
+      <li><strong>Compare to:</strong> Module 3 breach findings baseline</li>
+      <li><strong>OT-relevant finding:</strong> Any Tier 1 or Tier 2 personnel appearing in a new breach, especially if passwords or hashes were exposed. These are the credentials that could unlock remote access to OT-adjacent systems</li>
+      <li><strong>Expected noise:</strong> Previously known breaches appearing in HIBP updates (no new data, just re-processed)</li>
+    </ul>
+  </li>
+  <li><strong>Alert Backlog Processing</strong> (5 min)
+    <ul>
+      <li><strong>Tool:</strong> Your alert aggregation point (email folder, Slack channel)</li>
+      <li><strong>Action:</strong> Review and triage any push alerts that were flagged during daily checks but deferred for weekly review</li>
+      <li><strong>OT-relevant finding:</strong> Patterns across multiple alerts (e.g., several mentions of your organization in security forums, multiple new subdomains in one week)</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Monthly Checks (estimated 90 minutes):</strong></p>
+
+<ol>
+  <li><strong>Full Subdomain Re-Enumeration</strong> (20 min)
+    <ul>
+      <li><strong>Tools:</strong> crt.sh, DNSDumpster, SecurityTrails</li>
+      <li><strong>Query:</strong> Complete subdomain enumeration for all domains from Module 2</li>
+      <li><strong>Compare to:</strong> Module 2 baseline domain map</li>
+      <li><strong>Action:</strong> Update baseline. Investigate any new subdomains. Remove any that have been decommissioned</li>
+    </ul>
+  </li>
+  <li><strong>Shodan/Censys Exposure Review</strong> (20 min)
+    <ul>
+      <li><strong>Tools:</strong> Shodan, Censys</li>
+      <li><strong>Query:</strong> Re-run Module 2 queries for organization IP ranges and domain names</li>
+      <li><strong>Compare to:</strong> Module 2 baseline service inventory</li>
+      <li><strong>Action:</strong> Identify new services, changed ports, or version changes. Flag any new administrative interfaces exposed to the internet. Pay particular attention to any changes in VPN login pages, admin interfaces, or management ports -- these directly affect OT network boundary security</li>
+    </ul>
+  </li>
+  <li><strong>Vulnerability Correlation Update</strong> (20 min)
+    <ul>
+      <li><strong>Tools:</strong> NVD, CISA KEV, vendor PSIRTs, ICS Advisory Project</li>
+      <li><strong>Query:</strong> Re-run Module 4 CPE queries for all products in your asset inventory</li>
+      <li><strong>Compare to:</strong> Module 4 vulnerability correlation table</li>
+      <li><strong>Action:</strong> Update correlation table with new CVEs. Re-assess priority ratings. Check if previously patched items have follow-on CVEs (like the FortiGate CVE-2026-24858 follow-on)</li>
+    </ul>
+  </li>
+  <li><strong>Personnel Inventory Review</strong> (15 min)
+    <ul>
+      <li><strong>Tools:</strong> Organization website, professional profiles</li>
+      <li><strong>Query:</strong> Review leadership and key personnel pages for changes</li>
+      <li><strong>Compare to:</strong> Module 3 personnel inventory</li>
+      <li><strong>Action:</strong> Update inventory for new hires, departures, and role changes. New Tier 1 personnel should be added to breach monitoring immediately</li>
+    </ul>
+  </li>
+  <li><strong>Baseline Document Update</strong> (15 min)
+    <ul>
+      <li><strong>Action:</strong> Consolidate all weekly and monthly findings into the baseline document (Artifact 7). Reclassify items as needed. Archive resolved items</li>
+    </ul>
+  </li>
+</ol>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (NRECA Monitoring Schedule)" content=m5_schedule_response %}
+</details>
+
+    <p>Customize the AI-generated schedule for your environment. Your actual weekly time may vary -- the key is having a consistent, repeatable process rather than a specific time target. Organizations with larger attack surfaces or more exposed services may need to allocate more time for monthly checks.</p>
+
+  </div>
+</details>
+
+  <h3>Step 2: Create Your Baseline Snapshot</h3>
+
+  <p>Your pull-based monitoring is only useful if you have a baseline to compare against. Consolidate your outputs from Modules 2, 3, and 4 into a single baseline document that serves as the reference point for all future monitoring.</p>
+
+  <p>For each item in the baseline, assign a classification:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Classification</th>
+        <th>Meaning</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Known-Good</strong></td>
+        <td>Expected and properly configured. No security concern identified</td>
+        <td>Document and monitor for changes</td>
+      </tr>
+      <tr>
+        <td><strong>Accepted Risk</strong></td>
+        <td>Known exposure that cannot be remediated immediately (e.g., business-required internet-facing service)</td>
+        <td>Document the business justification. Monitor more frequently. Review acceptance quarterly</td>
+      </tr>
+      <tr>
+        <td><strong>Needs Remediation</strong></td>
+        <td>Security issue with a clear fix (patch available, misconfiguration, unnecessary exposure)</td>
+        <td>Add to remediation queue with priority from Module 4 framework. Track to resolution</td>
+      </tr>
+      <tr>
+        <td><strong>Needs Investigation</strong></td>
+        <td>Unknown or unexpected item requiring further analysis before classification</td>
+        <td>Investigate promptly. Items should not remain in this category for more than one monitoring cycle</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>OT-Priority Sorting</h4>
+
+  <p>When classifying baseline entries, work through them in order of operational impact. Remote access portals, VPN endpoints, and administrative interfaces should be classified first -- these are the assets most likely to provide a direct path into OT networks. Tier 1 and Tier 2 personnel (those with OT system access or credentials) come next, followed by vulnerability correlation entries for edge devices and OT-adjacent systems. All remaining findings -- corporate subdomains, general personnel, and lower-priority vulnerabilities -- are classified last. This ordering ensures that the entries with the most direct OT impact receive attention even when time runs short.</p>
+
+  <h4>Baseline Structure</h4>
+
+  <p>Your baseline document should consolidate the key outputs from each preceding module:</p>
+
+  <ul>
+    <li><strong>From Module 2 (Attack Surface):</strong> All discovered domains, subdomains, and exposed services with their current status. Remote access portals, VPN login pages, and administrative interfaces should be listed first within this section. Include the asset documentation fields (hostname, IP, port, product, criticality, zone)</li>
+    <li><strong>From Module 3 (Personnel):</strong> Tier 1 and Tier 2 personnel with email addresses, breach status, and monitoring priority. Team email addresses and email format pattern</li>
+    <li><strong>From Module 4 (Vulnerabilities):</strong> Vulnerability correlation table with CVE details, KEV status, priority ratings, and remediation status</li>
+    <li><strong>From this module:</strong> List of configured push alerts and pull-based schedule, so the next person running the monitoring process knows what is already set up</li>
+  </ul>
+
+  <div class="info-callout">
+    <p><strong>The baseline is a living document.</strong> Every monitoring cycle should produce a comparison against the baseline and then update it. When a new subdomain appears, it starts as "Needs Investigation," gets analyzed, and then moves to one of the other three categories. When a vulnerability is patched, its status in the baseline changes to "Known-Good" with a note about the patch date. The baseline reflects your current understanding, not a historical snapshot. The remote access and edge device entries are the highest-priority section of this document -- if nothing else is reviewed at each monitoring cycle, those entries should be.</p>
+  </div>
+
+  <h3>Step 3: Sustainability Assessment</h3>
+
+  <p>You have now designed a monitoring schedule and created a baseline. Before leaving this module, spend five minutes making explicit decisions about how this program survives beyond today. Answer these four questions -- use your AI client to think through the tradeoffs, but the answers are yours to make:</p>
+
+  <ol>
+    <li><strong>Single point of failure:</strong> Is this program documented well enough that a teammate who was not here today could run it? If not, what is missing -- tool access, login credentials, the schedule itself, or context about why certain alerts were configured?</li>
+    <li><strong>Minimum viable monitoring:</strong> Of all the push alerts and pull checks in your monitoring program, which 2-3 would you keep if your available time dropped by 75%? These are your non-negotiables -- the checks that keep the program alive even when everything else falls off. (Include both push alerts and pull checks in your consideration.)</li>
+    <li><strong>Escalation path:</strong> When monitoring surfaces a P0 or P1 finding at 10pm on a Friday, who gets the call? Is that documented anywhere other than your own memory?</li>
+    <li><strong>Program review cadence:</strong> When will you revisit the alert configurations themselves? Alert configs go stale too -- organizational changes, new domains, personnel turnover, and vendor product changes all require updates to what you are monitoring.</li>
+  </ol>
+
+  <p>Use your AI client to help identify your minimum viable monitoring set:</p>
+
+{% capture m5_sustainability_prompt %}
+Given this monitoring program covering [describe your setup --
+domains monitored, alert services configured, pull-based schedule,
+number of personnel tracked], I have limited time and need to
+identify my minimum viable monitoring set.
+
+If I could only run 3 checks per week, which 3 would give me the
+highest detection value for an electric cooperative / [sector]
+organization, and why?
+
+For each, specify:
+1. The tool and the specific query to run
+2. What finding would require immediate action (escalate now)
+   vs. adding to a weekly review queue
+3. How long the check takes and what it would miss if skipped
+{% endcapture %}
+{% include prompt-block.html title="Minimum Viable Monitoring Prompt" content=m5_sustainability_prompt %}
+
+  <p>Document your answers to these four questions alongside your monitoring artifacts. The goal is not to plan for failure -- it is to make scope decisions deliberately rather than discovering them when the program quietly stops running.</p>
+
+</section>
+
+<section class="module-output">
+  <h2>Output</h2>
+
+  <p><strong>Artifact 5: Push-based alert configuration.</strong> The alert sources documented in the read section -- Google Alerts, CISA ICS Advisory subscriptions, vendor PSIRT feeds, and breach notification services -- configured to deliver ongoing notifications without recurring effort. These push-based alerts form the daily triage queue that your Module 6 runbook will operationalize.</p>
+
+  <p><strong>Artifact 6: Pull-based monitoring schedule.</strong> A structured weekly and monthly checklist specifying which tools to use, which queries to run, and what to compare against your baseline. This schedule ensures monitoring happens consistently rather than only when someone remembers. Combined with the push-based alert sources documented in the read section, this provides layered monitoring coverage. Use the <a href="{{ '/templates/monitoring-checklist-template' | relative_url }}">Monitoring Checklist Template</a> (<a href="{{ '/templates/downloads/monitoring-checklist-template.docx' | relative_url }}">download Word</a>).</p>
+
+  <p><strong>Artifact 7: Consolidated baseline document.</strong> A single document consolidating your Module 2 attack surface inventory, Module 3 personnel exposure inventory, and Module 4 vulnerability correlation table, with each item classified as known-good, accepted risk, needs remediation, or needs investigation. This baseline is the reference point for all ongoing monitoring -- every future check asks "what has changed since the baseline?" Use the <a href="{{ '/templates/baseline-template' | relative_url }}">Baseline Document Template</a> (<a href="{{ '/templates/downloads/baseline-template.xlsx' | relative_url }}">download Excel</a>).</p>
+
+  <p><strong>Looking ahead:</strong> The manual program you built here is a foundation, not the end state. Once you know what you are looking for and what normal looks like, automation becomes feasible. The same AI clients you have been using throughout this workshop can generate scripts that automate your pull-based checks -- Python scripts for crt.sh API queries, CISA KEV JSON feed parsing, HIBP API lookups (for those with API access), and Shodan API queries -- turning your manual schedule into a repeatable, scheduled process.</p>
+</section>

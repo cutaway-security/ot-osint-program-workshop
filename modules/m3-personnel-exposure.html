@@ -1,0 +1,493 @@
+---
+layout: module
+title: "Module 3: Personnel & Credential Exposure"
+module_number: 3
+read_time: 10
+lab_time: 30
+total_time: 40
+block: 1
+prev_module: m2-attack-surface
+prev_module_title: "M2: Attack Surface Discovery"
+next_module: m4-vulnerability-correlation
+next_module_title: "M4: Vulnerability Correlation"
+---
+
+<section class="module-overview">
+  <h2>Overview</h2>
+
+  <p>In Module 2, you mapped the external attack surface -- domains, subdomains, and exposed services. This module shifts focus to the <strong>people</strong> who access those services. Adversaries do not just scan for open ports; they target individuals whose credentials unlock the infrastructure you just discovered.</p>
+
+  <h3>Why Personnel Exposure Matters for ICS/OT</h3>
+
+  <p>In an OT environment, personnel exposure creates attack paths that lead to <strong>operational systems controlling physical processes</strong>. The priority is not corporate email compromise -- it is identifying whose credentials could unlock access to SCADA, EMS, distribution automation, and the network infrastructure that connects to those systems.</p>
+
+  <ul>
+    <li><strong>Credential stuffing against OT-adjacent remote access</strong> -- Breached credentials (email + password) from third-party data breaches are tested against VPN portals and SSO systems discovered in Module 2. When the VPN terminates in an OT network -- or when the same credentials work on a jump host that bridges IT and OT -- a breached password becomes a path to control systems.</li>
+    <li><strong>Social engineering targeting engineers with system access</strong> -- Knowing a SCADA administrator's name, title, and specific responsibilities enables highly targeted phishing. A control system engineer who receives a fake vendor support email referencing the exact DCS platform they manage is far more likely to engage than a generic "IT department" message.</li>
+    <li><strong>Third-party integrators and vendor contacts</strong> -- Many OT environments rely on external integrators who maintain persistent remote access for support. These contacts often have credentials that bypass standard IT access controls and connect directly to operational systems.</li>
+    <li><strong>Executive and financial roles</strong> -- CEOs and CFOs are targets for business email compromise (BEC) and strategic intelligence. Important, but their compromise is primarily a financial and reputational risk -- not a direct threat to sustained operations.</li>
+  </ul>
+
+  <h3>What Breach Databases Reveal</h3>
+
+  <p>When third-party services are breached, stolen data often includes:</p>
+
+  <ul>
+    <li><strong>Email addresses</strong> -- confirms the person had an account on the breached service</li>
+    <li><strong>Passwords or password hashes</strong> -- if reused, these provide direct access to other systems</li>
+    <li><strong>Associated services</strong> -- reveals which external platforms employees use (LinkedIn, industry forums, cloud services)</li>
+    <li><strong>Breach dates</strong> -- a 2024 breach with plaintext passwords is more urgent than a 2015 breach with salted hashes</li>
+  </ul>
+
+  <p>The risk is not that the breached service itself is compromised -- it is that the same credentials may work on <strong>your</strong> VPN portal, webmail, or administrative interfaces.</p>
+
+  <h3>Role-Based Prioritization</h3>
+
+  <p>Not all personnel exposures carry equal risk. A breached credential for a communications manager is less urgent than one for a SCADA administrator. Use a three-tier model to prioritize findings, anchored on <strong>proximity to operational technology</strong>:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Priority</th>
+        <th>Roles</th>
+        <th>Rationale</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Tier 1</strong></td>
+        <td>Immediate</td>
+        <td>Control system engineers, SCADA/OT administrators, cybersecurity leadership with OT scope, grid operations leadership, OT network administrators, CIO/IT leadership with system access</td>
+        <td>Direct access to systems that control physical processes -- their compromise can affect generation, transmission, or distribution operations</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 2</strong></td>
+        <td>High</td>
+        <td>IT administrators with OT bridge access, plant managers, distribution automation engineers, cybersecurity program staff, GIS/mapping specialists</td>
+        <td>Access to systems adjacent to OT (historians, jump hosts, VPN serving OT networks) or data that reveals operational infrastructure</td>
+      </tr>
+      <tr>
+        <td><strong>Tier 3</strong></td>
+        <td>Elevated</td>
+        <td>Executives (CEO, CFO), financial officers, communications staff, vendor contacts without system access</td>
+        <td>Business email compromise and strategic intelligence targets -- important but primarily a financial/reputational risk, not a direct operational threat</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The combination of <strong>tier + breach severity</strong> determines urgency: a Tier 1 person found in a breach containing plaintext passwords is a critical finding that demands immediate action.</p>
+
+  <h3>Professional Network Exposure</h3>
+
+  <p>Beyond breach databases, adversaries mine professional networks and public postings for intelligence:</p>
+
+  <ul>
+    <li><strong>Job postings</strong> reveal technology stacks, specific vendor products, and internal tools ("Must have experience with FortiGate, Cisco ISE, and Honeywell Experion DCS")</li>
+    <li><strong>Conference presentations</strong> reveal system architectures, security approaches, and named technologies</li>
+    <li><strong>Professional profiles</strong> reveal certifications, past employers, and project details that support targeted social engineering</li>
+  </ul>
+
+  <p>This information does not require breach databases to collect -- it is freely available and provides adversaries with the context needed to craft convincing attacks.</p>
+</section>
+
+<section class="module-lab">
+  <h2>Lab: Build Your Personnel Exposure Inventory</h2>
+
+  <p>In this lab, you will identify key personnel at your target organization, check for credential exposure in breach databases, and prioritize findings by role. The output becomes Artifact 3.</p>
+
+  <h3>Step 1: Personnel Discovery and Email Pattern Identification</h3>
+
+  <p>Start by identifying personnel from publicly available sources. Review your target organization's:</p>
+
+  <ul>
+    <li><strong>Leadership pages</strong> -- executives, directors, department heads</li>
+    <li><strong>Staff directories</strong> -- if publicly available</li>
+    <li><strong>Contact pages</strong> -- department contacts, support contacts</li>
+    <li><strong>Press releases and news</strong> -- quoted individuals, spokespeople</li>
+    <li><strong>Careers pages</strong> -- hiring manager names, team structure clues</li>
+  </ul>
+
+  <p>Pay close attention to <strong>email format patterns</strong>. Most organizations use a consistent format (firstname.lastname@domain, first initial + lastname@domain, etc.). Once you identify the pattern, you can predict the email address for any discovered employee.</p>
+
+  <p>Use your AI client to automate the initial discovery and categorization. AI clients with web browsing can search the organization's websites directly:</p>
+
+{% capture m3_discovery_prompt %}
+I am building a personnel exposure inventory for [organization
+name], a [sector] organization that operates [operations
+description].
+
+Review the [domain1, domain2] websites and obtain a list of
+personnel. Search the internet to determine the email naming
+scheme used by [organization name] and generate a list of ten
+individuals and their email addresses.
+
+For each person:
+1. Assign a priority tier based on their likely access to
+   operational technology and critical systems:
+   - Tier 1 (Immediate): Control system engineers, SCADA/OT
+     administrators, cybersecurity leadership with OT scope,
+     grid operations leadership, OT network administrators,
+     CIO/IT leadership with system access
+   - Tier 2 (High): IT administrators with OT bridge access,
+     plant managers, distribution automation engineers,
+     cybersecurity program staff, GIS/mapping specialists
+   - Tier 3 (Elevated): Executives (CEO, CFO), financial
+     officers, communications staff, vendor contacts without
+     system access
+2. Explain the rationale for the tier assignment, focusing on
+   their likely access to operational technology
+3. Provide their predicted email address using the naming
+   pattern you identified
+4. Identify which personnel represent the highest risk to
+   sustained operations if their credentials were compromised
+
+IMPORTANT: For each person and the email format pattern, provide
+the specific URL where you found this information. If you cannot
+access a website directly, state that clearly rather than
+generating names from memory.
+{% endcapture %}
+{% include prompt-block.html title="Personnel Discovery and Categorization Prompt" content=m3_discovery_prompt %}
+
+  <div class="info-callout">
+    <p><strong>Verify AI results.</strong> AI clients with web browsing can perform this search directly, but may fabricate personnel names or titles for less-prominent organizations. Open each cited URL and confirm the person and title match before proceeding. If your AI client cannot browse websites, review the organization's website manually and paste the personnel list into the prompt for categorization only.</p>
+  </div>
+
+<details>
+  <summary>Worked Example: NRECA Personnel Discovery</summary>
+  <div class="worked-example-content">
+
+    <h4>Personnel with OT/Operational Relevance</h4>
+
+    <p>Sources: <a href="https://www.cooperative.com/" target="_blank" rel="noopener">cooperative.com</a> contact pages (cybersecurity, T&D, BTS divisions), <a href="https://www.electric.coop/" target="_blank" rel="noopener">electric.coop</a> articles, and professional profiles.</p>
+
+    <p>NRECA is an association serving 900+ member cooperatives, not a utility itself. Their personnel include cybersecurity leadership, grid operations staff, and technology strategists whose access and knowledge affect the security posture of the entire cooperative network.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Person</th>
+          <th>Title</th>
+          <th>Tier</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Carter Manucy</td>
+          <td>Director, Cybersecurity</td>
+          <td><strong>Tier 1</strong></td>
+          <td>Leads all co-op cybersecurity programs (TAC, RC3, TICCC-TAC, SPARK). Former IT/OT Cybersecurity Director at Florida Municipal Power Agency (27 yrs). Deep OT/ICS background.</td>
+        </tr>
+        <tr>
+          <td>Venkat Banunarayanan</td>
+          <td>VP, Integrated Grid</td>
+          <td><strong>Tier 1</strong></td>
+          <td>Leads T&D, distribution automation, SCADA/ADMS, DER integration. Senior leadership over grid technology strategy.</td>
+        </tr>
+        <tr>
+          <td>Patti Metro</td>
+          <td>Senior Director, Grid Operations and Reliability</td>
+          <td><strong>Tier 1</strong></td>
+          <td>Direct oversight of transmission, grid operations, and reliability. Access to operational systems and standards.</td>
+        </tr>
+        <tr>
+          <td>Meredith Miller</td>
+          <td>Principal Data Scientist, Electrical Power Grid</td>
+          <td><strong>Tier 1</strong></td>
+          <td>TAC product lead. Grid resilience and cybersecurity threat modeling. Runs GridEx simulations -- access to co-op threat scenarios and response plans.</td>
+        </tr>
+        <tr>
+          <td>Wayne McGurk</td>
+          <td>CIO / SVP Information Technology</td>
+          <td><strong>Tier 1</strong></td>
+          <td>IT infrastructure authority with likely OT network access. Controls VPN, firewall, and SSO systems that bridge IT and OT networks.</td>
+        </tr>
+        <tr>
+          <td>Ravindra Singh</td>
+          <td>Senior Principal, Distribution Automation</td>
+          <td><strong>Tier 2</strong></td>
+          <td>SCADA/ADMS/DMS technology for co-ops. Technical access to distribution automation systems.</td>
+        </tr>
+        <tr>
+          <td>Adrian McNamara</td>
+          <td>Cybersecurity Program Manager</td>
+          <td><strong>Tier 2</strong></td>
+          <td>Cyber risk quantification, tabletop exercises, incident response planning. Access to vulnerability assessments and response procedures.</td>
+        </tr>
+        <tr>
+          <td>Katherine Loving</td>
+          <td>Program Manager, GIS Services</td>
+          <td><strong>Tier 2</strong></td>
+          <td>Geospatial data covering co-op service territories and infrastructure. GIS data reveals physical asset locations.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Executives (CEO, CFO) are Tier 3 -- they are business email compromise targets, but their compromise is primarily a financial/reputational risk, not a direct threat to sustained operations. In an OT-focused inventory, Tier 1 and Tier 2 personnel with access to operational technology take priority.</p>
+
+    <h4>Team Email Addresses</h4>
+
+    <p>In addition to individual personnel, document shared team inboxes:</p>
+
+    <ul>
+      <li><strong>membersecurity@nreca.coop</strong> -- NRECA Cybersecurity Team shared inbox</li>
+      <li><strong>DistributionAutomation@nreca.coop</strong> -- Distribution Automation team</li>
+    </ul>
+
+    <p>Shared inboxes are credential targets in their own right. A compromised membersecurity@ account would allow an attacker to send communications as "the cybersecurity team" to 900+ member cooperatives -- a highly credible social engineering vector.</p>
+
+    <h4>Email Format Discovery</h4>
+
+    <p>Source: <a href="https://www.electric.coop/our-organization/contact-us" target="_blank" rel="noopener">electric.coop/our-organization/contact-us</a></p>
+
+    <p><strong>Key finding: Email format is firstname.lastname@nreca.coop</strong> -- confirmed across 10+ public contacts. This allows us to:</p>
+
+    <ul>
+      <li>Predict email addresses for any discovered employee (e.g., carter.manucy@nreca.coop)</li>
+      <li>Generate targeted breach database queries</li>
+      <li>Build a comprehensive email list for ongoing monitoring</li>
+    </ul>
+
+    <p>Note that the email domain (nreca.coop) is different from the public website domain (electric.coop) -- this is a common pattern. If you only searched for breaches on the website domain, you would miss all personnel exposure.</p>
+
+    <h4>Source Verification</h4>
+
+    <p>Public data goes stale. People change roles, leave organizations, and retire. Always note the source and date for each personnel entry and cross-reference multiple sources. For example, Angela Strickland was formerly SVP of Business and Technology Strategies at NRECA, overseeing cybersecurity, grid research, and technology programs -- but professional profiles indicate she may have moved to the Smart Electric Power Alliance. A former employee's credentials from their time at the organization may still work if accounts were not properly deprovisioned, making stale entries a finding in their own right.</p>
+
+  </div>
+</details>
+
+  <h3>Step 2: Breach Database Checks</h3>
+
+  <p>Check whether your target organization's personnel have appeared in known data breaches. <a href="https://haveibeenpwned.com/" target="_blank" rel="noopener">HaveIBeenPwned</a> (HIBP) is the primary free tool for this:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Check Type</th>
+        <th>How</th>
+        <th>What It Shows</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Individual email</strong></td>
+        <td>Enter each email at <a href="https://haveibeenpwned.com/" target="_blank" rel="noopener">haveibeenpwned.com</a></td>
+        <td>Which breaches included that email address, what data types were exposed</td>
+      </tr>
+      <tr>
+        <td><strong>Domain search</strong></td>
+        <td><a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">haveibeenpwned.com/DomainSearch</a> (requires domain verification)</td>
+        <td>All breached accounts across the entire domain</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>For each person found in a breach, document:</p>
+
+  <ul>
+    <li><strong>Breach name and date</strong> -- more recent breaches are higher risk</li>
+    <li><strong>Data types exposed</strong> -- plaintext passwords > hashed passwords > email-only</li>
+    <li><strong>Number of breaches</strong> -- multiple appearances suggest the email is widely used across external services</li>
+    <li><strong>The person's tier</strong> -- a Tier 1 person in a password-containing breach is a critical finding</li>
+  </ul>
+
+  <div class="info-callout">
+    <p><strong>Domain search requires verification.</strong> HIBP domain search requires you to prove control of the domain (via email, DNS record, or other methods). For your own organization, coordinate with IT to complete verification. For the NRECA practice exercise, use individual email checks instead.</p>
+  </div>
+
+<details>
+  <summary>Worked Example: NRECA Breach Database Findings (Hypothetical)</summary>
+  <div class="worked-example-content">
+
+    <p><strong>Note:</strong> The breach results below are <strong>hypothetical examples created for this workshop</strong>. They illustrate what real findings look like and how to document them. Do not interpret these as actual breach data for the named individuals.</p>
+
+    <blockquote>
+      <p><strong>Carter Manucy (Director, Cybersecurity)</strong> -- carter.manucy@nreca.coop found in 2 breach databases. One breach (2023) included bcrypt-hashed passwords. As the director leading cybersecurity programs for 900+ member cooperatives (TAC, RC3, TICCC-TAC, SPARK), Manucy has access to threat intelligence, vulnerability assessments, and incident response plans across the cooperative network. This is a <strong>Tier 1 / Critical finding</strong> -- credential exposure for someone with this scope of access to operational security programs demands immediate action.</p>
+    </blockquote>
+
+    <blockquote>
+      <p><strong>Venkat Banunarayanan (VP, Integrated Grid)</strong> -- venkat.banunarayanan@nreca.coop found in 1 breach (email + password hash from 2022). As VP overseeing SCADA/ADMS strategy, distribution automation, and DER integration, compromised credentials create a path toward grid operations technology. <strong>Tier 1 / Critical finding</strong> -- this role has direct influence over operational technology strategy for the entire cooperative network.</p>
+    </blockquote>
+
+    <blockquote>
+      <p><strong>Wayne McGurk (CIO/SVP IT)</strong> -- wayne.mcgurk@nreca.coop found in 1 breach (email only). As CIO, McGurk controls IT infrastructure including VPN, firewalls, and SSO systems that bridge IT and OT networks. Email-only exposure limits the immediate credential risk, but the confirmed active email enables targeted phishing. <strong>Tier 1 / High finding</strong> -- no password exposed, but the role's access to IT-OT bridge infrastructure makes this a monitoring priority.</p>
+    </blockquote>
+
+    <blockquote>
+      <p><strong>Adrian McNamara (Cybersecurity Program Manager)</strong> -- adrian.mcnamara@nreca.coop found in 1 breach (email + plaintext password from 2019). Manages cyber risk quantification, tabletop exercises, and incident response planning. Access to vulnerability assessments and response procedures. <strong>Tier 2 / High finding</strong> -- plaintext password is directly usable without cracking, and the role has access to sensitive security documentation.</p>
+    </blockquote>
+
+    <p>The critical finding pattern: <strong>Tier 1 role + password-containing breach + access to operational technology or OT security programs</strong> = immediate remediation priority. Notice how the prioritization is driven by operational access, not corporate rank.</p>
+
+  </div>
+</details>
+
+  <h4>Scaling Breach Monitoring</h4>
+
+  <p>Individual email lookups work for small personnel lists, but become impractical as your inventory grows. Several approaches help scale breach monitoring:</p>
+
+  <ul>
+    <li><strong>HIBP Domain Search</strong> -- If you can verify ownership of the organization's email domain (via DNS TXT record, specific email address, or metadata file), HIBP's <a href="https://haveibeenpwned.com/DomainSearch" target="_blank" rel="noopener">Domain Search</a> returns all breached accounts across the entire domain in a single query. This is the most efficient approach for your own organization. Coordinate with IT or domain administrators to complete the verification process.</li>
+    <li><strong>HIBP API v3</strong> -- For programmatic access, the <a href="https://haveibeenpwned.com/API/v3" target="_blank" rel="noopener">HIBP API</a> allows automated breach lookups. API access requires a paid subscription key, but enables integration with scripts and monitoring tools that can check personnel lists on a recurring schedule -- useful for the ongoing monitoring cadence established in Module 5.</li>
+    <li><strong>SpiderFoot</strong> -- <a href="https://github.com/smicallef/spiderfoot" target="_blank" rel="noopener">SpiderFoot</a> is an open-source OSINT automation tool that can collect email addresses, check breach databases, enumerate subdomains, and correlate findings across multiple data sources. For a guided walkthrough of SpiderFoot for email collection and breach checking, see the <a href="https://cutaway-security.github.io/ics-summit-2025-osint-workshop/task5.html" target="_blank" rel="noopener">ICS Summit 2025 OSINT Workshop - Task 5</a>.</li>
+  </ul>
+
+  <p>For this workshop lab, individual HIBP email lookups are sufficient. The scaling approaches above are relevant when you operationalize these checks as part of your ongoing monitoring program.</p>
+
+  <h3>Step 3: Role-Based Prioritization and Attack Scenarios</h3>
+
+  <p>Combine your personnel discovery (Step 1) with breach results (Step 2) to build a prioritized inventory. The three-tier model from the overview guides prioritization, but the <strong>combination</strong> of tier and breach severity determines actual urgency:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Combination</th>
+        <th>Priority</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tier 1 + password/hash breach</td>
+        <td><strong>Critical</strong></td>
+        <td>Immediate credential reset, MFA verification, review access logs</td>
+      </tr>
+      <tr>
+        <td>Tier 1 + email-only breach</td>
+        <td><strong>High</strong></td>
+        <td>Targeted phishing awareness, verify MFA on all accounts</td>
+      </tr>
+      <tr>
+        <td>Tier 2 + password/hash breach</td>
+        <td><strong>High</strong></td>
+        <td>Credential reset, MFA verification</td>
+      </tr>
+      <tr>
+        <td>Tier 3 + password breach</td>
+        <td><strong>Elevated</strong></td>
+        <td>Credential reset, BEC awareness for financial/executive roles</td>
+      </tr>
+      <tr>
+        <td>Any tier + no breach found</td>
+        <td><strong>Monitor</strong></td>
+        <td>Add to ongoing monitoring list for future breach appearances</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Use your AI client to generate prioritized analysis and attack scenarios for your findings:</p>
+
+{% capture m3_prioritization_prompt %}
+I found the following personnel from [organization name] in breach
+databases. Based on their roles at a [sector] organization that
+operates [OT/ICS systems], rank them by risk priority and explain
+potential attack scenarios for the top findings:
+
+[paste personnel with breach details -- name, role, tier, breaches
+ found, whether passwords/hashes/email-only were included]
+
+For each person found in breaches:
+1. The most likely attack scenario given their role and access level
+2. Whether credential reuse against VPN/remote access is plausible
+3. Cross-reference their tier (1/2/3) with the severity of the
+   breach data exposed
+4. Recommended immediate actions
+{% endcapture %}
+{% include prompt-block.html title="Personnel Risk Prioritization Prompt" content=m3_prioritization_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Personnel Prioritization</summary>
+  <div class="worked-example-content">
+
+    <p>Using the hypothetical breach findings from Step 2 with the prioritization prompt above:</p>
+
+<details>
+  <summary>Example AI Response (NRECA Personnel Prioritization)</summary>
+{% capture m3_prioritization_response %}
+<h4>NRECA Personnel Risk Prioritization</h4>
+
+<p><strong>Priority 1 -- Critical (Immediate Action Required):</strong></p>
+
+<p><strong>Carter Manucy, Director of Cybersecurity</strong> -- Tier 1 + 2 breaches (one with hashed passwords, 2023)</p>
+<ul>
+  <li><strong>Attack scenario:</strong> Attacker recovers password from bcrypt hash (offline cracking or dictionary attack). Tests recovered credential against NRECA VPN, email, and SSO systems. Manucy leads cybersecurity programs serving 900+ member cooperatives -- TAC (threat analysis), RC3 (response coordination), and SPARK (security program). Compromised access could expose threat intelligence shared across the cooperative network, vulnerability assessment data for member utilities, incident response playbooks, and the security architecture recommendations that cooperatives rely on.</li>
+  <li><strong>Credential reuse plausibility:</strong> Moderate. Security professionals are more likely to use unique passwords, but the presence of the credential in a breach means the external service account was not isolated from the NRECA email address. The 2023 breach date means the credential may still be current.</li>
+  <li><strong>Recommended actions:</strong> Immediate password reset on all systems. Verify MFA is enabled on VPN, SSO, and email. Review access logs for security program platforms and shared intelligence repositories. Audit whether any member-facing security advisories were accessed from unexpected locations.</li>
+</ul>
+
+<p><strong>Venkat Banunarayanan, VP Integrated Grid</strong> -- Tier 1 + 1 breach (password hash, 2022)</p>
+<ul>
+  <li><strong>Attack scenario:</strong> Recovered credential tested against VPN and administrative portals. As VP overseeing SCADA/ADMS strategy, distribution automation, and DER integration, Banunarayanan has access to grid technology roadmaps, SCADA system specifications, and distribution automation architectures across the cooperative network. Compromised access provides adversaries with detailed knowledge of operational technology deployments at member cooperatives -- the kind of reconnaissance that precedes targeted ICS attacks.</li>
+  <li><strong>Credential reuse plausibility:</strong> Moderate. Executive-level accounts on external platforms often share passwords with less-protected services.</li>
+  <li><strong>Recommended actions:</strong> Immediate password reset. Verify MFA on all systems. Review access to grid technology planning documents and SCADA/ADMS architecture specifications. Alert T&D team to potential exposure.</li>
+</ul>
+
+<p><strong>Priority 2 -- High (Action Within 1 Week):</strong></p>
+
+<p><strong>Adrian McNamara, Cybersecurity Program Manager</strong> -- Tier 2 + 1 breach (plaintext password, 2019)</p>
+<ul>
+  <li><strong>Attack scenario:</strong> Plaintext password is directly usable without cracking. McNamara manages cyber risk quantification, tabletop exercises, and incident response planning. Compromised access could expose vulnerability assessment results, incident response procedures, and security posture data for member cooperatives. An attacker who knows the incident response playbook can design attacks specifically to evade the documented response steps.</li>
+  <li><strong>Credential reuse plausibility:</strong> Moderate. The 2019 breach date means the password may have been changed, but users often iterate on passwords (adding numbers or symbols to the same base). Plaintext exposure makes the original password available for pattern-based guessing.</li>
+  <li><strong>Recommended actions:</strong> Credential reset. Verify MFA on all cybersecurity program platforms. Review access to incident response documentation and tabletop exercise materials. Check whether the compromised password pattern appears in any current system credentials.</li>
+</ul>
+
+<p><strong>Priority 3 -- Monitor:</strong></p>
+
+<p><strong>Wayne McGurk, CIO/SVP IT</strong> -- Tier 1 + 1 breach (email only)</p>
+<ul>
+  <li><strong>Attack scenario:</strong> Email-only exposure confirms the active email address but provides no credential material. As CIO, McGurk controls IT infrastructure including VPN, firewalls, and SSO systems that bridge IT and OT networks. The confirmed email enables targeted spear-phishing designed to harvest credentials for these high-value systems -- for example, a fake Fortinet security advisory requesting immediate VPN portal login.</li>
+  <li><strong>Recommended actions:</strong> Add to priority monitoring list for future breach appearances. Enhanced phishing awareness for this account. Ensure MFA is enforced on all administrative interfaces. No immediate credential action needed, but the IT-OT bridge access this role controls warrants ongoing vigilance.</li>
+</ul>
+
+<p><strong>Key Pattern:</strong> The highest-priority findings are personnel with <em>access to operational technology programs and infrastructure</em> combined with credential exposure. Manucy's access to cooperative-wide cybersecurity programs and Banunarayanan's access to grid technology strategy make them higher-priority findings than a traditional executive-focused analysis would suggest. The Module 2 attack surface inventory tells us <em>what</em> is exposed; this analysis tells us <em>whose credentials could unlock it</em>.</p>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (NRECA Personnel Prioritization)" content=m3_prioritization_response %}
+</details>
+
+  </div>
+</details>
+
+  <h3>Step 4: Professional Network Exposure</h3>
+
+  <p>Beyond breach databases, review what your target organization's personnel reveal through professional channels. This information does not require any breach data -- it is freely available and provides adversaries with targeting context.</p>
+
+  <p><strong>Job postings:</strong> Review the organization's careers page and job boards for postings that reveal technology details. Look for:</p>
+
+  <ul>
+    <li>Specific vendor products and versions ("Experience with FortiGate 7.x required")</li>
+    <li>Internal tools and platforms ("Must know ServiceNow, Splunk, and CrowdStrike")</li>
+    <li>Network architecture clues ("Manage site-to-site VPN between 12 substations")</li>
+    <li>Team structure and reporting relationships</li>
+  </ul>
+
+  <p><strong>Professional profiles and conference presentations:</strong> Search for the organization's name and key personnel on conference agendas, published papers, and industry forums. Presentations often reveal system architectures, security approaches, and named technologies in far more detail than any external scan.</p>
+
+  <p>Use your AI client to analyze what an adversary could learn from this information:</p>
+
+{% capture m3_profnet_prompt %}
+Review the following job postings and professional profile
+information for [organization name]. Identify what an adversary
+could learn about the organization's:
+
+1. Technology stack (specific vendors, products, versions)
+2. Network architecture (on-premise vs cloud, remote access)
+3. Security tools and practices
+4. Organizational structure and reporting chains
+5. Information that could support targeted social engineering
+
+[paste job posting text or profile summaries]
+{% endcapture %}
+{% include prompt-block.html title="Professional Network Exposure Analysis Prompt" content=m3_profnet_prompt %}
+
+  <p>Add professional network findings to your personnel inventory. Technology details discovered here also feed back to Module 2 (expanding your attack surface knowledge) and forward to Module 4 (additional products to correlate against vulnerability databases).</p>
+
+</section>
+
+<section class="module-output">
+  <h2>Output</h2>
+  <p><strong>Artifact 3: Personnel exposure inventory.</strong> A role-prioritized list of personnel with breach correlation, email pattern documentation, and professional network exposure findings. This inventory identifies whose credentials could unlock the remote access services discovered in Module 2, which personnel to monitor for future breach appearances (Module 5), and which roles require the most urgent remediation actions (Module 6 runbook).</p>
+
+  <p>Record your findings in the <a href="{{ '/templates/personnel-inventory-template' | relative_url }}">Personnel Exposure Inventory Template</a> (<a href="{{ '/templates/downloads/personnel-inventory-template.xlsx' | relative_url }}">download Excel</a>).</p>
+</section>

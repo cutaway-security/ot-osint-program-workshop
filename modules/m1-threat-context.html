@@ -1,0 +1,219 @@
+---
+layout: module
+title: "Module 1: ICS/OT Threat Context"
+module_number: 1
+read_time: 5
+lab_time: 10
+total_time: 15
+block: 1
+prev_module:
+prev_module_title:
+next_module: m2-attack-surface
+next_module_title: "M2: Attack Surface Discovery"
+---
+
+<section class="module-overview">
+  <h2>Overview</h2>
+
+  <p>Before we start building an OSINT monitoring program, we need to understand <strong>why</strong> it matters. The attacks below were all enabled -- or made significantly worse -- by information that was publicly discoverable before the attack occurred.</p>
+
+  <h3>Attacks Enabled by Public Exposure</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Incident</th>
+        <th>What Was Exposed</th>
+        <th>What Happened</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Aliquippa Water Authority</strong> (Nov 2023) <a href="#ref-1">[1]</a></td>
+        <td>Unitronics PLCs discoverable via internet scanning; default password "1111"</td>
+        <td>Iranian-linked actors accessed water treatment SCADA systems</td>
+      </tr>
+      <tr>
+        <td><strong>Colonial Pipeline</strong> (2021) <a href="#ref-2">[2]</a></td>
+        <td>VPN credential found in a breach database</td>
+        <td>$4.4M ransomware attack disrupted fuel pipeline operations across the U.S. East Coast</td>
+      </tr>
+      <tr>
+        <td><strong>Texas Water Facilities</strong> (Jan 2024) <a href="#ref-3">[3]</a></td>
+        <td>Vendor remote access software exposed to the internet</td>
+        <td>Russian-linked actors accessed SCADA systems and posted video evidence of interaction</td>
+      </tr>
+      <tr>
+        <td><strong>Fortinet FortiGate Campaign</strong> (Dec 2025) <a href="#ref-4">[4]</a><a href="#ref-5">[5]</a></td>
+        <td>~30,000 FortiGate admin interfaces with FortiCloud SSO exposed to the internet</td>
+        <td>Mass exploitation of <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CVE-2025-59718</a> (CVSS 9.8) within 3 days of disclosure; attackers stole device configurations and established rogue VPN tunnels</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>In each case, the information an attacker needed -- exposed devices, breached credentials, vulnerable services -- was available through publicly accessible sources <strong>before the attack happened</strong>. A monitoring program that regularly checks these sources can identify exposures before adversaries exploit them.</p>
+
+  <h3>The Problem</h3>
+
+  <p>Most ICS/OT security teams do not have a systematic way to answer these questions:</p>
+
+  <ul>
+    <li>What does our organization look like from the outside?</li>
+    <li>Which of our remote access services are visible on the internet?</li>
+    <li>Have any of our employees' credentials appeared in breach databases?</li>
+    <li>Are the specific products we deploy being actively exploited right now?</li>
+  </ul>
+
+  <p>This workshop builds a <strong>repeatable OSINT monitoring process</strong> -- not a one-time assessment. You will leave with operational artifacts and procedures you can use starting tomorrow.</p>
+</section>
+
+<section class="module-lab">
+  <h2>Lab: Generate a Sector Threat Profile</h2>
+
+  <p>In this lab, you will use your AI client to generate a sector-specific threat profile. This document becomes the context for everything you do in the remaining modules.</p>
+
+  <h3>Step 1: Open Your AI Client</h3>
+
+  <p>Open your preferred AI assistant (ChatGPT, Claude, or other). You will use this throughout the workshop as a working partner for analysis, query generation, and document drafting.</p>
+
+  <h3>Step 2: Generate Your Sector Threat Profile</h3>
+
+  <p>Use the prompt template below, customized with your organization's sector, operational technology, and environment. Replace the bracketed fields with your own details:</p>
+
+{% capture m1_prompt %}
+I work at a [organization type -- e.g., "rural electric cooperative",
+"municipal water utility", "food manufacturing company"]. We operate
+[OT/ICS systems -- e.g., "SCADA/EMS systems for grid management",
+"SCADA for plant process control", "DCS and PLC-based control systems"].
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the [sector] sector
+2. Priority remote access technologies commonly deployed at
+   [organization type]
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target [sector]
+{% endcapture %}
+{% include prompt-block.html title="Sector Threat Profile Prompt" content=m1_prompt %}
+
+<details>
+  <summary>Worked Example: NRECA Electric Cooperative Sector</summary>
+  <div class="worked-example-content">
+
+    <p>Using the prompt above for a rural electric cooperative (NRECA member):</p>
+
+{% capture m1_nreca_prompt %}
+I work at a rural electric cooperative that operates generation,
+transmission, and distribution infrastructure. We are a member of
+NRECA and operate SCADA/EMS systems for grid management.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the electric cooperative sector
+2. Priority remote access technologies commonly deployed at cooperatives
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target the electric sector
+{% endcapture %}
+{% include prompt-block.html title="NRECA Sector Threat Profile Prompt" content=m1_nreca_prompt %}
+
+<details>
+  <summary>Example AI Response (Electric Cooperative Sector)</summary>
+{% capture m1_response %}
+<h4>Electric Cooperative Sector Threat Profile</h4>
+
+<p><strong>Top 3 External Exposure Categories:</strong></p>
+<ol>
+  <li><strong>Remote access infrastructure</strong> -- VPN portals (especially FortiGate, Cisco, SonicWall), RDP gateways, and vendor remote support tools are the primary entry points adversaries target. Many cooperatives maintain internet-facing administrative interfaces for these devices.</li>
+  <li><strong>SCADA/EMS web interfaces</strong> -- Energy management system dashboards, historian servers, and HMI web clients are sometimes reachable from the internet, particularly through misconfigured network segmentation or dual-homed systems.</li>
+  <li><strong>Email and credential exposure</strong> -- Employee credentials from third-party breaches, combined with predictable email formats (firstname.lastname@domain), enable credential stuffing attacks against VPN and webmail portals.</li>
+</ol>
+
+<p><strong>Priority Remote Access Technologies:</strong></p>
+<ul>
+  <li>Fortinet FortiGate SSL-VPN (widely deployed at cooperatives for site-to-site and remote admin access)</li>
+  <li>Cisco AnyConnect / ASA</li>
+  <li>TeamViewer, AnyDesk, or similar tools used by SCADA vendors for remote support</li>
+  <li>Citrix or RDP-based virtual desktop environments</li>
+  <li>OPC-UA gateways or data diodes with web management interfaces</li>
+</ul>
+
+<p><strong>Key Personnel Roles Targeted:</strong></p>
+<ul>
+  <li><strong>SCADA/EMS administrators</strong> -- direct access to control systems</li>
+  <li><strong>IT administrators / CIO</strong> -- credentials often provide VPN and firewall admin access</li>
+  <li><strong>Plant managers</strong> -- operational authority, often have system access</li>
+  <li><strong>Executives (CEO, CFO)</strong> -- business email compromise and strategic intelligence</li>
+  <li><strong>Third-party integrator contacts</strong> -- shared credentials for vendor support access</li>
+</ul>
+
+<p><strong>Recent Threat Actor Groups:</strong></p>
+<ul>
+  <li><strong>Volt Typhoon</strong> (PRC) -- pre-positioning in U.S. critical infrastructure, including energy sector, using living-off-the-land techniques</li>
+  <li><strong>CyberAv3ngers</strong> (Iran-linked) -- targeted water and energy infrastructure using default credentials on exposed PLCs</li>
+  <li><strong>Sandworm</strong> (Russia/GRU) -- history of targeting electric grids; responsible for Ukraine power grid attacks</li>
+  <li><strong>Various ransomware groups</strong> -- financially motivated attacks on utilities via exposed RDP and VPN credentials from breach databases</li>
+</ul>
+{% endcapture %}
+{% include response-block.html title="Example AI Response (Electric Cooperative Sector)" content=m1_response %}
+</details>
+
+  </div>
+</details>
+
+  <p>If you work in a different sector, here are additional starting points:</p>
+
+{% capture m1_water_prompt %}
+I work at a municipal water utility that operates water treatment
+and distribution infrastructure serving 50,000 customers. We use
+SCADA systems for plant process control and remote pump station
+monitoring.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the water/wastewater sector
+2. Priority remote access technologies commonly deployed at water utilities
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target water infrastructure
+{% endcapture %}
+{% include prompt-block.html title="Example: Water Utility" content=m1_water_prompt %}
+
+{% capture m1_mfg_prompt %}
+I work at a food and beverage manufacturing company with 12 plants
+across the Midwest. We operate DCS and PLC-based process control
+systems for batch production and packaging lines.
+
+Generate a sector threat profile including:
+1. Top 3 external exposure categories for the food manufacturing sector
+2. Priority remote access technologies commonly deployed at manufacturing plants
+3. Key personnel roles that adversaries would target
+4. Recent threat actor groups known to target manufacturing
+{% endcapture %}
+{% include prompt-block.html title="Example: Manufacturing" content=m1_mfg_prompt %}
+
+  <p>Generate your sector threat profile and save the output. You will reference this document in every remaining module.</p>
+
+  <h3>Step 3: Review and Refine</h3>
+
+  <p>Review the AI-generated profile for accuracy. Consider:</p>
+
+  <ul>
+    <li>Does the list of exposure categories match what you know about your environment?</li>
+    <li>Are the remote access technologies accurate for your organization?</li>
+    <li>Are there personnel roles or threat actors specific to your sector that the AI missed?</li>
+  </ul>
+
+  <p>Edit the document to correct any gaps. This is <strong>your</strong> operational artifact -- the AI accelerates the drafting, but you validate the content.</p>
+</section>
+
+<section class="module-output">
+  <h2>Output</h2>
+  <p><strong>Artifact 1: Sector threat profile document.</strong> This profile provides the context for the remaining modules -- it identifies what exposure categories to investigate (Module 2), which personnel roles to prioritize (Module 3), what technologies to correlate against vulnerability databases (Module 4), and what keywords to monitor (Module 5).</p>
+</section>
+
+<section class="module-references">
+  <h2>References</h2>
+  <ol>
+    <li id="ref-1">MITRE ATT&CK -- Unitronics Defacement Campaign (C0031). <a href="https://attack.mitre.org/campaigns/C0031/" target="_blank" rel="noopener">https://attack.mitre.org/campaigns/C0031/</a></li>
+    <li id="ref-2">CISA -- Alert AA20-049A: Ransomware Pipeline Operations. <a href="https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-049a" target="_blank" rel="noopener">https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-049a</a></li>
+    <li id="ref-3">Texas Department of Information Resources -- 2024 Cybersecurity Report. <a href="https://dir.texas.gov/sites/default/files/2024-11/2024%20Cybersecurity%20Report.pdf" target="_blank" rel="noopener">https://dir.texas.gov/sites/default/files/2024-11/2024%20Cybersecurity%20Report.pdf</a> (PDF)</li>
+    <li id="ref-4">CISA -- CVE-2025-59718 Added to Known Exploited Vulnerabilities Catalog. <a href="https://www.cisa.gov/news-events/alerts/2025/12/16/cisa-adds-one-known-exploited-vulnerability-catalog" target="_blank" rel="noopener">https://www.cisa.gov/news-events/alerts/2025/12/16/cisa-adds-one-known-exploited-vulnerability-catalog</a></li>
+    <li id="ref-5">Dragos -- Poland Power Grid Attack: Electrum Targets Distributed Energy Facilities via Exposed FortiGate Devices. <a href="https://www.dragos.com/blog/poland-power-grid-attack-electrum-targets-distributed-energy-2025" target="_blank" rel="noopener">https://www.dragos.com/blog/poland-power-grid-attack-electrum-targets-distributed-energy-2025</a></li>
+  </ol>
+</section>

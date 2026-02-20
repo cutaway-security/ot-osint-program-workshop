@@ -1,0 +1,13 @@
+title: CutSec OT OSINT Program Workshop
+description: Building an ICS/OT OSINT Monitoring Program
+baseurl: /ot-osint-program-workshop
+url: https://cutaway-security.github.io
+markdown: kramdown
+
+exclude:
+  - CLAUDE.md
+  - claude-dev/
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - "**/*.py"

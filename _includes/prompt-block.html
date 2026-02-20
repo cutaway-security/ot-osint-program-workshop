@@ -1,0 +1,7 @@
+<div class="prompt-block">
+  <div class="prompt-header">
+    <span>{{ include.title | default: "AI Prompt" }}</span>
+    <button class="copy-btn">Copy</button>
+  </div>
+  <pre><code>{{ include.content | strip }}</code></pre>
+</div>

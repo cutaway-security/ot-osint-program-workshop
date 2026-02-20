@@ -1,0 +1,133 @@
+---
+layout: default
+title: Building an ICS/OT OSINT Monitoring Program
+---
+
+<div class="workshop-header">
+  <h1>CutSec OT OSINT Program Workshop</h1>
+  <p class="subtitle">Building an ICS/OT OSINT Monitoring Program</p>
+</div>
+
+<h2>Workshop Overview</h2>
+
+<p>A 4-hour hands-on workshop teaching ICS/OT security professionals to build sustainable OSINT monitoring programs using AI-assisted workflows. Students work through 6 modules and leave with 8 operational artifacts they can use immediately.</p>
+
+<p>This workshop focuses on the core disciplines of an ICS/OT OSINT monitoring program: external attack surface discovery, personnel exposure analysis, vulnerability correlation, and operationalizing the monitoring process. These are the capabilities every program needs first. A mature ICS/OT OSINT program extends well beyond what a single workshop can cover -- the <a href="{{ site.baseurl }}/modules/summary.html">Summary</a> outlines where the program goes from here.</p>
+
+<h2>Schedule</h2>
+
+<table class="schedule-table">
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Read</th>
+      <th>Lab</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m1-threat-context.html">M1: ICS/OT Threat Context</a></td>
+      <td>5 min</td>
+      <td>10 min</td>
+      <td>15 min</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m2-attack-surface.html">M2: External Attack Surface Discovery</a></td>
+      <td>10 min</td>
+      <td>35 min</td>
+      <td>45 min</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m3-personnel-exposure.html">M3: Personnel & Credential Exposure</a></td>
+      <td>10 min</td>
+      <td>30 min</td>
+      <td>40 min</td>
+    </tr>
+    <tr class="schedule-break">
+      <td colspan="4">Break 1 (10 min)</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m4-vulnerability-correlation.html">M4: Vulnerability Correlation</a></td>
+      <td>10 min</td>
+      <td>30 min</td>
+      <td>40 min</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m5-monitoring-alerting.html">M5: Monitoring & Alerting Setup</a></td>
+      <td>10 min</td>
+      <td>40 min</td>
+      <td>50 min</td>
+    </tr>
+    <tr class="schedule-break">
+      <td colspan="4">Break 2 (10 min)</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/m6-runbook-development.html">M6: Runbook Development</a></td>
+      <td>10 min</td>
+      <td>25 min</td>
+      <td>35 min</td>
+    </tr>
+    <tr>
+      <td><a href="{{ site.baseurl }}/modules/summary.html">Summary & Next Steps</a></td>
+      <td>10 min</td>
+      <td>--</td>
+      <td>10 min</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Prerequisites</h2>
+
+<ul>
+  <li>Laptop with web browser (Windows primary; macOS/Linux supported)</li>
+  <li>AI client access (ChatGPT, Claude, or preferred AI assistant)</li>
+  <li>Basic OSINT familiarity</li>
+  <li>Optional: free-tier accounts for <a href="https://www.shodan.io/" target="_blank" rel="noopener">Shodan</a>, <a href="https://search.censys.io/" target="_blank" rel="noopener">Censys</a>, and <a href="https://securitytrails.com/" target="_blank" rel="noopener">SecurityTrails</a></li>
+</ul>
+
+<h2>The Broader Program</h2>
+
+<p>The six modules in this workshop establish the operational foundation of an ICS/OT OSINT program. A complete program also incorporates capability areas that require additional training, specialized tools, or dedicated analytical expertise:</p>
+
+<ul>
+  <li><strong>Physical security and geospatial intelligence</strong> -- satellite and aerial imagery analysis, facility perimeter reconnaissance, publicly available mapping and permit data</li>
+  <li><strong>Supply chain and vendor exposure</strong> -- identifying third-party vendors, integrators, and service providers with access to OT environments and assessing their external posture</li>
+  <li><strong>Social media and open web monitoring</strong> -- tracking threat actor activity, sector-specific discussions, and operational security leakage on public platforms</li>
+  <li><strong>Financial and regulatory intelligence</strong> -- FERC/NERC filings, Form 990s, rate case documents, and other regulatory submissions that reveal infrastructure and operational details</li>
+  <li><strong>Technical intelligence (TECHINT)</strong> -- firmware analysis, hardware identification, and protocol fingerprinting from public sources</li>
+  <li><strong>Incident and threat intelligence correlation</strong> -- connecting external findings to known TTPs, threat actor campaigns, and sector-specific threat intelligence feeds</li>
+</ul>
+
+<p>Two additional areas deserve specific mention because they are directly relevant to critical infrastructure operators but require specialized training beyond this workshop:</p>
+
+<p><strong>Domestic violent extremism (DVE) research</strong> is a recognized component of OSINT programs for critical infrastructure operators. Electric cooperatives and utilities are specifically named targets in publicly documented DVE attack planning. DVE research requires additional specialized training -- including source validation, analytical objectivity, bias mitigation, and proper handling of sensitive findings. Students interested in this area should seek dedicated training from law enforcement partners (FBI InfraGard, DHS/CISA), sector ISACs, or specialized intelligence training programs.</p>
+
+<p><strong>Dark web monitoring</strong> -- watching for credential dumps, ransomware group postings, threat actor communications, and data leak forums -- is relevant to ICS/OT security programs. Effective dark web research requires specialized tools, operational security practices, and legal awareness that are beyond the scope of this workshop. Performing dark web research without proper training introduces risk: attribution errors, operational security failures, legal exposure, and collection of unreliable or manipulated intelligence. Seek dedicated training before attempting dark web research.</p>
+
+<p>The <a href="{{ site.baseurl }}/modules/summary.html">Summary & Next Steps</a> page covers these areas in more detail and identifies where to continue building after this workshop.</p>
+
+<h2>Supporting Materials</h2>
+
+<div class="materials-grid">
+  <a href="{{ site.baseurl }}/templates/" class="material-card">
+    <h3>Templates</h3>
+    <p>Baseline, personnel inventory, vulnerability correlation, runbook, and monitoring checklist templates.</p>
+  </a>
+  <a href="{{ site.baseurl }}/prompts/ai-copilot-prompt-library.html" class="material-card">
+    <h3>AI Copilot Prompts</h3>
+    <p>All AI prompts from the workshop, organized by category and ready to copy.</p>
+  </a>
+  <a href="{{ site.baseurl }}/resources/tools.html" class="material-card">
+    <h3>Tool Reference</h3>
+    <p>Browser-based OSINT tools used in the workshop with URLs and account requirements.</p>
+  </a>
+  <a href="{{ site.baseurl }}/resources/vuln-intelligence-resources.html" class="material-card">
+    <h3>Vulnerability Intel</h3>
+    <p>Primary vulnerability sources, vendor PSIRTs, and exploit intelligence feeds.</p>
+  </a>
+  <a href="{{ site.baseurl }}/examples/" class="material-card">
+    <h3>Worked Examples</h3>
+    <p>NRECA worked examples for domain discovery, personnel analysis, vulnerability correlation, and alert configuration.</p>
+  </a>
+</div>

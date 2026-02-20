@@ -1,0 +1,219 @@
+---
+layout: module
+title: "Summary & Next Steps"
+module_number: 7
+read_time: 10
+lab_time: 0
+total_time: 10
+block: 3
+prev_module: m6-runbook-development
+prev_module_title: "M6: Runbook Development"
+next_module:
+next_module_title:
+---
+
+<section class="module-overview">
+  <h2>Remediation Prioritization Recap</h2>
+
+  <p>Throughout this workshop, you used the P0-P3 framework to prioritize findings by operational impact. This hierarchy applies to every artifact you built today and every finding your monitoring program surfaces going forward:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Priority</th>
+        <th>Criteria</th>
+        <th>Response</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>P0 -- Active Exploitation</strong></td>
+        <td>Direct exposure + confirmed active exploitation (CISA KEV, CISA ICS advisory, or vendor alert) + safety or operational impact</td>
+        <td>Immediate action (hours, not days)</td>
+        <td>FortiGate CVE-2025-59718 on an internet-facing admin interface with active exploitation confirmed by CISA KEV and Fortinet PSIRT</td>
+      </tr>
+      <tr>
+        <td><strong>P1 -- Critical</strong></td>
+        <td>Direct exposure + known exploit + safety or operational impact</td>
+        <td>Investigate within 24 hours</td>
+        <td>Internet-exposed remote access portal running a product version with a published exploit, but no confirmed active exploitation from CISA or vendor sources</td>
+      </tr>
+      <tr>
+        <td><strong>P2 -- Urgent</strong></td>
+        <td>Remote access exposure + credential risk, or vulnerable edge device without confirmed exploitation</td>
+        <td>Remediate within 1-2 weeks</td>
+        <td>Tier 1 personnel credentials in a recent breach, or a known-vulnerable edge device not yet in CISA KEV</td>
+      </tr>
+      <tr>
+        <td><strong>P3 -- Planned</strong></td>
+        <td>Information disclosure, configuration weaknesses, monitoring gaps</td>
+        <td>Remediate within 30-90 days</td>
+        <td>Excessive DNS information disclosure, stale subdomains, personnel with outdated professional profiles exposing technology details</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The baseline and monitoring program give you the <strong>visibility</strong> to apply this framework consistently. Without them, prioritization is guesswork.</p>
+
+</section>
+
+<section>
+  <h2>What You Are Leaving With (8 Artifacts)</h2>
+
+  <p>Each artifact builds on the ones before it. Together, they form a complete OT OSINT monitoring program -- from understanding the threat landscape to operationalizing the monitoring process.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Artifact</th>
+        <th>Module</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Sector threat profile</strong></td>
+        <td><a href="{{ '/modules/m1-threat-context' | relative_url }}">M1</a></td>
+        <td>Context for what you are defending against -- recent ICS/OT attacks in your sector, common TTPs, and exposure categories to investigate</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>External attack surface inventory</strong></td>
+        <td><a href="{{ '/modules/m2-attack-surface' | relative_url }}">M2</a></td>
+        <td>Categorized list of domains, subdomains, remote access services, and identified technologies with asset documentation fields</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Personnel exposure inventory</strong></td>
+        <td><a href="{{ '/modules/m3-personnel-exposure' | relative_url }}">M3</a></td>
+        <td>Role-prioritized list of personnel with breach correlation, email patterns, and professional network exposure -- tiered by proximity to OT systems</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Vulnerability correlation table</strong></td>
+        <td><a href="{{ '/modules/m4-vulnerability-correlation' | relative_url }}">M4</a></td>
+        <td>Exposed assets mapped to CVEs with CISA KEV status, P0-P3 priority ratings, and remediation tracking</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Push-based alert configuration</strong></td>
+        <td><a href="{{ '/modules/m5-monitoring-alerting' | relative_url }}">M5</a></td>
+        <td>Google Alerts, CISA ICS Advisory subscriptions, vendor PSIRT feeds, and breach notification services configured for continuous monitoring</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Pull-based monitoring schedule</strong></td>
+        <td><a href="{{ '/modules/m5-monitoring-alerting' | relative_url }}">M5</a></td>
+        <td>Structured weekly and monthly checklist specifying tools, queries, baseline comparisons, and OT-relevant finding criteria</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Consolidated baseline document</strong></td>
+        <td><a href="{{ '/modules/m5-monitoring-alerting' | relative_url }}">M5</a></td>
+        <td>Single document consolidating M2-M4 outputs with each item classified as known-good, accepted risk, needs remediation, or needs investigation</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>Operational runbook</strong></td>
+        <td><a href="{{ '/modules/m6-runbook-development' | relative_url }}">M6</a></td>
+        <td>Cadenced procedures (daily, weekly, monthly, quarterly) with specific tools, queries, triage criteria, escalation paths, and [CORE]/[FULL] labels</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>These artifacts are not independent documents -- they are a connected system. The threat profile (1) tells you what to look for. The inventories (2-4) tell you what you have and where you are exposed. The monitoring infrastructure (5-6) watches for changes. The baseline (7) gives you a reference point. The runbook (8) keeps it all running.</p>
+
+</section>
+
+<section>
+  <h2>Next Steps Beyond This Workshop</h2>
+
+  <p>The program you built today is a foundation. These are the logical next steps, ordered by the value they add to the monitoring program:</p>
+
+  <h3>Response Playbooks</h3>
+
+  <p>Your runbook defines routine operations -- what to check and when. Playbooks define what to do when monitoring surfaces a specific finding type. Start with playbooks for your highest-impact scenarios:</p>
+
+  <ul>
+    <li><strong>Exposed remote access:</strong> A new VPN portal or admin interface appears in Shodan/Censys that is not in your baseline</li>
+    <li><strong>Breached credentials:</strong> A Tier 1 or Tier 2 employee appears in a new breach with password or hash exposure</li>
+    <li><strong>Critical vulnerability on exposed asset:</strong> A P0 or P1 finding from your vulnerability correlation workflow -- active exploitation confirmed by CISA KEV, CISA ICS advisory, or vendor PSIRT on an internet-facing edge device</li>
+  </ul>
+
+  <p>Each playbook should define: who is notified, what immediate containment actions are taken, how the finding is validated, and how remediation is tracked to resolution.</p>
+
+  <h3>Tabletop Exercises</h3>
+
+  <p>Validate your playbooks before a real incident. Walk through scenarios using your actual artifacts: "The Monday morning KEV review shows CVE-2026-XXXXX added for FortiGate FortiOS 7.4.x. Your baseline shows two internet-facing FortiGate instances. Walk through your response." Tabletop exercises expose gaps in escalation paths, unclear ownership, and missing tool access before they matter.</p>
+
+  <h3>Script Automation</h3>
+
+  <p>The same AI clients you used throughout this workshop can generate scripts that automate your pull-based checks. Candidates for automation:</p>
+
+  <ul>
+    <li>crt.sh API queries with diff against baseline subdomain list</li>
+    <li>CISA KEV JSON feed parsing with match against your asset inventory CPEs</li>
+    <li>Shodan API queries for monitored IP ranges with change detection</li>
+    <li>HIBP API lookups for domain-level breach monitoring (requires API key)</li>
+  </ul>
+
+  <p>Start with the [CORE] procedures from your runbook -- these are the checks that run no matter what, so they benefit most from automation.</p>
+
+  <h3>Program Maturity</h3>
+
+  <p>As the program matures, build toward:</p>
+
+  <ul>
+    <li><strong>Metrics:</strong> Track alerts received vs. actionable findings, triage response time, baseline changes per cycle, and open remediation aging. These demonstrate program value and identify where effort is wasted</li>
+    <li><strong>Stakeholder reporting:</strong> Quarterly briefings for management using the P0-P3 framework to frame findings and remediation progress</li>
+    <li><strong>Integration:</strong> Connect monitoring outputs to existing vulnerability management, change management, and incident response workflows</li>
+    <li><strong>Expansion:</strong> Add new monitoring targets as the organization's OT footprint changes -- new facilities, new vendors, new remote access technologies</li>
+  </ul>
+
+</section>
+
+<section>
+  <h2>Expanding Program Scope</h2>
+
+  <p>This workshop covers the core operational disciplines: external attack surface discovery, personnel exposure analysis, vulnerability correlation, and monitoring operations. A mature ICS/OT OSINT program extends into additional capability areas that require dedicated training, specialized tools, or analytical expertise beyond what a 4-hour workshop can address. The following sections outline where the program goes from here.</p>
+
+  <h3>Additional Capability Areas</h3>
+
+  <p><strong>Physical security and geospatial intelligence.</strong> Satellite and aerial imagery, facility perimeter reconnaissance, and publicly available mapping and permit data can reveal physical security posture, facility layouts, and infrastructure locations. For electric cooperatives and utilities, publicly filed documents often include substation locations, transmission line routes, and generation facility details that complement the digital attack surface you mapped in Module 2.</p>
+
+  <p><strong>Supply chain and vendor exposure.</strong> Third-party vendors, system integrators, and managed service providers frequently have direct or VPN access to OT environments. Assessing their external posture -- exposed services, breach history, personnel exposure -- using the same techniques from Modules 2-4 extends the monitoring program to cover access paths that the organization does not directly control. The Texas water facility incidents in Module 1 illustrate what happens when vendor remote access becomes the attack vector.</p>
+
+  <p><strong>Social media and open web monitoring.</strong> Threat actors discuss targets, share reconnaissance findings, and coordinate operations on public platforms. Monitoring for organizational mentions, sector-specific threat discussions, and operational security leakage (employees posting photos of control rooms, badge designs, or network diagrams) adds an early-warning layer that technical monitoring alone does not provide.</p>
+
+  <p><strong>Financial and regulatory intelligence.</strong> Organizations in regulated sectors produce public filings that reveal operational details: FERC/NERC filings, Form 990s, rate case documents, capital improvement plans, and vendor contract disclosures. These documents can expose technology choices, infrastructure investments, and organizational structure that adversaries can use for targeting.</p>
+
+  <p><strong>Technical intelligence (TECHINT).</strong> Firmware analysis, hardware identification from public procurement records, and protocol fingerprinting from publicly accessible services provide deeper technical intelligence about OT environments. This capability area typically requires specialized tooling and ICS/OT engineering knowledge beyond general OSINT techniques.</p>
+
+  <p><strong>Incident and threat intelligence correlation.</strong> Connecting your monitoring findings to known threat actor TTPs, active campaigns, and sector-specific threat intelligence feeds transforms individual findings into actionable intelligence. Membership in sector ISACs (E-ISAC for electric utilities, WaterISAC for water/wastewater) provides access to threat intelligence sharing that contextualizes what your monitoring program detects.</p>
+
+  <h3>Domestic Violent Extremism Research</h3>
+
+  <p>DVE research is a recognized component of OSINT programs for critical infrastructure operators. Electric cooperatives and utilities are specifically named targets in publicly documented DVE attack planning, including physical attacks on substations and generation facilities. DVE monitoring requires additional specialized training beyond this workshop -- including source validation, analytical objectivity, bias mitigation, and proper handling of sensitive findings. This workshop does not cover DVE tradecraft. Organizations interested in building this capability should seek dedicated training from law enforcement partners (FBI InfraGard, DHS/CISA), sector ISACs, or specialized intelligence training programs.</p>
+
+  <h3>Dark Web Monitoring</h3>
+
+  <p>Dark web monitoring -- watching for credential dumps, ransomware group postings targeting your sector or organization, threat actor communications, and data leak forums -- is relevant to ICS/OT security programs. The breach monitoring techniques in Module 3 cover the surface web; dark web sources can surface compromised credentials, stolen data, and pre-attack reconnaissance before they appear in public databases. Effective dark web research requires specialized tools, operational security practices, and legal awareness that are beyond the scope of this workshop. Performing dark web research without proper training introduces risk: attribution errors, operational security failures, legal exposure, and collection of unreliable or manipulated intelligence. Seek dedicated training before attempting dark web research.</p>
+
+</section>
+
+<section>
+  <h2>Resources</h2>
+
+  <p>All workshop materials remain available on this site for reference after the workshop:</p>
+
+  <ul>
+    <li><a href="{{ site.baseurl }}/templates/">Templates</a> -- artifact templates for baseline, personnel inventory, vulnerability correlation, runbook, and monitoring checklist</li>
+    <li><a href="{{ site.baseurl }}/prompts/ai-copilot-prompt-library.html">AI Copilot Prompt Library</a> -- all AI prompts from Modules 1-6, organized by category and ready to copy</li>
+    <li><a href="{{ site.baseurl }}/resources/tools.html">Tool Reference</a> -- browser-based OSINT tools with URLs and account requirements</li>
+    <li><a href="{{ site.baseurl }}/resources/vuln-intelligence-resources.html">Vulnerability Intelligence Resources</a> -- primary vulnerability sources, vendor PSIRTs, and exploit intelligence feeds</li>
+  </ul>
+
+</section>
